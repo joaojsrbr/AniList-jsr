@@ -1,10 +1,10 @@
 on:
   pull_request:
     branches:
-      - dev
+      - get-master
   push:
     branches:
-      - dev
+      - get-master
 
 name: "Build & Release"
  
@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       JAVA_VERSION: "11.0"
-      FLUTTER_VERSION: "3.0.1"
+      FLUTTER_VERSION: "3.0.2"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
