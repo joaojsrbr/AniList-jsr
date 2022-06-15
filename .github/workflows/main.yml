@@ -1,0 +1,50 @@
+on:
+  pull_request:
+    branches:
+      - dev
+  push:
+    branches:
+      - dev
+
+name: "Build & Release"
+ 
+jobs:
+  build:
+    name: Build & Release
+    runs-on: ubuntu-latest
+    env:
+      JAVA_VERSION: "11.0"
+      FLUTTER_VERSION: "3.0.1"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: ${{env.JAVA_VERSION}}
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{env.FLUTTER_VERSION}}
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter build apk --release
+      - run: flutter build apk --split-per-abi --release 
+      - name: Push to Releases
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/*.apk"
+          tag: v1.0.${{ github.run_number }}
+          token: ${{ secrets.TOKEN }}  
+      - name: Telegram<apk>
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          document: build/app/outputs/flutter-apk/*.apk 
+  # notifyTelegram:
+  #   runs-on: ubuntu-latest      
+  #   steps:
+  #   - name: Telegram<apk>
+  #     uses: appleboy/telegram-action@master
+  #     with:
+  #       to: ${{ secrets.TELEGRAM_TO }}
+  #       token: ${{ secrets.TELEGRAM_TOKEN }}
+  #       document: build/app/outputs/flutter-apk/*.apk 
