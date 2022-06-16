@@ -2,6 +2,7 @@
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
 import 'package:anisearch2/screens/mangaDetails/models/list_type.dart';
+import 'package:anisearch2/scroll/scrollbehavior.dart';
 // import 'package:anisearch2/screens/mangaDetails/widget/colored_tabbar.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/foundation.dart';
@@ -104,7 +105,7 @@ class MangaDetailsR extends GetView<MangaDetailsRController> {
         // controller: _scrollController,
         controller: controller.scrollController,
         physics: const ScrollPhysics(parent: PageScrollPhysics()),
-
+        scrollBehavior: MyScrollBehavior(),
         // physics: ClampingScrollPhysics(),
         body: TabBarView(
           controller: controller.tabController,
@@ -141,23 +142,26 @@ class MangaDetailsR extends GetView<MangaDetailsRController> {
               background: Stack(
                 children: [
                   BuildImageWidget(
-                      filterQuality: FilterQuality.high,
-                      colorBlendMode: BlendMode.dstIn,
-                      colors: withOpacity
-                          .map(
-                            (e) => Theme.of(context)
-                                .colorScheme
-                                .background
-                                .withOpacity(e),
-                          )
-                          .toList(),
-                      height: MediaQuery.of(context).size.height * 1,
-                      colorfilter: true,
-                      fit: BoxFit.fitHeight,
-                      imageUrl: dataProvider.coverImage!.extraLarge ??
-                          dataProvider.coverImage!.large ??
-                          dataProvider.bannerImage ??
-                          ''),
+                    filterQuality: FilterQuality.high,
+                    colorBlendMode: BlendMode.dstIn,
+                    colors: withOpacity
+                        .map(
+                          (e) => Theme.of(context)
+                              .colorScheme
+                              .background
+                              .withOpacity(e),
+                        )
+                        .toList(),
+                    height: MediaQuery.of(context).size.height * 1,
+                    width: MediaQuery.of(context).size.width * 1,
+                    colorfilter: true,
+                    fit: GetPlatform.isWeb ? BoxFit.cover : BoxFit.fitHeight,
+                    imageUrl: dataProvider.bannerImage ??
+                        dataProvider.coverImage!.extraLarge ??
+                        dataProvider.coverImage!.large ??
+                        dataProvider.coverImage!.medium ??
+                        'https://convertingcolors.com/plain-1E2436.svg',
+                  ),
                   _TestViewState(
                     scrollController: controller.scrollController,
                   )

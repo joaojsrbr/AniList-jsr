@@ -5,6 +5,7 @@ import 'package:anisearch2/api/models/api_graphql_pageinfo_model.dart';
 import 'package:anisearch2/screens/mangaGrid/controller/controller.dart';
 import 'package:anisearch2/screens/mangaGrid/manga_gridS.dart';
 import 'package:anisearch2/widgetU/build_image.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 
@@ -105,14 +106,17 @@ class CopyWidget extends StatelessWidget {
       padding: const EdgeInsets.only(top: 15),
       child: SafeArea(
         child: AspectRatio(
-          aspectRatio: 16 / 12,
+          aspectRatio: (GetPlatform.isWeb)
+              ? (MediaQuery.of(context).size.height >= 900)
+                  ? (38 / 12)
+                  : (16 / 12)
+              : (16 / 12),
           child: Column(
             // primary: true,
             // mainAxisAlignment: MainAxisAlignment.start,
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeaderTrends(
-                refreshController: refreshController,
                 title: title,
                 lista: lista!,
               ),
@@ -172,7 +176,7 @@ class _TrendsState extends State<Trends> {
               refreshController.loadComplete();
             },
             child: ListView.builder(
-              physics: const ClampingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemCount: widget.lista!.length,
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.only(top: 10, left: 20),
@@ -181,7 +185,7 @@ class _TrendsState extends State<Trends> {
                 final url = listaU.coverImage!.extraLarge ??
                     listaU.coverImage!.large ??
                     listaU.coverImage!.medium ??
-                    '';
+                    'https://convertingcolors.com/plain-1E2436.svg';
                 final title = listaU.title!.english ??
                     listaU.title!.romaji ??
                     listaU.title!.native ??
@@ -223,11 +227,20 @@ class _TrendsState extends State<Trends> {
       Media listaU,
       double averageScore,
       TextStyle style) {
+    if (kDebugMode) {
+      print(
+          'maxHeight: ${constraints.maxHeight}, maxWidth: ${constraints.maxWidth},');
+    }
     return Padding(
-      padding: const EdgeInsets.only(right: 18),
+      padding: EdgeInsets.only(right: (GetPlatform.isWeb) ? 10 : 18),
       child: SizedBox(
-        width: constraints.maxWidth * .355,
-        height: constraints.maxHeight,
+        width: (GetPlatform.isWeb)
+            ? (MediaQuery.of(context).size.height >= 900)
+                ? constraints.maxWidth * .175
+                : constraints.maxWidth * .355
+            : constraints.maxWidth * .355,
+        height:
+            (GetPlatform.isWeb) ? constraints.maxHeight : constraints.maxHeight,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -239,8 +252,12 @@ class _TrendsState extends State<Trends> {
                     imageUrl: url,
                     borderradius: 10,
                     fit: BoxFit.cover,
-                    height: constraints.maxHeight,
-                    width: constraints.maxWidth,
+                    height: (GetPlatform.isWeb)
+                        ? constraints.maxHeight
+                        : constraints.maxHeight,
+                    width: (GetPlatform.isWeb)
+                        ? constraints.maxWidth
+                        : constraints.maxWidth,
                     // height: 500,
                     // height: constraints.maxHeight,
                   ),
@@ -267,7 +284,7 @@ class _TrendsState extends State<Trends> {
                 ],
               ),
             ),
-            const SizedBox(height: 15),
+            SizedBox(height: (GetPlatform.isWeb) ? 5 : 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -348,6 +365,7 @@ class _TrendsState extends State<Trends> {
     return AlertDialog(
       contentPadding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
       backgroundColor: Theme.of(context).colorScheme.background,
+      alignment: Alignment.center,
       content: Container(
         width: constraints.maxWidth * 1.2,
         height: 230,
@@ -403,9 +421,8 @@ class _TrendsState extends State<Trends> {
 class HeaderTrends extends StatelessWidget {
   final List<Media>? lista;
   final String title;
-  final RefreshController refreshController;
+
   const HeaderTrends({
-    required this.refreshController,
     required this.title,
     required this.lista,
     Key? key,

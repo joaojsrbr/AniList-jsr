@@ -2,6 +2,7 @@ import 'package:anisearch2/widgetU/build_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:get/get.dart';
 
 class BuildImageWidget extends StatelessWidget {
   final bool avatar;
@@ -90,27 +91,35 @@ class BuildImageWidget extends StatelessWidget {
                               Rect.fromLTRB(0, 0, rect.width, rect.height));
                         },
                         blendMode: colorBlendMode,
-                        child: CachedNetworkImage(
-                          // memCacheHeight: 1000,
-                          // memCacheWidth: 1000,
-                          cacheManager: customCacheManager,
-                          key: cachedkey,
-                          imageUrl: imageUrl,
-                          // colorBlendMode: colorBlendMode,
-                          height: height,
-                          color: color,
-                          filterQuality: filterQuality,
-                          width: width,
-                          fit: fit,
-                          placeholder: (context, url) => Container(
-                            color: Colors.black12,
-                          ),
+                        child: InteractiveViewer(
+                          minScale: 0.1, // min scale
+                          maxScale: 1.0, // max scale
+                          scaleEnabled: true,
+                          panEnabled: true,
+                          child: CachedNetworkImage(
+                            // memCacheHeight: 1000,
+                            // memCacheWidth: 1000,
+                            cacheManager: customCacheManager,
+                            key: cachedkey,
+                            fit: fit,
+                            imageUrl: imageUrl,
+                            // colorBlendMode: colorBlendMode,
+                            height: height,
+                            color: color,
 
-                          errorWidget: (context, url, error) => Container(
-                            color: Colors.black12,
-                            child: const Icon(
-                              Icons.error,
-                              color: Colors.red,
+                            filterQuality: filterQuality,
+                            width: width,
+
+                            placeholder: (context, url) => Container(
+                              color: Colors.grey[200],
+                            ),
+
+                            errorWidget: (context, url, error) => Container(
+                              color: Colors.black12,
+                              child: const Icon(
+                                Icons.error,
+                                color: Colors.red,
+                              ),
                             ),
                           ),
                         ),
@@ -130,8 +139,8 @@ class BuildImageWidget extends StatelessWidget {
                         child: CachedNetworkImage(
                           // maxWidthDiskCache: 500,
                           // maxHeightDiskCache: 700,
-                          memCacheHeight: 1000,
-                          memCacheWidth: 1000,
+                          memCacheHeight: GetPlatform.isWeb ? 2000 : 1000,
+                          memCacheWidth: GetPlatform.isWeb ? 2000 : 1000,
                           cacheManager: customCacheManager,
                           key: cachedkey,
                           imageUrl: imageUrl,

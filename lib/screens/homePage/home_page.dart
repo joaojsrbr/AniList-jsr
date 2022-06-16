@@ -42,10 +42,11 @@ class Homepage extends GetView<HomepageController> {
     sliverappbar1() {
       return Obx(
         () => SliverAppBar(
+          backgroundColor: Theme.of(context).colorScheme.background,
           // expandedHeight: MediaQuery.of(context).size.height * .20,
           // pinned: true,
           actions: ListWidget().actions(context, controller.manga.value),
-          surfaceTintColor: Theme.of(context).colorScheme.background,
+          // surfaceTintColor: Theme.of(context).colorScheme.background,
           floating: true,
           stretch: true,
         ),

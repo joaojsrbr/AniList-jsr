@@ -10,26 +10,41 @@ import 'package:flutter/foundation.dart';
 import 'package:graphql/client.dart';
 
 class ApiProvider extends ChangeNotifier {
-  bool isLoading = false;
-  List<Media> manga = [];
-  PageInfo pageInfoA = PageInfo();
-  PageInfo pageInfoM = PageInfo();
-  List<Media> anime = [];
-  List<Media> searchListSu = [];
-  Media searchdetails = Media();
-
   // List<RequestApiModel> item3 = [];
   // UnmodifiableListView<RequestApiModel> get manga => UnmodifiableListView(item);
   // UnmodifiableListView<RequestApiModel> get anime =>
   //     UnmodifiableListView(item2);
 
-  // Apitest() {
-  //   test();
-  // }
+  PageInfo _pageInfoM = PageInfo();
+  PageInfo _pageInfoA = PageInfo();
+  Media _searchdetails = Media();
+  List<Media> _searchlistsu = [];
+  bool _isLoading = false;
+  List<Media> _anime = [];
+  List<Media> _manga = [];
+
+  PageInfo get pageInfoM => _pageInfoM;
+  PageInfo get pageInfoA => _pageInfoA;
+  Media get searchdetails => _searchdetails;
+  List<Media> get manga => _manga;
+  List<Media> get anime => _anime;
+  bool get isLoading => _isLoading;
+  List<Media> get searchListSu => _searchlistsu;
+
+  Future<dynamic> Function(
+      {int page,
+      int perPage,
+      List<String> sort,
+      dynamic type}) get getHomeManga => _getHomeManga;
+  Future<dynamic> Function(
+      {int page,
+      int perPage,
+      List<String> sort,
+      dynamic type}) get getHomeAnime => _getHomeAnime;
 
   ApiProvider() {
-    getHomeManga();
-    getHomeAnime();
+    _getHomeManga();
+    _getHomeAnime();
   }
 
   Future searchDataSu({
@@ -38,7 +53,7 @@ class ApiProvider extends ChangeNotifier {
     required String query,
   }) async {
     List<Media> tempData = [];
-    isLoading = true;
+    _isLoading = true;
 
     final QueryOptions options = QueryOptions(
       document: gql(queryRes),
@@ -62,16 +77,16 @@ class ApiProvider extends ChangeNotifier {
 
     tempData = _returnMedia(repositories.page!.media!);
 
-    searchListSu = tempData;
+    _searchlistsu = tempData;
 
-    isLoading = false;
+    _isLoading = false;
 
     notifyListeners();
   }
 
   Future searchbyID({required int id}) async {
     List<Media> tempData = [];
-    isLoading = true;
+    _isLoading = true;
     PageInfo temppageInfo;
     final QueryOptions options = QueryOptions(
       document: gql(queryRes),
@@ -91,11 +106,11 @@ class ApiProvider extends ChangeNotifier {
 
     tempData = _returnMedia(repositories.page!.media!);
 
-    searchdetails = tempData.first;
+    _searchdetails = tempData.first;
 
     temppageInfo = repositories.page!.pageInfo!;
 
-    isLoading = false;
+    _isLoading = false;
 
     notifyListeners();
   }
@@ -108,7 +123,7 @@ class ApiProvider extends ChangeNotifier {
     int page = 0,
   }) async {
     List<Media> tempData = [];
-    isLoading = true;
+    _isLoading = true;
     PageInfo temppageInfo;
     final QueryOptions options = QueryOptions(
       document: gql(queryRes),
@@ -145,7 +160,7 @@ class ApiProvider extends ChangeNotifier {
 
       // manga.addAll(main);
       temppageInfo = repositories.page!.pageInfo!;
-      isLoading = false;
+      _isLoading = false;
       notifyListeners();
     } else {
       for (var i in tempData) {
@@ -159,12 +174,12 @@ class ApiProvider extends ChangeNotifier {
       }
       // anime.addAll(tempData);
       temppageInfo = repositories.page!.pageInfo!;
-      isLoading = false;
+      _isLoading = false;
       notifyListeners();
     }
   }
 
-  Future getHomeAnime({
+  Future _getHomeAnime({
     List<String> sort = const ["TRENDING_DESC"],
     type = 'ANIME',
     int perPage = 25,
@@ -172,7 +187,7 @@ class ApiProvider extends ChangeNotifier {
   }) async {
     List<Media> tempData = [];
     PageInfo temppageInfo;
-    isLoading = true;
+    _isLoading = true;
 
     final QueryOptions options = QueryOptions(
       document: gql(queryRes),
@@ -199,23 +214,23 @@ class ApiProvider extends ChangeNotifier {
 
     temppageInfo = repositories.page!.pageInfo!;
 
-    pageInfoA = temppageInfo;
+    _pageInfoA = temppageInfo;
 
-    anime = tempData;
+    _anime = tempData;
 
-    isLoading = false;
+    _isLoading = false;
 
     notifyListeners();
   }
 
-  Future getHomeManga({
+  Future _getHomeManga({
     List<String> sort = const ["TRENDING_DESC"],
     type = 'MANGA',
     int perPage = 25,
     int page = 0,
   }) async {
     List<Media> tempData = [];
-    isLoading = true;
+    _isLoading = true;
     PageInfo temppageInfo;
 
     final QueryOptions options = QueryOptions(
@@ -241,13 +256,13 @@ class ApiProvider extends ChangeNotifier {
 
     tempData = _returnMedia(repositories.page!.media!);
 
-    manga = tempData;
+    _manga = tempData;
 
     temppageInfo = repositories.page!.pageInfo!;
 
-    pageInfoM = temppageInfo;
+    _pageInfoM = temppageInfo;
 
-    isLoading = false;
+    _isLoading = false;
 
     notifyListeners();
   }

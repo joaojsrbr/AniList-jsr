@@ -2,8 +2,10 @@
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
 import 'package:anisearch2/api/repositories/manga_anime_provider.dart';
+import 'package:anisearch2/screens/homePage/home_page.dart';
 import 'package:anisearch2/screens/mangaGrid/controller/controller.dart';
 import 'package:anisearch2/widgetU/build_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -22,24 +24,30 @@ class MangaGridS extends GetView<MangaGridSController> {
   @override
   Widget build(BuildContext context) {
     // final sw = Get.find<MangaGridSController>();
-    final listaManga = Provider.of<ApiProvider>(context).manga;
-    final listaAnime = Provider.of<ApiProvider>(context).anime;
+    final List<Media> listaManga = Provider.of<ApiProvider>(context).manga;
+    final List<Media> listaAnime = Provider.of<ApiProvider>(context).anime;
+
     return Scaffold(
       appBar: (main == true)
           ? AppBar(
-              surfaceTintColor: Colors.transparent,
+              surfaceTintColor: Theme.of(context).colorScheme.background,
               elevation: 0,
             )
           : null,
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         child: LayoutBuilder(
           builder: (context, constraints) {
             if (main == true) {
               final dataProvider =
                   ModalRoute.of(context)!.settings.arguments as List<Media>;
+
               lista = dataProvider;
+
+              if (kDebugMode) {
+                print(lista);
+              }
               final RefreshController refreshController =
                   RefreshController(initialRefresh: false);
 
@@ -76,7 +84,7 @@ class MangaGridS extends GetView<MangaGridSController> {
                     final imageUrl = lista![index].coverImage!.extraLarge ??
                         lista![index].coverImage!.large ??
                         lista![index].coverImage!.medium ??
-                        '';
+                        'https://convertingcolors.com/plain-1E2436.svg';
                     final title = lista![index].title!.english ??
                         lista![index].title!.romaji ??
                         lista![index].title!.native ??
@@ -103,10 +111,10 @@ class MangaGridS extends GetView<MangaGridSController> {
                                 children: [
                                   BuildImageWidget(
                                     borderradius: 10,
-                                    width: constraints.maxWidth,
                                     fit: BoxFit.cover,
+                                    width: constraints.maxWidth,
+                                    height: constraints.maxHeight,
                                     imageUrl: imageUrl,
-                                    height: constraints.maxHeight * 0.9,
                                   ),
                                   Row(
                                     mainAxisAlignment:
@@ -182,6 +190,7 @@ class MangaGridS extends GetView<MangaGridSController> {
                       fontWeight: FontWeight.w600,
                     );
                 final averageScore = lista![index].averageScore;
+                // print(constraints.maxHeight * .2);
 
                 return GestureDetector(
                   onTap: () => Get.toNamed(
@@ -200,20 +209,24 @@ class MangaGridS extends GetView<MangaGridSController> {
                               BuildImageWidget(
                                 filterQuality: FilterQuality.high,
                                 borderradius: 10,
-                                width: constraints.maxWidth,
+                                width: (GetPlatform.isWeb)
+                                    ? (constraints.maxWidth * 1)
+                                    : constraints.maxWidth,
+                                height: (GetPlatform.isWeb)
+                                    ? (constraints.maxHeight * 1)
+                                    : constraints.maxHeight,
                                 fit: BoxFit.cover,
                                 imageUrl: imageUrl,
-                                height: constraints.maxHeight,
                               ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  const CardS(
-                                    height: 30.49,
-                                    width: 30.27,
-                                    borderRadius: BorderRadius.only(
+                                  CardS(
+                                    height: GetPlatform.isWeb ? 31 : 30.49,
+                                    width: GetPlatform.isWeb ? 32 : 30.27,
+                                    borderRadius: const BorderRadius.only(
                                         topLeft: Radius.circular(8.4),
                                         bottomRight: Radius.circular(8.4)),
                                     image: true,

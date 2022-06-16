@@ -88,7 +88,7 @@ class ListWidget {
             clipBehavior: Clip.antiAlias,
             type: MaterialType.button,
             borderRadius: BorderRadius.circular(12),
-            color: Colors.transparent,
+            color: Theme.of(context).colorScheme.background,
             child: IconButton(
                 // autofocus: true,
                 onPressed: () {
@@ -106,7 +106,7 @@ class ListWidget {
             clipBehavior: Clip.antiAlias,
             type: MaterialType.button,
             borderRadius: BorderRadius.circular(12),
-            color: Colors.transparent,
+            color: Theme.of(context).colorScheme.background,
             child: IconButton(
               // autofocus: true,
               onPressed: () {

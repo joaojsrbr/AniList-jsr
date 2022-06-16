@@ -1,3 +1,4 @@
+import 'package:anisearch2/scroll/scrollbehavior.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,21 +49,17 @@ class _MyAppState extends State<MyApp> {
           ColorScheme darkColorScheme;
 
           if (lightDynamic != null && darkDynamic != null) {
-            // On Android S+ devices, use the provided dynamic color scheme.
-            // (Recommended) Harmonize the dynamic color scheme' built-in semantic colors.
             lightColorScheme = lightDynamic.harmonized();
-            // (Optional) Customize the scheme as desired. For example, one might
-            // want to use a brand color to override the dynamic [ColorScheme.secondary].
 
-            // Repeat for the dark color scheme.
             darkColorScheme = darkDynamic.harmonized();
           } else {
-            // Otherwise, use fallback schemes.
             lightColorScheme = ColorScheme.fromSeed(
               seedColor: const Color.fromARGB(255, 231, 129, 6),
+              background: const Color.fromRGBO(35, 36, 54, 1),
             );
             darkColorScheme = ColorScheme.fromSeed(
               seedColor: const Color.fromARGB(255, 231, 197, 6),
+              background: const Color.fromRGBO(35, 36, 54, 1),
               brightness: Brightness.dark,
             );
           }
@@ -75,6 +72,7 @@ class _MyAppState extends State<MyApp> {
               GlobalCupertinoLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate
             ],
+            scrollBehavior: MyScrollBehavior(),
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               textTheme: texttheme1(),
