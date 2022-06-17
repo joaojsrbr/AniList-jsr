@@ -286,10 +286,12 @@ class CardScore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardS(
-      height: 30.49,
+      // height: 30.49,
       // width: 30.27,
       borderRadius: const BorderRadius.only(
-          topRight: Radius.circular(8.4), bottomLeft: Radius.circular(8.4)),
+        topLeft: Radius.circular(10),
+        bottomRight: Radius.circular(7.5),
+      ),
       image: false,
       widget: (title == null)
           ? null
@@ -329,7 +331,7 @@ class CardS extends StatelessWidget {
     return Container(
       height: height,
       width: width,
-      // alignment: image == false ? alignment : null,
+      alignment: image == false ? alignment : null,
       decoration: image
           // ? null
           ? BoxDecoration(
@@ -344,13 +346,13 @@ class CardS extends StatelessWidget {
           ? image
               ? ClipRRect(
                   borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(8.4),
-                    bottomRight: Radius.circular(8.4),
+                    topRight: Radius.circular(10),
+                    bottomLeft: Radius.circular(7.5),
                   ),
                   child: Image.asset(
-                    alignment: alignment,
+                    // alignment: alignment,
                     'assets/img/AniList_logo.png',
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fitHeight,
                     cacheHeight: 100,
                     filterQuality: FilterQuality.high,
                     cacheWidth: 100,

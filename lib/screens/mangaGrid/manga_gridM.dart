@@ -1,7 +1,8 @@
 // ignore_for_file: file_names
-
+import 'dart:ui' as ui;
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
 import 'package:anisearch2/api/models/api_graphql_pageinfo_model.dart';
+import 'package:anisearch2/screens/mangaDetails/manga_details.dart';
 import 'package:anisearch2/screens/mangaGrid/controller/controller.dart';
 import 'package:anisearch2/screens/mangaGrid/manga_gridS.dart';
 import 'package:anisearch2/widgetU/build_image.dart';
@@ -110,7 +111,7 @@ class CopyWidget extends StatelessWidget {
               ? (MediaQuery.of(context).size.height >= 900)
                   ? (38 / 12)
                   : (16 / 12)
-              : (16 / 12),
+              : (8 / 10.5),
           child: Column(
             // primary: true,
             // mainAxisAlignment: MainAxisAlignment.start,
@@ -152,6 +153,35 @@ class Trends extends StatefulWidget {
 class _TrendsState extends State<Trends> {
   final RefreshController refreshController =
       RefreshController(initialRefresh: false);
+  late final PageController _movieCardPageController;
+  // late final PageController _movieDetailPageController;
+  double _movieCardPage = 0.0;
+  final _showMovieDetails = ValueNotifier(true);
+  int _movieCardIndex = 0;
+
+  _movieCardPagePercentListener() {
+    setState(() {
+      _movieCardPage = _movieCardPageController.page!;
+      _movieCardIndex = _movieCardPageController.page!.round();
+    });
+  }
+
+  @override
+  void initState() {
+    _movieCardPageController = PageController(viewportFraction: 0.77)
+      ..addListener(_movieCardPagePercentListener);
+
+    super.initState();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _movieCardPageController
+      ..removeListener(_movieCardPagePercentListener)
+      ..dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,59 +190,102 @@ class _TrendsState extends State<Trends> {
         builder: (context, constraints) {
           final controller = Get.find<MangaGridSController>();
 
-          return SmartRefresher(
-            enablePullDown: false,
-            enablePullUp: true,
-            semanticChildCount: widget.lista!.length,
-            controller: refreshController,
-            onLoading: () async {
-              await Future.delayed(const Duration(milliseconds: 1000));
-              if (mounted) {
-                // setState(() {
-                controller.onLoading(
-                    context, widget.sort, widget.type, widget.lista!);
-                // });
+          return PageView.builder(
+            onPageChanged: (value) {
+              if (value + 1 == widget.lista!.length) {
+                if (mounted) {
+                  controller.onLoading(
+                      context, widget.sort, widget.type, widget.lista!);
+                }
               }
-              refreshController.loadComplete();
             },
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: widget.lista!.length,
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.only(top: 10, left: 20),
-              itemBuilder: (context, index) {
-                final listaU = widget.lista![index];
-                final url = listaU.coverImage!.extraLarge ??
-                    listaU.coverImage!.large ??
-                    listaU.coverImage!.medium ??
-                    'https://convertingcolors.com/plain-1E2436.svg';
-                final title = listaU.title!.english ??
-                    listaU.title!.romaji ??
-                    listaU.title!.native ??
-                    '';
+            clipBehavior: Clip.none,
+            controller: _movieCardPageController,
+            physics: const BouncingScrollPhysics(),
+            // onPageChanged: (page) {
+            //   _movieDetailPageController.animateToPage(
+            //     page,
+            //     duration: const Duration(milliseconds: 500),
+            //     curve: const Interval(0.25, 1, curve: Curves.decelerate),
+            //   );
+            // },
 
-                final averageScore = ((listaU.averageScore ?? 0) / 10);
-                final style = Theme.of(context).textTheme.button!.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    );
-                return GestureDetector(
-                  onTap: () => Get.toNamed(
-                    '/d',
-                    arguments: listaU,
+            itemCount: widget.lista!.length,
+            scrollDirection: Axis.horizontal,
+            // padding: const EdgeInsets.only(top: 10, left: 20),
+            itemBuilder: (context, index) {
+              final progress = (_movieCardPage - index);
+              final scale = ui.lerpDouble(1, .8, progress.abs())!;
+              final listaU = widget.lista![index];
+              final url = listaU.coverImage!.extraLarge ??
+                  listaU.coverImage!.large ??
+                  listaU.coverImage!.medium ??
+                  'https://convertingcolors.com/plain-1E2436.svg';
+              final title = listaU.title!.english ??
+                  listaU.title!.romaji ??
+                  listaU.title!.native ??
+                  '';
+              final isCurrentPage = index == _movieCardIndex;
+              final isScrolling =
+                  _movieCardPageController.position.isScrollingNotifier.value;
+              final isFirstPage = index == 0;
+
+              final averageScore = ((listaU.averageScore ?? 0) / 10);
+              final style = Theme.of(context).textTheme.button!.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  );
+              return Padding(
+                padding: const EdgeInsets.only(top: 10, left: 20),
+                child: Transform.scale(
+                  alignment: Alignment.lerp(
+                    Alignment.centerLeft,
+                    Alignment.center,
+                    -progress,
                   ),
-                  child: _return(
-                    constraints,
-                    url,
-                    title,
-                    context,
-                    listaU,
-                    averageScore,
-                    style,
+                  scale: isScrolling && isFirstPage ? 1 - progress : scale,
+                  child: GestureDetector(
+                    onTap: () {
+                      _showMovieDetails.value = !_showMovieDetails.value;
+                      const transitionDuration = Duration(milliseconds: 550);
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          settings: RouteSettings(
+                            arguments: listaU,
+                          ),
+                          transitionDuration: transitionDuration,
+                          reverseTransitionDuration: transitionDuration,
+                          pageBuilder: (_, animation, __) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: const MangaDetailsR(),
+                            );
+                          },
+                        ),
+                      );
+                      Future.delayed(transitionDuration, () {
+                        _showMovieDetails.value = !_showMovieDetails.value;
+                      });
+                    },
+                    // onTap: () => Get.toNamed(
+                    //   '/d',
+                    //   arguments: listaU,
+                    // ),
+                    child: _return(
+                      constraints,
+                      url,
+                      title,
+                      context,
+                      listaU,
+                      averageScore,
+                      style,
+                      isCurrentPage,
+                      isScrolling,
+                    ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           );
         },
       ),
@@ -220,17 +293,16 @@ class _TrendsState extends State<Trends> {
   }
 
   Padding _return(
-      BoxConstraints constraints,
-      String url,
-      String? title,
-      BuildContext context,
-      Media listaU,
-      double averageScore,
-      TextStyle style) {
-    if (kDebugMode) {
-      print(
-          'maxHeight: ${constraints.maxHeight}, maxWidth: ${constraints.maxWidth},');
-    }
+    BoxConstraints constraints,
+    String url,
+    String title,
+    BuildContext context,
+    Media listaU,
+    double averageScore,
+    TextStyle style,
+    isCurrentPage,
+    isScrolling,
+  ) {
     return Padding(
       padding: EdgeInsets.only(right: (GetPlatform.isWeb) ? 10 : 18),
       child: SizedBox(
@@ -238,121 +310,196 @@ class _TrendsState extends State<Trends> {
             ? (MediaQuery.of(context).size.height >= 900)
                 ? constraints.maxWidth * .175
                 : constraints.maxWidth * .355
-            : constraints.maxWidth * .355,
+            : constraints.maxWidth * .020,
         height:
             (GetPlatform.isWeb) ? constraints.maxHeight : constraints.maxHeight,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Flexible(
-              child: Stack(
-                children: [
-                  BuildImageWidget(
-                    filterQuality: FilterQuality.high,
-                    imageUrl: url,
-                    borderradius: 10,
-                    fit: BoxFit.cover,
-                    height: (GetPlatform.isWeb)
-                        ? constraints.maxHeight
-                        : constraints.maxHeight,
-                    width: (GetPlatform.isWeb)
-                        ? constraints.maxWidth
-                        : constraints.maxWidth,
-                    // height: 500,
-                    // height: constraints.maxHeight,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      const CardS(
-                        height: 30.49,
-                        width: 30.27,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8.4),
-                            bottomRight: Radius.circular(8.4)),
-                        image: true,
-                      ),
-                      CardScore(
-                        title: (listaU.episodes == null)
-                            ? null
-                            : (listaU.episodes).toString(),
-                        style: style,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: (GetPlatform.isWeb) ? 5 : 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Text(
-                    title ?? '',
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(
-                          fontSize: 14,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+              child: Hero(
+                tag: url,
+                child: Stack(
+                  children: [
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      transform: Matrix4.identity()
+                        ..translate(
+                          isCurrentPage ? 0.0 : -20.0,
+                          isCurrentPage ? 0.0 : 60.0,
                         ),
-                    maxLines: 1,
-                  ),
-                ),
-                ClipOval(
-                  child: Material(
-                    child: InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) =>
-                              dialog(context, constraints, listaU),
-                        );
-                      },
-                      child: const SizedBox(
-                        width: 19,
-                        height: 19,
-                        child: Center(
-                          child: Icon(
-                            Icons.question_mark,
-                            size: 15,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(25),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 25,
+                            offset: const Offset(0, 25),
+                            color: Colors.black.withOpacity(.12),
+                          ),
+                        ],
+                      ),
+                      child: BuildImageWidget(
+                        filterQuality: FilterQuality.high,
+                        imageUrl: url,
+                        borderradius: 8.7,
+                        fit: BoxFit.cover,
+                        height: (GetPlatform.isWeb)
+                            ? constraints.maxHeight
+                            : constraints.maxHeight,
+                        width: (GetPlatform.isWeb)
+                            ? constraints.maxWidth
+                            : constraints.maxWidth,
+                        // height: 500,
+                        // height: constraints.maxHeight,
+                      ),
+                    ),
+                    Positioned(
+                      width: 40,
+                      height: 40,
+                      bottom: -0.5,
+                      left: -0.5,
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: AnimatedContainer(
+                          curve: Curves.bounceIn,
+                          transform: Matrix4.identity()
+                            ..translate(
+                              isCurrentPage ? 0.0 : -20.0,
+                              isCurrentPage ? 0.0 : 60.0,
+                            ),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(70),
+                            ),
+                          ),
+                          duration: const Duration(milliseconds: 300),
+                          child: const CardS(
+                            height: 40,
+                            width: 40,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(10),
+                              bottomLeft: Radius.circular(7.5),
+                            ),
+                            image: true,
                           ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              ],
+                    Positioned(
+                      bottom: -0.5,
+                      height: 40,
+                      width: 40,
+                      right: -0.5,
+                      child: Material(
+                        type: MaterialType.transparency,
+                        child: AnimatedContainer(
+                          curve: Curves.bounceIn,
+                          transform: Matrix4.identity()
+                            ..translate(
+                              isCurrentPage ? 0.0 : -20.0,
+                              isCurrentPage ? 0.0 : 60.0,
+                            ),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(70),
+                            ),
+                          ),
+                          duration: const Duration(milliseconds: 300),
+                          child: CardScore(
+                            title: (listaU.episodes == null)
+                                ? null
+                                : (listaU.episodes).toString(),
+                            style: style,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: (GetPlatform.isWeb) ? 5 : 15),
+            Hero(
+              tag: title,
+              child: Material(
+                type: MaterialType.transparency,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        title,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.headline6!.copyWith(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                        maxLines: 1,
+                      ),
+                    ),
+                    ClipOval(
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) =>
+                                dialog(context, constraints, listaU),
+                          );
+                        },
+                        child: const SizedBox(
+                          width: 19,
+                          height: 19,
+                          child: Center(
+                            child: Icon(
+                              Icons.question_mark,
+                              size: 15,
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
             const SizedBox(height: 7.5),
-            Row(
-              children: [
-                Image.asset(
-                  'assets/img/AniList_logo.png',
-                  height: 22,
-                  width: 22,
-                  cacheHeight: 60,
-                  cacheWidth: 60,
-                  filterQuality: FilterQuality.high,
+            Material(
+              type: MaterialType.transparency,
+              child: Hero(
+                tag: averageScore,
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/img/AniList_logo.png',
+                      height: 22,
+                      width: 22,
+                      cacheHeight: 60,
+                      cacheWidth: 60,
+                      filterQuality: FilterQuality.high,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      'Score: $averageScore',
+                      style: style,
+                    ),
+                    const SizedBox(
+                      width: 7.5,
+                    ),
+                    // Text(
+                    //   '# ${listaU.episodes ?? 0}',
+                    //   style: style.copyWith(
+                    //     color: Colors.cyan,
+                    //   ),
+                    // ),
+                  ],
                 ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  'Score: $averageScore',
-                  style: style,
-                ),
-                const SizedBox(
-                  width: 7.5,
-                ),
-                // Text(
-                //   '# ${listaU.episodes ?? 0}',
-                //   style: style.copyWith(
-                //     color: Colors.cyan,
-                //   ),
-                // ),
-              ],
+              ),
             )
           ],
         ),

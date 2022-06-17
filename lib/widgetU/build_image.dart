@@ -139,11 +139,12 @@ class BuildImageWidget extends StatelessWidget {
                         child: CachedNetworkImage(
                           // maxWidthDiskCache: 500,
                           // maxHeightDiskCache: 700,
-                          memCacheHeight: GetPlatform.isWeb ? 2000 : 1000,
-                          memCacheWidth: GetPlatform.isWeb ? 2000 : 1000,
+                          memCacheHeight: GetPlatform.isWeb ? 2000 : 2000,
+                          memCacheWidth: GetPlatform.isWeb ? 2000 : 2000,
                           cacheManager: customCacheManager,
                           key: cachedkey,
                           imageUrl: imageUrl,
+
                           // colorBlendMode: colorBlendMode,
                           // height: height,
                           // width: width,
