@@ -1,15 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 
-import 'package:expandable/expandable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/screens/mangaDetails/models/list_type.dart';
-import 'package:anisearch2/screens/mangaDetails/widget/colored_tabbar.dart';
 import 'package:anisearch2/screens/mangaGrid/manga_gridS.dart';
-import 'package:anisearch2/scroll/scrollbehavior.dart';
 import 'package:anisearch2/widgetU/build_image.dart';
 
 class MangaDetailsRBinding implements Bindings {

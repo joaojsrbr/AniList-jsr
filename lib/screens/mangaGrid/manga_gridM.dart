@@ -6,7 +6,6 @@ import 'package:anisearch2/screens/mangaDetails/manga_details.dart';
 import 'package:anisearch2/screens/mangaGrid/controller/controller.dart';
 import 'package:anisearch2/screens/mangaGrid/manga_gridS.dart';
 import 'package:anisearch2/widgetU/build_image.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 
