@@ -21,7 +21,7 @@ class MangaGridM extends GetView<MangaGridSController> {
   final bool search;
   final String? type;
 
-  MangaGridM({
+  const MangaGridM({
     super.key,
     this.pageInfo,
     this.scrollController,
@@ -30,9 +30,6 @@ class MangaGridM extends GetView<MangaGridSController> {
     this.type,
     this.lista,
   });
-
-  final RefreshController refreshController =
-      RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +44,6 @@ class MangaGridM extends GetView<MangaGridSController> {
             : Column(
                 children: [
                   CopyWidget(
-                    refreshController: refreshController,
                     lista: lista,
                     type: type!,
                     sort: sort!,
@@ -93,10 +89,8 @@ class CopyWidget extends StatelessWidget {
     required this.sort,
     required this.type,
     required this.lista,
-    required this.refreshController,
   }) : super(key: key);
 
-  final RefreshController refreshController;
   final List<Media>? lista;
   final String sort, type, title;
 
@@ -108,8 +102,8 @@ class CopyWidget extends StatelessWidget {
         child: AspectRatio(
           aspectRatio: (GetPlatform.isWeb)
               ? (MediaQuery.of(context).size.height >= 900)
-                  ? (38 / 12)
-                  : (16 / 12)
+                  ? (38 / 16)
+                  : (8 / 10.5)
               : (8 / 10.5),
           child: Column(
             // primary: true,
@@ -216,14 +210,35 @@ class _TrendsState extends State<Trends> {
               final progress = (_movieCardPage - index);
               final scale = ui.lerpDouble(1, .8, progress.abs())!;
               final listaU = widget.lista![index];
-              final url = listaU.coverImage!.extraLarge ??
-                  listaU.coverImage!.large ??
-                  listaU.coverImage!.medium ??
-                  'https://convertingcolors.com/plain-1E2436.svg';
+
+              String _url() {
+                final urlA = listaU.coverImage!.extraLarge ??
+                    listaU.coverImage!.large ??
+                    listaU.coverImage!.medium ??
+                    'https://convertingcolors.com/plain-1E2436.svg';
+
+                // final urlB = listaU.bannerImage ??
+                //     listaU.coverImage!.extraLarge ??
+                //     listaU.coverImage!.large ??
+                //     listaU.coverImage!.medium ??
+                //     'https://convertingcolors.com/plain-1E2436.svg';
+                return GetPlatform.isWeb
+                    ? (MediaQuery.of(context).size.height >= 900)
+                        ? urlA
+                        : urlA
+                    : urlA;
+              }
+
+              // final url = listaU.coverImage!.extraLarge ??
+              //     listaU.coverImage!.large ??
+              //     listaU.coverImage!.medium ??
+              //     'https://convertingcolors.com/plain-1E2436.svg';
+
               final title = listaU.title!.english ??
                   listaU.title!.romaji ??
                   listaU.title!.native ??
                   '';
+
               final isCurrentPage = index == _movieCardIndex;
               final isScrolling =
                   _movieCardPageController.position.isScrollingNotifier.value;
@@ -272,14 +287,13 @@ class _TrendsState extends State<Trends> {
                     // ),
                     child: _return(
                       constraints,
-                      url,
+                      _url(),
                       title,
                       context,
                       listaU,
                       averageScore,
                       style,
                       isCurrentPage,
-                      isScrolling,
                     ),
                   ),
                 ),
@@ -300,68 +314,78 @@ class _TrendsState extends State<Trends> {
     double averageScore,
     TextStyle style,
     isCurrentPage,
-    isScrolling,
   ) {
     return Padding(
-      padding: EdgeInsets.only(right: (GetPlatform.isWeb) ? 10 : 18),
+      padding: EdgeInsets.only(
+        right: (GetPlatform.isWeb) ? 10 : 18,
+      ),
       child: SizedBox(
         width: (GetPlatform.isWeb)
             ? (MediaQuery.of(context).size.height >= 900)
-                ? constraints.maxWidth * .175
+                // ? constraints.maxWidth * .055
+                ? constraints.maxWidth
                 : constraints.maxWidth * .355
             : constraints.maxWidth * .020,
-        height:
-            (GetPlatform.isWeb) ? constraints.maxHeight : constraints.maxHeight,
+        height: (GetPlatform.isWeb)
+            ? (MediaQuery.of(context).size.height >= 900)
+                ? constraints.maxHeight
+                : constraints.maxHeight
+            : constraints.maxHeight,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Flexible(
               child: Hero(
-                tag: url,
-                child: Stack(
-                  children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                      transform: Matrix4.identity()
-                        ..translate(
-                          isCurrentPage ? 0.0 : -20.0,
-                          isCurrentPage ? 0.0 : 60.0,
-                        ),
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(25),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            blurRadius: 25,
-                            offset: const Offset(0, 25),
-                            color: Colors.black.withOpacity(.12),
+                tag: listaU.id!,
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                        transform: Matrix4.identity()
+                          ..translate(
+                            isCurrentPage ? 0.0 : -20.0,
+                            isCurrentPage ? 0.0 : 60.0,
                           ),
-                        ],
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(25),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 25,
+                              offset: const Offset(0, 25),
+                              color: Colors.black.withOpacity(.12),
+                            ),
+                          ],
+                        ),
+                        child: BuildImageWidget(
+                          filterQuality: FilterQuality.high,
+                          imageUrl: url,
+                          borderradius: 8.7,
+                          fit: (GetPlatform.isWeb)
+                              ? (MediaQuery.of(context).size.height >= 900)
+                                  ? BoxFit.cover
+                                  : BoxFit.cover
+                              : BoxFit.cover,
+                          height: (GetPlatform.isWeb)
+                              ? constraints.maxHeight
+                              : constraints.maxHeight,
+                          width: (GetPlatform.isWeb)
+                              ? constraints.maxWidth
+                              : constraints.maxWidth,
+                          // height: 500,
+                          // height: constraints.maxHeight,
+                        ),
                       ),
-                      child: BuildImageWidget(
-                        filterQuality: FilterQuality.high,
-                        imageUrl: url,
-                        borderradius: 8.7,
-                        fit: BoxFit.cover,
-                        height: (GetPlatform.isWeb)
-                            ? constraints.maxHeight
-                            : constraints.maxHeight,
-                        width: (GetPlatform.isWeb)
-                            ? constraints.maxWidth
-                            : constraints.maxWidth,
-                        // height: 500,
-                        // height: constraints.maxHeight,
-                      ),
-                    ),
-                    Positioned(
-                      width: 40,
-                      height: 40,
-                      bottom: -0.5,
-                      left: -0.5,
-                      child: Material(
-                        type: MaterialType.transparency,
+                      Positioned(
+                        width: 40,
+                        height: 40,
+                        bottom: -0.5,
+                        left: -0.5,
                         child: AnimatedContainer(
                           curve: Curves.bounceIn,
                           transform: Matrix4.identity()
@@ -386,37 +410,37 @@ class _TrendsState extends State<Trends> {
                           ),
                         ),
                       ),
-                    ),
-                    Positioned(
-                      bottom: -0.5,
-                      height: 40,
-                      width: 40,
-                      right: -0.5,
-                      child: Material(
-                        type: MaterialType.transparency,
-                        child: AnimatedContainer(
-                          curve: Curves.bounceIn,
-                          transform: Matrix4.identity()
-                            ..translate(
-                              isCurrentPage ? 0.0 : -20.0,
-                              isCurrentPage ? 0.0 : 60.0,
+                      Positioned(
+                        height: 40,
+                        width: 40,
+                        right: -0.5,
+                        bottom: -0.5,
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: AnimatedContainer(
+                            curve: Curves.bounceIn,
+                            transform: Matrix4.identity()
+                              ..translate(
+                                isCurrentPage ? 0.0 : -20.0,
+                                isCurrentPage ? 0.0 : 60.0,
+                              ),
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(70),
+                              ),
                             ),
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(70),
+                            duration: const Duration(milliseconds: 300),
+                            child: CardScore(
+                              title: (listaU.episodes == null)
+                                  ? null
+                                  : (listaU.episodes).toString(),
+                              style: style,
                             ),
-                          ),
-                          duration: const Duration(milliseconds: 300),
-                          child: CardScore(
-                            title: (listaU.episodes == null)
-                                ? null
-                                : (listaU.episodes).toString(),
-                            style: style,
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -469,7 +493,7 @@ class _TrendsState extends State<Trends> {
             Material(
               type: MaterialType.transparency,
               child: Hero(
-                tag: averageScore,
+                tag: listaU.recommendations!,
                 child: Row(
                   children: [
                     Image.asset(
@@ -490,12 +514,6 @@ class _TrendsState extends State<Trends> {
                     const SizedBox(
                       width: 7.5,
                     ),
-                    // Text(
-                    //   '# ${listaU.episodes ?? 0}',
-                    //   style: style.copyWith(
-                    //     color: Colors.cyan,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),

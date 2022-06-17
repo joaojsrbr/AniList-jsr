@@ -53,8 +53,8 @@ class BuildImageWidget extends StatelessWidget {
                   color: Colors.grey[200],
                   constraints: constraints,
                   child: CachedNetworkImage(
-                    memCacheHeight: 1000,
-                    memCacheWidth: 1000,
+                    memCacheHeight: GetPlatform.isWeb ? 3000 : 1000,
+                    memCacheWidth: GetPlatform.isWeb ? 3000 : 1000,
 
                     cacheManager: customCacheManager,
                     key: cachedkey,
@@ -99,6 +99,8 @@ class BuildImageWidget extends StatelessWidget {
                           child: CachedNetworkImage(
                             // memCacheHeight: 1000,
                             // memCacheWidth: 1000,
+                            memCacheHeight: GetPlatform.isWeb ? 3000 : 1000,
+                            memCacheWidth: GetPlatform.isWeb ? 3000 : 1000,
                             cacheManager: customCacheManager,
                             key: cachedkey,
                             fit: fit,
@@ -126,7 +128,6 @@ class BuildImageWidget extends StatelessWidget {
                       )
                     : Container(
                         decoration: BoxDecoration(
-                          color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(borderradius),
                         ),
                         height: (constraints == null)
@@ -139,8 +140,8 @@ class BuildImageWidget extends StatelessWidget {
                         child: CachedNetworkImage(
                           // maxWidthDiskCache: 500,
                           // maxHeightDiskCache: 700,
-                          memCacheHeight: GetPlatform.isWeb ? 2000 : 2000,
-                          memCacheWidth: GetPlatform.isWeb ? 2000 : 2000,
+                          memCacheHeight: GetPlatform.isWeb ? 3000 : 1000,
+                          memCacheWidth: GetPlatform.isWeb ? 3000 : 1000,
                           cacheManager: customCacheManager,
                           key: cachedkey,
                           imageUrl: imageUrl,

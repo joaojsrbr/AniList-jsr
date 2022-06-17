@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -121,11 +122,29 @@ class MangaDetailsR extends GetView<MangaDetailsRController> {
 
         final dataProvider =
             ModalRoute.of(context)!.settings.arguments as Media;
-        final image = dataProvider.coverImage!.extraLarge ??
-            dataProvider.coverImage!.large ??
-            dataProvider.coverImage!.medium ??
-            dataProvider.bannerImage ??
-            'https://convertingcolors.com/plain-1E2436.svg';
+        // final image = dataProvider.coverImage!.extraLarge ??
+        //     dataProvider.coverImage!.large ??
+        //     dataProvider.coverImage!.medium ??
+        //     dataProvider.bannerImage ??
+        //     'https://convertingcolors.com/plain-1E2436.svg';
+        String _url() {
+          final urlA = dataProvider.coverImage!.extraLarge ??
+              dataProvider.coverImage!.large ??
+              dataProvider.coverImage!.medium ??
+              'https://convertingcolors.com/plain-1E2436.svg';
+
+          // final urlB = dataProvider.bannerImage ??
+          //     dataProvider.coverImage!.extraLarge ??
+          //     dataProvider.coverImage!.large ??
+          //     dataProvider.coverImage!.medium ??
+          //     'https://convertingcolors.com/plain-1E2436.svg';
+          return GetPlatform.isWeb
+              ? (MediaQuery.of(context).size.height >= 900)
+                  ? urlA
+                  : urlA
+              : urlA;
+        }
+
         final title = dataProvider.title!.english ??
             dataProvider.title!.romaji ??
             dataProvider.title!.native ??
@@ -135,107 +154,156 @@ class MangaDetailsR extends GetView<MangaDetailsRController> {
               color: Colors.white,
               fontWeight: FontWeight.w600,
             );
+        if (kDebugMode) {
+          print('id: ${dataProvider.id} \ntitle: $title');
+        }
         return Scaffold(
+          appBar: (dataProvider.id == null)
+              ? null
+              : AppBar(
+                  backgroundColor: Colors.transparent,
+                  surfaceTintColor: Colors.transparent,
+                  elevation: 0,
+                ),
+          extendBodyBehindAppBar: true,
           backgroundColor: Theme.of(context).colorScheme.background,
-          body: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Positioned(
-                top: h * -.1,
-                width: w,
-                height: h * .8,
-                child: Hero(
-                  tag: image,
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: SizedBox(
+                  height: h,
+                  width: w,
                   child: Stack(
-                    fit: StackFit.expand,
-                    clipBehavior: Clip.none,
                     alignment: Alignment.bottomCenter,
                     children: [
-                      _Card(
-                        image: image,
-                      ),
-                      const Positioned(
-                        width: 40,
-                        height: 40,
-                        bottom: -0.5,
-                        left: -0.5,
-                        child: CardS(
-                          height: 40,
-                          width: 40,
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(10),
-                            bottomLeft: Radius.circular(7.5),
+                      Positioned(
+                        top: h * -.1,
+                        width: w,
+                        height: h * .8,
+                        child: Hero(
+                          key: Key(dataProvider.id.toString()),
+                          tag: dataProvider.id!,
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: Stack(
+                              fit: StackFit.expand,
+                              clipBehavior: Clip.none,
+                              alignment: Alignment.bottomCenter,
+                              children: [
+                                _Card(
+                                  image: _url(),
+                                ),
+                                const Positioned(
+                                  width: 40,
+                                  height: 40,
+                                  bottom: -0.5,
+                                  left: -0.5,
+                                  child: CardS(
+                                    height: 40,
+                                    width: 40,
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(10),
+                                      bottomLeft: Radius.circular(7.5),
+                                    ),
+                                    image: true,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          image: true,
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
-              // Positioned(
-              //   width: 40,
-              //   height: 40,
-              //   child: Hero(
-              //     tag: dataProvider,
-              //     child: const CardS(
-              //       height: 40,
-              //       width: 40,
-              //       borderRadius: BorderRadius.only(
-              //         topRight: Radius.circular(10),
-              //         bottomLeft: Radius.circular(7.5),
-              //       ),
-              //       image: true,
-              //     ),
-              //   ),
-              // ),
-              Positioned(
-                height: h * .3,
-                width: w,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Hero(
-                        tag: title,
-                        child: Material(
-                          type: MaterialType.transparency,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Positioned(
+                        height: h * .3,
+                        width: w,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
                             children: [
-                              Flexible(
-                                child: Text(
-                                  title,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
+                              Hero(
+                                key: Key(title),
+                                tag: title,
+                                child: Material(
+                                  type: MaterialType.transparency,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          title,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6!
+                                              .copyWith(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                          maxLines: 1,
+                                        ),
                                       ),
-                                  maxLines: 1,
+                                      ClipOval(
+                                        child: InkWell(
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => dialog(
+                                                  context,
+                                                  constraints,
+                                                  dataProvider),
+                                            );
+                                          },
+                                          child: const SizedBox(
+                                            width: 19,
+                                            height: 19,
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.question_mark,
+                                                size: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                              ClipOval(
-                                child: InkWell(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => dialog(
-                                          context, constraints, dataProvider),
-                                    );
-                                  },
-                                  child: const SizedBox(
-                                    width: 19,
-                                    height: 19,
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.question_mark,
-                                        size: 15,
+                              Material(
+                                type: MaterialType.transparency,
+                                child: Hero(
+                                  key: Key(
+                                      dataProvider.recommendations.toString()),
+                                  tag: dataProvider.recommendations!,
+                                  child: Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/img/AniList_logo.png',
+                                        height: 22,
+                                        width: 22,
+                                        cacheHeight: 60,
+                                        cacheWidth: 60,
+                                        filterQuality: FilterQuality.high,
                                       ),
-                                    ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        'Score: $averageScore',
+                                        style: style,
+                                      ),
+                                      const SizedBox(
+                                        width: 7.5,
+                                      ),
+                                      // Text(
+                                      //   '# ${listaU.episodes ?? 0}',
+                                      //   style: style.copyWith(
+                                      //     color: Colors.cyan,
+                                      //   ),
+                                      // ),
+                                    ],
                                   ),
                                 ),
                               )
@@ -243,40 +311,6 @@ class MangaDetailsR extends GetView<MangaDetailsRController> {
                           ),
                         ),
                       ),
-                      Material(
-                        type: MaterialType.transparency,
-                        child: Hero(
-                          tag: averageScore,
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                'assets/img/AniList_logo.png',
-                                height: 22,
-                                width: 22,
-                                cacheHeight: 60,
-                                cacheWidth: 60,
-                                filterQuality: FilterQuality.high,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                'Score: $averageScore',
-                                style: style,
-                              ),
-                              const SizedBox(
-                                width: 7.5,
-                              ),
-                              // Text(
-                              //   '# ${listaU.episodes ?? 0}',
-                              //   style: style.copyWith(
-                              //     color: Colors.cyan,
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ),
@@ -303,7 +337,11 @@ class _Card extends StatelessWidget {
         filterQuality: FilterQuality.high,
         imageUrl: image,
         borderradius: 25,
-        fit: BoxFit.cover,
+        fit: (GetPlatform.isWeb)
+            ? (MediaQuery.of(context).size.height >= 900)
+                ? BoxFit.cover
+                : BoxFit.cover
+            : BoxFit.cover,
       ),
     );
   }
