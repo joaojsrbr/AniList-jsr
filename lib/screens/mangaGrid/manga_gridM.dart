@@ -384,8 +384,8 @@ class _TrendsState extends State<Trends> {
                       Positioned(
                         width: 40,
                         height: 40,
-                        bottom: -0.5,
-                        left: -0.5,
+                        bottom: -1,
+                        left: -1,
                         child: AnimatedContainer(
                           curve: Curves.bounceIn,
                           transform: Matrix4.identity()
@@ -413,8 +413,8 @@ class _TrendsState extends State<Trends> {
                       Positioned(
                         height: 40,
                         width: 40,
-                        right: -0.5,
-                        bottom: -0.5,
+                        right: -1,
+                        bottom: -1,
                         child: Material(
                           type: MaterialType.transparency,
                           child: AnimatedContainer(
