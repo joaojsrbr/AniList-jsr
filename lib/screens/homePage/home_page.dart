@@ -167,37 +167,3 @@ List<String> labels = [
   'main',
   'main',
 ];
-
-// class filterChildWidget extends StatefulWidget {
-//   final String chipName;
-//   const filterChildWidget({
-//     Key? key,
-//     required this.chipName,
-//   }) : super(key: key);
-
-//   @override
-//   State<filterChildWidget> createState() => _filterChildWidgetState();
-// }
-
-// class _filterChildWidgetState extends State<filterChildWidget> {
-//   var _isSelected = false;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return FilterChip(
-//       label: Text(widget.chipName),
-//       labelStyle: TextStyle(
-//         color: Colors.blueGrey.shade500,
-//         fontSize: 16.0,
-//         fontWeight: FontWeight.bold,
-//       ),
-//       selected: _isSelected,
-//       onSelected: (iss) {
-//         setState(() {
-//           _isSelected = iss;
-//         });
-//       },
-//       selectedColor: Colors.grey,
-//     );
-//   }
-// }

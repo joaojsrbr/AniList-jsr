@@ -2,7 +2,6 @@
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
 import 'package:anisearch2/api/repositories/manga_anime_provider.dart';
-import 'package:anisearch2/screens/homePage/home_page.dart';
 import 'package:anisearch2/screens/mangaGrid/controller/controller.dart';
 import 'package:anisearch2/widgetU/build_image.dart';
 import 'package:flutter/foundation.dart';
