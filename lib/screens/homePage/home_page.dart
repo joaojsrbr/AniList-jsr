@@ -14,29 +14,6 @@ class Homepage extends GetView<HomepageController> {
     super.key,
   });
 
-  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  // late TabController tabcontroller;
-
-  // Future<void> getHomeAnime(
-  //     int page, int perPage, List<String> sort, dynamic type) async {
-  //   await Provider.of<ApiProvider>(Get.context!, listen: false).getHomeAnime(
-  //     sort: sort,
-  //     type: type,
-  //     page: page,
-  //     perPage: perPage,
-  //   );
-  // }
-
-  // Future<void> getHomeManga(
-  //     int page, int perPage, List<String> sort, dynamic type) async {
-  //   await Provider.of<ApiProvider>(Get.context!, listen: false).getHomeManga(
-  //     sort: sort,
-  //     type: type,
-  //     page: page,
-  //     perPage: perPage,
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     sliverappbar1() {
@@ -46,22 +23,30 @@ class Homepage extends GetView<HomepageController> {
           // expandedHeight: MediaQuery.of(context).size.height * .20,
           // pinned: true,
           actions: ListWidget().actions(context, controller.manga.value),
-          // surfaceTintColor: Theme.of(context).colorScheme.background,
+          surfaceTintColor: Theme.of(context).colorScheme.background,
           floating: true,
-          stretch: true,
         ),
       );
     }
 
     final listaManga = Provider.of<ApiProvider>(context).manga;
+
     final listaAnime = Provider.of<ApiProvider>(context).anime;
+
     final pageInfoA = Provider.of<ApiProvider>(context).pageInfoA;
+
     final pageInfoM = Provider.of<ApiProvider>(context).pageInfoM;
+
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
     return Scaffold(
-      key: controller.scaffoldKey,
+      resizeToAvoidBottomInset: false,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+      ),
+      key: scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
       body: NestedScrollView(
-        controller: controller.scrollController,
         headerSliverBuilder: (context, _) {
           return <Widget>[
             sliverappbar1(),
@@ -91,8 +76,18 @@ class Homepage extends GetView<HomepageController> {
                       duration: const Duration(milliseconds: 400),
                       tabBackgroundColor: Colors.grey[100]!,
                       color: Colors.white,
-                      onTabChange: controller.onchange,
-                      selectedIndex: controller.index.value,
+                      onTabChange: (value) {
+                        WidgetsBinding.instance
+                            .addPostFrameCallback((timeStamp) {
+                          controller.tabcontroller.index = value;
+                          if (value == 0) {
+                            controller.manga.value = true;
+                          } else {
+                            controller.manga.value = false;
+                          }
+                        });
+                      },
+                      selectedIndex: controller.tabcontroller.index,
                       tabs: const <GButton>[
                         GButton(
                           // icon: LineIcons.home,
@@ -135,18 +130,18 @@ class Homepage extends GetView<HomepageController> {
                   controller: controller.tabcontroller,
                   children: [
                     MangaGridM(
-                      scrollController: controller.scrollController,
                       type: "MANGA",
-                      key: const Key('ListaManga'),
                       sort: "TRENDING_DESC",
+                      // key: const Key('ListaManga'),
+
                       lista: listaManga,
                       pageInfo: pageInfoM,
                     ),
                     MangaGridM(
-                      scrollController: controller.scrollController,
                       type: "ANIME",
                       sort: "TRENDING_DESC",
-                      key: const Key('ListaAnime'),
+                      // key: const Key('ListaAnime'),
+
                       lista: listaAnime,
                       pageInfo: pageInfoA,
                     ),
@@ -160,10 +155,3 @@ class Homepage extends GetView<HomepageController> {
     );
   }
 }
-
-List<String> labels = [
-  'main',
-  'main',
-  'main',
-  'main',
-];
