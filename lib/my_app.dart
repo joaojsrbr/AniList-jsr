@@ -10,7 +10,6 @@ import 'package:anisearch2/module/page/mangadetailsr_module.dart';
 import 'package:anisearch2/module/page/mangagridm_module.dart';
 import 'package:anisearch2/module/page/mangagrids_module.dart';
 import 'package:anisearch2/screens/homePage/binding/binding.dart';
-import 'package:anisearch2/screens/mangaDetails/manga_details.dart';
 import 'package:anisearch2/scroll/scrollbehavior.dart';
 import 'package:anisearch2/theme/text_theme.dart';
 
@@ -69,13 +68,6 @@ class _MyAppState extends State<MyApp> {
                 elevation: 0,
               ),
               colorScheme: lightColorScheme,
-              // extensions: [lightCustomColors],
-              // colorScheme: ColorScheme.fromSeed(
-              //   seedColor: const Color.fromARGB(239, 4, 207, 112),
-              //   brightness: lightDynamic!.brightness,
-              //   secondary: const Color.fromARGB(255, 232, 1, 244),
-              //   background: lightDynamic.background,
-              // ),
             ),
             title: 'AsS',
             // initialBinding: ControllerBinding(),
@@ -86,22 +78,12 @@ class _MyAppState extends State<MyApp> {
                 elevation: 0,
               ),
               colorScheme: darkColorScheme,
-              // extensions: [darkCustomColors],
-              // colorScheme: ColorScheme.fromSeed(
-              //   seedColor: const Color.fromARGB(210, 65, 170, 5),
-              //   brightness: darkDynamic!.brightness,
-              //   secondary: const Color.fromARGB(255, 232, 1, 244),
-              //   background: darkDynamic.background,
-              // ),
             ),
             initialRoute: '/h',
+            initialBinding: ControllerBinding(),
             getPages: [
               // GetPage(name: '/r', page: () => const HomepageRouter()),
               GetPage(
-                bindings: [
-                  MangaDetailsRBinding(),
-                  ControllerBinding(),
-                ],
                 name: '/h',
                 page: () => const HomepageModule(),
               ),

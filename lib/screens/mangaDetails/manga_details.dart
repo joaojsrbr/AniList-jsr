@@ -2,27 +2,20 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
 import 'package:anisearch2/screens/mangaDetails/hero/hero_image.dart';
 import 'package:anisearch2/screens/mangaDetails/hero/hero_row_score.dart';
 import 'package:anisearch2/screens/mangaDetails/hero/hero_title.dart';
 
-class MangaDetailsRBinding implements Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut<MangaDetailsRController>(
-      () => MangaDetailsRController(),
-    );
-  }
-}
-
-class MangaDetailsRController extends GetxController {}
-
-class MangaDetailsR extends GetView<MangaDetailsRController> {
+class MangaDetailsR extends StatefulWidget {
   const MangaDetailsR({Key? key}) : super(key: key);
 
+  @override
+  State<MangaDetailsR> createState() => _MangaDetailsRState();
+}
+
+class _MangaDetailsRState extends State<MangaDetailsR> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
