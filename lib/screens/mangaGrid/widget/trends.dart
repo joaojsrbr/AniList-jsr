@@ -32,7 +32,7 @@ class _TrendsState extends State<Trends> {
   double cardPage = 0.0;
   int cardIndex = 0;
   final _details = ValueNotifier(true);
-  late final PageController _pageController;
+  late PageController _pageController;
 
   @override
   void initState() {
@@ -176,7 +176,7 @@ class _TrendsState extends State<Trends> {
                           children: <Widget>[
                             HeroImageGrid(
                               constraints: constraints,
-                              url: _url(),
+                              url: _url,
                               isCurrentPage: isCurrentPage,
                               listaU: listaU,
                               style: style,

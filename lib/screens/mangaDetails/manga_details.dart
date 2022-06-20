@@ -64,7 +64,7 @@ class _MangaDetailsRState extends State<MangaDetailsR> {
                           top: h * .09,
                           right: 2,
                           left: w * .47,
-                          height: h * .1,
+                          height: h * .2,
                           // width: w * .48,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

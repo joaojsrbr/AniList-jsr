@@ -12,12 +12,16 @@ class HeroImageGrid extends StatelessWidget {
     required this.listaU,
     required this.constraints,
     required this.style,
+    this.main = false,
+    this.averageScore,
   }) : super(key: key);
 
   final TextStyle style;
-  final String url;
+  final double? averageScore;
+  final String Function() url;
   final bool isCurrentPage;
   final Media listaU;
+  final bool main;
   final BoxConstraints constraints;
 
   @override
@@ -53,7 +57,7 @@ class HeroImageGrid extends StatelessWidget {
                 ),
                 child: BuildImageWidget(
                   filterQuality: FilterQuality.high,
-                  imageUrl: url,
+                  imageUrl: url(),
                   borderradius: 8.7,
                   fit: (GetPlatform.isWeb)
                       ? (MediaQuery.of(context).size.height >= 900)
@@ -70,35 +74,65 @@ class HeroImageGrid extends StatelessWidget {
                   // height: constraints.maxHeight,
                 ),
               ),
-              Positioned(
-                width: 40,
-                height: 40,
-                bottom: -1,
-                left: -1,
-                child: AnimatedContainer(
-                  curve: Curves.bounceIn,
-                  transform: Matrix4.identity()
-                    ..translate(
-                      isCurrentPage ? 0.0 : -20.0,
-                      isCurrentPage ? 0.0 : 60.0,
+              main
+                  ? const Positioned(
+                      left: -1,
+                      bottom: -1,
+                      child: CardS(
+                        height: 35,
+                        width: 35,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(8.4),
+                          bottomRight: Radius.circular(8.4),
+                        ),
+                        image: true,
+                      ),
+                    )
+                  : Container(),
+              main
+                  ? Positioned(
+                      right: -1,
+                      bottom: -1,
+                      child: CardScore(
+                        averageScore: (averageScore == null)
+                            ? null
+                            : (averageScore! / 10),
+                        media: listaU,
+                        style: style,
+                      ),
+                    )
+                  : Container(),
+              main
+                  ? Container()
+                  : Positioned(
+                      width: 40,
+                      height: 40,
+                      bottom: -1,
+                      left: -1,
+                      child: AnimatedContainer(
+                        curve: Curves.bounceIn,
+                        transform: Matrix4.identity()
+                          ..translate(
+                            isCurrentPage ? 0.0 : -20.0,
+                            isCurrentPage ? 0.0 : 60.0,
+                          ),
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
+                        ),
+                        duration: const Duration(milliseconds: 300),
+                        child: const CardS(
+                          height: 40,
+                          width: 40,
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(10),
+                            bottomLeft: Radius.circular(7.5),
+                          ),
+                          image: true,
+                        ),
+                      ),
                     ),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(70),
-                    ),
-                  ),
-                  duration: const Duration(milliseconds: 300),
-                  child: const CardS(
-                    height: 40,
-                    width: 40,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(7.5),
-                    ),
-                    image: true,
-                  ),
-                ),
-              ),
               Positioned(
                 height: 40,
                 width: 40,
@@ -113,14 +147,14 @@ class HeroImageGrid extends StatelessWidget {
                     ),
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(70),
+                      Radius.circular(15),
                     ),
                   ),
                   duration: const Duration(milliseconds: 300),
                   child: CardScore(
-                    title: (listaU.episodes == null)
-                        ? null
-                        : (listaU.episodes).toString(),
+                    averageScore:
+                        (listaU.episodes == null) ? null : (listaU.episodes),
+                    media: listaU,
                     style: style,
                   ),
                 ),

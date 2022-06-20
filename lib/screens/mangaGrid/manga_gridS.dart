@@ -2,7 +2,10 @@
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
 import 'package:anisearch2/api/repositories/manga_anime_provider.dart';
+import 'package:anisearch2/screens/mangaDetails/hero/hero_title.dart';
+import 'package:anisearch2/screens/mangaDetails/manga_details.dart';
 import 'package:anisearch2/screens/mangaGrid/controller/controller.dart';
+import 'package:anisearch2/screens/mangaGrid/hero/hero_image.dart';
 import 'package:anisearch2/widgetU/build_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +28,8 @@ class MangaGridS extends GetView<MangaGridSController> {
     // final sw = Get.find<MangaGridSController>();
     final List<Media> listaManga = Provider.of<ApiProvider>(context).manga;
     final List<Media> listaAnime = Provider.of<ApiProvider>(context).anime;
-
+    final RefreshController refreshController =
+        RefreshController(initialRefresh: false);
     return Scaffold(
       appBar: (main == true)
           ? AppBar(
@@ -44,11 +48,9 @@ class MangaGridS extends GetView<MangaGridSController> {
 
               lista = dataProvider;
 
-              if (kDebugMode) {
-                print(lista);
-              }
-              final RefreshController refreshController =
-                  RefreshController(initialRefresh: false);
+              // if (kDebugMode) {
+              //   print(lista);
+              // }
 
               return SmartRefresher(
                 enablePullDown: false,
@@ -80,6 +82,24 @@ class MangaGridS extends GetView<MangaGridSController> {
                   ),
                   itemCount: lista!.length,
                   itemBuilder: (context, index) {
+                    String _url() {
+                      final urlA = lista![index].coverImage!.extraLarge ??
+                          lista![index].coverImage!.large ??
+                          lista![index].coverImage!.medium ??
+                          'https://convertingcolors.com/plain-1E2436.svg';
+
+                      // final urlB = listaU.bannerImage ??
+                      //     listaU.coverImage!.extraLarge ??
+                      //     listaU.coverImage!.large ??
+                      //     listaU.coverImage!.medium ??
+                      //     'https://convertingcolors.com/plain-1E2436.svg';
+                      return GetPlatform.isWeb
+                          ? (MediaQuery.of(context).size.height >= 900)
+                              ? urlA
+                              : urlA
+                          : urlA;
+                    }
+
                     final imageUrl = lista![index].coverImage!.extraLarge ??
                         lista![index].coverImage!.large ??
                         lista![index].coverImage!.medium ??
@@ -93,57 +113,57 @@ class MangaGridS extends GetView<MangaGridSController> {
                           fontWeight: FontWeight.w600,
                         );
                     final averageScore = lista![index].averageScore;
-
+                    final isCurrent = index == index;
                     return GestureDetector(
-                      onTap: () => Get.toNamed(
-                        '/d',
-                        arguments: lista![index],
-                      ),
+                      // onTap: () => Get.toNamed(
+                      //   '/d',
+                      //   arguments: lista![index],
+                      // ),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          PageRouteBuilder(
+                            settings: RouteSettings(
+                              arguments: lista![index],
+                            ),
+                            transitionDuration:
+                                const Duration(milliseconds: 1000),
+                            reverseTransitionDuration:
+                                const Duration(milliseconds: 1000),
+                            pageBuilder: (_, animation, __) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: SizeTransition(
+                                  sizeFactor: animation,
+                                  child: const MangaDetailsR(),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
                       child: Card(
                         color: Colors.blueGrey[900],
                         elevation: 0,
                         child: Column(
                           children: [
-                            Flexible(
-                              fit: FlexFit.tight,
-                              child: Stack(
-                                children: [
-                                  BuildImageWidget(
-                                    borderradius: 10,
-                                    fit: BoxFit.cover,
-                                    width: constraints.maxWidth,
-                                    height: constraints.maxHeight,
-                                    imageUrl: imageUrl,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      const CardS(
-                                        height: 30.49,
-                                        width: 30.27,
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(8.4),
-                                            bottomRight: Radius.circular(8.4)),
-                                        image: true,
-                                      ),
-                                      CardScore(
-                                        title: (averageScore == null)
-                                            ? null
-                                            : (averageScore / 10).toString(),
-                                        style: style,
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                            HeroImageGrid(
+                              url: _url,
+                              listaU: lista![index],
+                              main: true,
+                              averageScore: averageScore!.toDouble(),
+                              constraints: constraints,
+                              style: style,
+                              isCurrentPage: isCurrent,
                             ),
                             Padding(
                               padding:
                                   const EdgeInsets.only(left: 8.0, right: 5.0),
                               child: Align(
                                 alignment: Alignment.centerLeft,
+                                // child: HeroTitle(
+                                //   maxLines: 1,
+                                //   title: title,
+                                // ),
                                 child: Text(
                                   title,
                                   overflow: TextOverflow.ellipsis,
@@ -176,7 +196,7 @@ class MangaGridS extends GetView<MangaGridSController> {
               ),
               itemCount: lista!.length,
               itemBuilder: (context, index) {
-                final imageUrl = lista![index].coverImage!.extraLarge ??
+                final url = lista![index].coverImage!.extraLarge ??
                     lista![index].coverImage!.large ??
                     lista![index].coverImage!.medium ??
                     '';
@@ -188,58 +208,68 @@ class MangaGridS extends GetView<MangaGridSController> {
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
                     );
+                final isCurrent = index == index;
+
+                String _url() {
+                  final urlA = lista![index].coverImage!.extraLarge ??
+                      lista![index].coverImage!.large ??
+                      lista![index].coverImage!.medium ??
+                      'https://convertingcolors.com/plain-1E2436.svg';
+
+                  // final urlB = listaU.bannerImage ??
+                  //     listaU.coverImage!.extraLarge ??
+                  //     listaU.coverImage!.large ??
+                  //     listaU.coverImage!.medium ??
+                  //     'https://convertingcolors.com/plain-1E2436.svg';
+                  return GetPlatform.isWeb
+                      ? (MediaQuery.of(context).size.height >= 900)
+                          ? urlA
+                          : urlA
+                      : urlA;
+                }
+
                 final averageScore = lista![index].averageScore;
                 // print(constraints.maxHeight * .2);
 
                 return GestureDetector(
-                  onTap: () => Get.toNamed(
-                    '/d',
-                    arguments: lista![index],
-                  ),
+                  // onTap: () => Get.toNamed(
+                  //   '/d',
+                  //   arguments: lista![index],
+                  // ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        settings: RouteSettings(
+                          arguments: lista![index],
+                        ),
+                        transitionDuration: const Duration(milliseconds: 1000),
+                        reverseTransitionDuration:
+                            const Duration(milliseconds: 1000),
+                        pageBuilder: (_, animation, __) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: SizeTransition(
+                              sizeFactor: animation,
+                              child: const MangaDetailsR(),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
                   child: Card(
                     color: Colors.blueGrey[900],
                     elevation: 0,
                     child: Column(
                       children: [
-                        Flexible(
-                          fit: FlexFit.tight,
-                          child: Stack(
-                            children: [
-                              BuildImageWidget(
-                                filterQuality: FilterQuality.high,
-                                borderradius: 10,
-                                width: (GetPlatform.isWeb)
-                                    ? (constraints.maxWidth * 1)
-                                    : constraints.maxWidth,
-                                height: (GetPlatform.isWeb)
-                                    ? (constraints.maxHeight * 1)
-                                    : constraints.maxHeight,
-                                fit: BoxFit.cover,
-                                imageUrl: imageUrl,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  CardS(
-                                    height: GetPlatform.isWeb ? 31 : 30.49,
-                                    width: GetPlatform.isWeb ? 32 : 30.27,
-                                    borderRadius: const BorderRadius.only(
-                                        topLeft: Radius.circular(8.4),
-                                        bottomRight: Radius.circular(8.4)),
-                                    image: true,
-                                  ),
-                                  CardScore(
-                                    title: (averageScore == null)
-                                        ? null
-                                        : (averageScore / 10).toString(),
-                                    style: style,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                        HeroImageGrid(
+                          url: _url,
+                          listaU: lista![index],
+                          constraints: constraints,
+                          style: style,
+                          main: true,
+                          averageScore: averageScore!.toDouble(),
+                          isCurrentPage: isCurrent,
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 8.0, right: 5.0),
@@ -275,11 +305,13 @@ class MangaGridS extends GetView<MangaGridSController> {
 class CardScore extends StatelessWidget {
   const CardScore({
     Key? key,
-    required this.title,
+    this.averageScore,
     required this.style,
+    required this.media,
   }) : super(key: key);
 
-  final String? title;
+  final Media media;
+  final dynamic averageScore;
 
   final TextStyle style;
 
@@ -293,10 +325,10 @@ class CardScore extends StatelessWidget {
         bottomRight: Radius.circular(7.5),
       ),
       image: false,
-      widget: (title == null)
+      widget: (averageScore == null)
           ? null
           : Text(
-              '# $title',
+              '$averageScore',
               style: style.copyWith(
                 color: Colors.white,
                 fontSize: 12,
@@ -316,8 +348,8 @@ class CardS extends StatelessWidget {
   const CardS({
     this.widget,
     this.image = true,
-    this.height = 37.49,
-    this.width = 37.27,
+    this.height = 35,
+    this.width = 35,
     this.alignment = Alignment.topLeft,
     this.borderRadius = const BorderRadius.only(
       topLeft: Radius.circular(8.4),
