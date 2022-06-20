@@ -8,7 +8,7 @@ class HomepageController extends GetxController
   RxBool manga = false.obs;
 
   late TabController tabcontroller;
-
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void onInit() {
     const duration = Duration(milliseconds: 0);

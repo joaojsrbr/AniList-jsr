@@ -2,6 +2,7 @@
 import 'dart:ui' as ui;
 
 import 'package:anisearch2/screens/mangaGrid/hero/hero_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -31,7 +32,7 @@ class _TrendsState extends State<Trends> {
   double cardPage = 0.0;
   int cardIndex = 0;
   final _details = ValueNotifier(true);
-  late PageController _pageController;
+  late final PageController _pageController;
 
   @override
   void initState() {
@@ -65,9 +66,14 @@ class _TrendsState extends State<Trends> {
 
           return PageView.builder(
             onPageChanged: (value) {
+              if (kDebugMode) {
+                print(value + 1);
+              }
               if (value + 1 == widget.lista!.length) {
-                controller1.onLoading(
-                    context, widget.sort, widget.type, widget.lista!);
+                if (mounted) {
+                  controller1.onLoading(
+                      context, widget.sort, widget.type, widget.lista!);
+                }
               }
             },
             clipBehavior: Clip.none,
@@ -113,6 +119,7 @@ class _TrendsState extends State<Trends> {
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                   );
+
               return Padding(
                 padding: const EdgeInsets.only(top: 10, left: 20),
                 child: Transform.scale(

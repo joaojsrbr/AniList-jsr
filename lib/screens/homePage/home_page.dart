@@ -37,14 +37,12 @@ class Homepage extends GetView<HomepageController> {
 
     final pageInfoM = Provider.of<ApiProvider>(context).pageInfoM;
 
-    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
       ),
-      key: scaffoldKey,
+      key: controller.scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
       body: NestedScrollView(
         headerSliverBuilder: (context, _) {
@@ -132,16 +130,14 @@ class Homepage extends GetView<HomepageController> {
                     MangaGridM(
                       type: "MANGA",
                       sort: "TRENDING_DESC",
-                      // key: const Key('ListaManga'),
-
+                      key: const Key('ListaManga'),
                       lista: listaManga,
                       pageInfo: pageInfoM,
                     ),
                     MangaGridM(
                       type: "ANIME",
                       sort: "TRENDING_DESC",
-                      // key: const Key('ListaAnime'),
-
+                      key: const Key('ListaAnime'),
                       lista: listaAnime,
                       pageInfo: pageInfoA,
                     ),
