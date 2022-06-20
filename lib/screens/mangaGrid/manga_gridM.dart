@@ -17,7 +17,7 @@ class MangaGridM extends GetView<MangaGridSController> {
   final bool search;
   final String? type;
 
-  const MangaGridM({
+  MangaGridM({
     super.key,
     this.pageInfo,
     this.search = false,
@@ -25,24 +25,28 @@ class MangaGridM extends GetView<MangaGridSController> {
     this.type,
     this.lista,
   });
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     // final isLoading = Provider.of<ApiProvider>(context).isLoading;
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
       body: lista!.isEmpty
           ? const Center(
               child: CircularProgressIndicator(),
             )
           : Column(
-              children: [
-                _CopyWidget(
-                  lista: lista,
-                  type: type!,
-                  sort: sort!,
-                  title: 'Trending',
+              children: <Widget>[
+                Flexible(
+                  child: _CopyWidget(
+                    lista: lista,
+                    type: type!,
+                    sort: sort!,
+                    title: 'Trending',
+                  ),
                 ),
               ],
             ),

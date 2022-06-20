@@ -1,22 +1,29 @@
+import 'package:anisearch2/api/models/api_graphql_media_model.dart';
 import 'package:flutter/material.dart';
 
 class HeroTitle extends StatelessWidget {
   const HeroTitle({
     Key? key,
-    required this.title,
+    required this.media,
     this.style,
     this.maxLines = 4,
   }) : super(key: key);
   final int maxLines;
   final TextStyle? style;
-  final String title;
+  final Media media;
 
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: ObjectKey(title),
+      tag: ObjectKey(media.title!.english ??
+          media.title!.romaji ??
+          media.title!.native ??
+          ''),
       child: Text(
-        title,
+        media.title!.english ??
+            media.title!.romaji ??
+            media.title!.native ??
+            '',
         overflow: TextOverflow.ellipsis,
         style: style ??
             Theme.of(context).textTheme.headline6!.copyWith(

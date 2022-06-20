@@ -36,24 +36,24 @@ class HeroImageGrid extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 250),
                 curve: Curves.easeInOut,
                 transform: Matrix4.identity()
                   ..translate(
                     isCurrentPage ? 0.0 : -20.0,
                     isCurrentPage ? 0.0 : 60.0,
                   ),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(
                     Radius.circular(25),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 15,
-                      offset: const Offset(0, 25),
-                      color: Colors.black.withOpacity(.12),
-                    ),
-                  ],
+                  // boxShadow: [
+                  //   BoxShadow(
+                  //     blurRadius: 15,
+                  //     offset: const Offset(0, 25),
+                  //     color: Colors.black.withOpacity(.12),
+                  //   ),
+                  // ],
                 ),
                 child: BuildImageWidget(
                   filterQuality: FilterQuality.high,
@@ -118,7 +118,7 @@ class HeroImageGrid extends StatelessWidget {
                           ),
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(
-                            Radius.circular(15),
+                            Radius.circular(10),
                           ),
                         ),
                         duration: const Duration(milliseconds: 300),

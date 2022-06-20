@@ -1,7 +1,6 @@
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
 import 'package:anisearch2/screens/mangaGrid/manga_gridS.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class HeaderTrends extends StatelessWidget {
   final List<Media>? lista;
@@ -28,12 +27,34 @@ class HeaderTrends extends StatelessWidget {
                 ),
           ),
           GestureDetector(
-            onTap: () => Get.to(
-              MangaGridS(
-                main: true,
-              ),
-              arguments: lista!,
-            ),
+            // onTap: () => Get.to(
+            //   MangaGridS(
+            //     main: true,
+            //   ),
+            //   arguments: lista!,
+            // ),
+            onTap: () {
+              Navigator.of(context).push(
+                PageRouteBuilder(
+                  settings: RouteSettings(
+                    arguments: lista!,
+                  ),
+                  transitionDuration: const Duration(milliseconds: 600),
+                  reverseTransitionDuration: const Duration(milliseconds: 600),
+                  pageBuilder: (_, animation, __) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SizeTransition(
+                        sizeFactor: animation,
+                        child: MangaGridS(
+                          main: true,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
             child: Text(
               'View all',
               style: Theme.of(context).textTheme.subtitle2!.copyWith(

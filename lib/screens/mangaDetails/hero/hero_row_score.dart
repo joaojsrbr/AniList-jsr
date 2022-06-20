@@ -5,11 +5,9 @@ class HeroRowScore extends StatelessWidget {
   const HeroRowScore({
     Key? key,
     required this.dataProvider,
-    required this.averageScore,
   }) : super(key: key);
 
   final Media dataProvider;
-  final double averageScore;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +15,9 @@ class HeroRowScore extends StatelessWidget {
           color: Colors.white,
           fontWeight: FontWeight.w600,
         );
+    final averageScore = (dataProvider.averageScore ?? 0) / 10;
+
+    // final double avengescore = compute(calc, dataProvider.averageScore ?? 0);
     return Hero(
       tag: ObjectKey(dataProvider.recommendations!),
       child: Row(

@@ -1,13 +1,13 @@
-import 'package:anisearch2/screens/homePage/controller/controller.dart';
-import 'package:anisearch2/screens/mangaGrid/manga_gridM.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-
-import 'package:provider/provider.dart';
-import 'package:anisearch2/api/repositories/manga_anime_provider.dart';
-import 'package:anisearch2/screens/homePage/widget_List/widgets_model_list.dart';
-
 import 'package:get/get.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
+
+import 'package:anisearch2/api/repositories/manga_anime_provider.dart';
+import 'package:anisearch2/screens/homePage/controller/controller.dart';
+import 'package:anisearch2/screens/homePage/widget_List/widgets_model_list.dart';
+import 'package:anisearch2/screens/mangaGrid/manga_gridM.dart';
 
 class Homepage extends GetView<HomepageController> {
   const Homepage({
@@ -19,7 +19,7 @@ class Homepage extends GetView<HomepageController> {
     sliverappbar1() {
       return Obx(
         () => SliverAppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          // backgroundColor: Theme.of(context).colorScheme.background,
           // expandedHeight: MediaQuery.of(context).size.height * .20,
           // pinned: true,
           actions: ListWidget().actions(context, controller.manga.value),
@@ -42,7 +42,7 @@ class Homepage extends GetView<HomepageController> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
       ),
-      key: controller.scaffoldKey,
+      // key: controller.scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
       body: NestedScrollView(
         headerSliverBuilder: (context, _) {
@@ -59,7 +59,7 @@ class Homepage extends GetView<HomepageController> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
                 child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     GNav(
@@ -101,24 +101,12 @@ class Homepage extends GetView<HomepageController> {
                         ),
                       ],
                     ),
-                    // Flexible(
-                    //   child: Obx(
-                    //     () {
-                    //       return PageViewDotIndicator(
-                    //         alignment: Alignment.centerRight,
-                    //         currentItem: indexP(
-                    //           indexpage.index.value.toInt(),
-                    //           controller.manga.value
-                    //               ? listaManga.length
-                    //               : listaManga.length,
-                    //         ).clamp(0, 4),
-                    //         count: 4,
-                    //         unselectedColor: Colors.black26,
-                    //         selectedColor: Colors.blue,
-                    //       );
-                    //     },
-                    //   ),
-                    // ),
+                    Obx(
+                      () => LoadOn(
+                        key: ValueKey(controller.load.value),
+                        onload: controller.load.value,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -149,5 +137,36 @@ class Homepage extends GetView<HomepageController> {
         ),
       ),
     );
+  }
+}
+
+class LoadOn extends StatelessWidget {
+  const LoadOn({
+    Key? key,
+    required this.onload,
+    this.height = 20,
+    this.width = 20,
+    this.value,
+  }) : super(key: key);
+
+  final bool onload;
+  final double? height;
+  final double? width;
+  final double? value;
+
+  @override
+  Widget build(BuildContext context) {
+    return onload
+        ? SizedBox(
+            height: height,
+            width: width,
+            child: const Center(
+              child: CircularProgressIndicator(
+                // value: value,
+                strokeWidth: 2,
+              ),
+            ),
+          )
+        : Container();
   }
 }

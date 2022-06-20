@@ -79,6 +79,7 @@ class _MyAppState extends State<MyApp> {
               ),
               colorScheme: darkColorScheme,
             ),
+
             initialRoute: '/h',
             initialBinding: ControllerBinding(),
             getPages: [

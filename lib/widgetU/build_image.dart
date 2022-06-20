@@ -50,11 +50,10 @@ class BuildImageWidget extends StatelessWidget {
             ? ClipRRect(
                 borderRadius: BorderRadius.circular(borderradius),
                 child: Container(
-                  color: Colors.grey[200],
                   constraints: constraints,
                   child: CachedNetworkImage(
-                    memCacheHeight: GetPlatform.isWeb ? 3000 : 1000,
-                    memCacheWidth: GetPlatform.isWeb ? 3000 : 1000,
+                    memCacheHeight: GetPlatform.isWeb ? 2000 : 600,
+                    memCacheWidth: GetPlatform.isWeb ? 2000 : 600,
 
                     cacheManager: customCacheManager,
                     key: cachedkey,
@@ -99,8 +98,8 @@ class BuildImageWidget extends StatelessWidget {
                           child: CachedNetworkImage(
                             // memCacheHeight: 1000,
                             // memCacheWidth: 1000,
-                            memCacheHeight: GetPlatform.isWeb ? 3000 : 1000,
-                            memCacheWidth: GetPlatform.isWeb ? 3000 : 1000,
+                            memCacheHeight: GetPlatform.isWeb ? 2000 : 600,
+                            memCacheWidth: GetPlatform.isWeb ? 2000 : 600,
                             cacheManager: customCacheManager,
                             key: cachedkey,
                             fit: fit,
@@ -132,16 +131,16 @@ class BuildImageWidget extends StatelessWidget {
                         ),
                         height: (constraints == null)
                             ? height
-                            : constraints!.maxHeight * .99,
+                            : constraints!.maxHeight,
                         width: (constraints == null)
                             ? width
-                            : constraints!.maxWidth * .99,
+                            : constraints!.maxWidth,
                         constraints: constraints,
                         child: CachedNetworkImage(
                           // maxWidthDiskCache: 500,
                           // maxHeightDiskCache: 700,
-                          memCacheHeight: GetPlatform.isWeb ? 3000 : 1000,
-                          memCacheWidth: GetPlatform.isWeb ? 3000 : 1000,
+                          memCacheHeight: GetPlatform.isWeb ? 2000 : 600,
+                          memCacheWidth: GetPlatform.isWeb ? 2000 : 600,
                           cacheManager: customCacheManager,
                           key: cachedkey,
                           imageUrl: imageUrl,

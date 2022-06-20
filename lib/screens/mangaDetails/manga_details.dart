@@ -34,15 +34,11 @@ class _MangaDetailsRState extends State<MangaDetailsR> {
         //     dataProvider.bannerImage ??
         //     'https://convertingcolors.com/plain-1E2436.svg';
 
-        final title = dataProvider.title!.english ??
-            dataProvider.title!.romaji ??
-            dataProvider.title!.native ??
-            '';
-
-        final averageScore = ((dataProvider.averageScore ?? 0.0) / 10);
+        // final averageScore = ((dataProvider.averageScore ?? 0.0) / 10);
 
         if (kDebugMode) {
-          print('id: ${dataProvider.id} -- title: $title\n');
+          print(
+              'id: ${dataProvider.id} -- title: ${dataProvider.title!.english ?? dataProvider.title!.romaji ?? dataProvider.title!.native ?? ''}\n');
         }
 
         return Scaffold(
@@ -70,11 +66,10 @@ class _MangaDetailsRState extends State<MangaDetailsR> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               HeroTitle(
-                                title: title,
+                                media: dataProvider,
                               ),
                               HeroRowScore(
                                 dataProvider: dataProvider,
-                                averageScore: averageScore,
                               ),
                             ],
                           ),

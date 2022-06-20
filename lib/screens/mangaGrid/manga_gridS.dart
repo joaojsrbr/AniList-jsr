@@ -2,12 +2,9 @@
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
 import 'package:anisearch2/api/repositories/manga_anime_provider.dart';
-import 'package:anisearch2/screens/mangaDetails/hero/hero_title.dart';
 import 'package:anisearch2/screens/mangaDetails/manga_details.dart';
 import 'package:anisearch2/screens/mangaGrid/controller/controller.dart';
 import 'package:anisearch2/screens/mangaGrid/hero/hero_image.dart';
-import 'package:anisearch2/widgetU/build_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -100,10 +97,10 @@ class MangaGridS extends GetView<MangaGridSController> {
                           : urlA;
                     }
 
-                    final imageUrl = lista![index].coverImage!.extraLarge ??
-                        lista![index].coverImage!.large ??
-                        lista![index].coverImage!.medium ??
-                        'https://convertingcolors.com/plain-1E2436.svg';
+                    // final imageUrl = lista![index].coverImage!.extraLarge ??
+                    //     lista![index].coverImage!.large ??
+                    //     lista![index].coverImage!.medium ??
+                    //     'https://convertingcolors.com/plain-1E2436.svg';
                     final title = lista![index].title!.english ??
                         lista![index].title!.romaji ??
                         lista![index].title!.native ??
@@ -126,9 +123,9 @@ class MangaGridS extends GetView<MangaGridSController> {
                               arguments: lista![index],
                             ),
                             transitionDuration:
-                                const Duration(milliseconds: 1000),
+                                const Duration(milliseconds: 700),
                             reverseTransitionDuration:
-                                const Duration(milliseconds: 1000),
+                                const Duration(milliseconds: 700),
                             pageBuilder: (_, animation, __) {
                               return FadeTransition(
                                 opacity: animation,
@@ -150,7 +147,7 @@ class MangaGridS extends GetView<MangaGridSController> {
                               url: _url,
                               listaU: lista![index],
                               main: true,
-                              averageScore: averageScore!.toDouble(),
+                              averageScore: (averageScore ?? 10).toDouble(),
                               constraints: constraints,
                               style: style,
                               isCurrentPage: isCurrent,
@@ -196,10 +193,10 @@ class MangaGridS extends GetView<MangaGridSController> {
               ),
               itemCount: lista!.length,
               itemBuilder: (context, index) {
-                final url = lista![index].coverImage!.extraLarge ??
-                    lista![index].coverImage!.large ??
-                    lista![index].coverImage!.medium ??
-                    '';
+                // final url = lista![index].coverImage!.extraLarge ??
+                //     lista![index].coverImage!.large ??
+                //     lista![index].coverImage!.medium ??
+                //     '';
                 final title = lista![index].title!.english ??
                     lista![index].title!.romaji ??
                     lista![index].title!.native ??
@@ -268,7 +265,7 @@ class MangaGridS extends GetView<MangaGridSController> {
                           constraints: constraints,
                           style: style,
                           main: true,
-                          averageScore: averageScore!.toDouble(),
+                          averageScore: (averageScore ?? 0).toDouble(),
                           isCurrentPage: isCurrent,
                         ),
                         Padding(

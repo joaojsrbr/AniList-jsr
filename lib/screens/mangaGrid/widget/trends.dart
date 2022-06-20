@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
 import 'dart:ui' as ui;
 
+import 'package:anisearch2/screens/homePage/controller/controller.dart';
 import 'package:anisearch2/screens/mangaGrid/hero/hero_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +33,34 @@ class Trends extends StatefulWidget {
 class _TrendsState extends State<Trends> {
   double cardPage = 0.0;
   int cardIndex = 0;
+
   final _details = ValueNotifier(true);
   late PageController _pageController;
 
+  late StreamController<int> streamController;
+
+  late Stream<int> onload;
+
+  void getData() {
+    final controller = Get.find<MangaGridSController>();
+    controller.onLoading(context, widget.sort, widget.type, widget.lista!);
+    Get.find<HomepageController>().length.value = widget.lista!.length;
+  }
+
   @override
   void initState() {
+    streamController = StreamController();
+
+    onload = streamController.stream;
+    onload.listen(
+      (event) async {
+        final controller = Get.find<HomepageController>();
+        controller.load.value = true;
+        getData();
+        await Future.delayed(const Duration(seconds: 2));
+        controller.load.value = false;
+      },
+    );
     _pageController = PageController(viewportFraction: 0.77)
       ..addListener(percentListener);
     super.initState();
@@ -46,6 +71,7 @@ class _TrendsState extends State<Trends> {
     _pageController
       ..removeListener(percentListener)
       ..dispose();
+    streamController.close();
     super.dispose();
   }
 
@@ -56,13 +82,12 @@ class _TrendsState extends State<Trends> {
     });
   }
 
-  // late final PageController _movieDetailPageController;
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final controller1 = Get.find<MangaGridSController>();
+          // final controller1 = Get.find<MangaGridSController>();
 
           return PageView.builder(
             onPageChanged: (value) {
@@ -71,8 +96,7 @@ class _TrendsState extends State<Trends> {
               }
               if (value + 1 == widget.lista!.length) {
                 if (mounted) {
-                  controller1.onLoading(
-                      context, widget.sort, widget.type, widget.lista!);
+                  streamController.sink.add(value);
                 }
               }
             },
@@ -104,17 +128,29 @@ class _TrendsState extends State<Trends> {
                     : urlA;
               }
 
-              final title = listaU.title!.english ??
-                  listaU.title!.romaji ??
-                  listaU.title!.native ??
-                  '';
+              // final title = listaU.title!.english ??
+              //     listaU.title!.romaji ??
+              //     listaU.title!.native ??
+              //     '';
 
               final isCurrentPage = index == cardIndex;
               final isScrolling =
                   _pageController.position.isScrollingNotifier.value;
               final isFirstPage = index == 0;
 
-              final averageScore = ((listaU.averageScore ?? 0) / 10);
+              // Future<double> averageScore(int? value) {
+              //   double calc(int? value) {
+              //     return (value ?? 0) / 10;
+              //   }
+
+              //   return compute(calc, value);
+              // }
+
+              // final averageScore = compute(
+              //   calc ,/ 10
+              // )
+
+              // ((listaU.averageScore ?? 0) / 10);
               final style = Theme.of(context).textTheme.button!.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -188,7 +224,10 @@ class _TrendsState extends State<Trends> {
                                 Flexible(
                                   child: Material(
                                     type: MaterialType.transparency,
-                                    child: HeroTitle(title: title),
+                                    child: HeroTitle(
+                                      media: listaU,
+                                      maxLines: 1,
+                                    ),
                                   ),
                                 ),
                                 ClipOval(
@@ -221,7 +260,6 @@ class _TrendsState extends State<Trends> {
                               type: MaterialType.transparency,
                               child: HeroRowScore(
                                 dataProvider: listaU,
-                                averageScore: averageScore,
                               ),
                             )
                           ],

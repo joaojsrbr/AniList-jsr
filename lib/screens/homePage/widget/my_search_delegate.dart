@@ -7,6 +7,16 @@ class MySearchDelegate extends SearchDelegate {
   BuildContext context;
   final bool manga;
 
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    return Theme.of(context).copyWith(
+      scaffoldBackgroundColor: Theme.of(context).colorScheme.background,
+      appBarTheme: AppBarTheme(
+        surfaceTintColor: Theme.of(context).colorScheme.background,
+      ),
+    );
+  }
+
   MySearchDelegate({
     required this.manga,
     required this.context,
