@@ -17,8 +17,11 @@ class MangaGridM extends GetView<MangaGridSController> {
   final bool search;
   final String? type;
 
-  MangaGridM({
+  final List<Media>? lista2;
+
+  const MangaGridM({
     super.key,
+    this.lista2,
     this.pageInfo,
     this.search = false,
     this.sort,
@@ -27,22 +30,26 @@ class MangaGridM extends GetView<MangaGridSController> {
   });
   // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     // final isLoading = Provider.of<ApiProvider>(context).isLoading;
     return Scaffold(
-      key: scaffoldKey,
+      // key: scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: Column(
+      body: ListView(
         children: <Widget>[
-          Flexible(
-            child: _CopyWidget(
-              lista: lista,
-              type: type!,
-              sort: sort!,
-              title: 'Trending',
-            ),
+          _CopyWidget(
+            lista: lista,
+            type: type!,
+            sort: sort!,
+            title: 'Trending',
+          ),
+          _CopyWidget(
+            lista: lista2,
+            type: type!,
+            popula: true,
+            sort: "POPULARITY_DESC",
+            title: 'All Time Popular',
           ),
         ],
       ),
@@ -57,32 +64,37 @@ class _CopyWidget extends StatelessWidget {
     required this.sort,
     required this.type,
     required this.lista,
+    this.popula = false,
   }) : super(key: key);
-
+  final bool popula;
   final List<Media>? lista;
   final String sort, type, title;
 
+// aspectRatio: (GetPlatform.isWeb)
+//               ? (MediaQuery.of(context).size.height >= 900)
+//                   ? (38 / 16)
+//                   : (8 / 10.5)
+//               : (8 / 9.9),
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 15),
       child: SafeArea(
-        child: AspectRatio(
-          aspectRatio: (GetPlatform.isWeb)
-              ? (MediaQuery.of(context).size.height >= 900)
-                  ? (38 / 16)
-                  : (8 / 10.5)
-              : (8 / 10.5),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * .59,
           child: Column(
             // primary: true,
             // mainAxisAlignment: MainAxisAlignment.start,
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HeaderTrends(
+                popula: popula,
                 title: title,
-                lista: lista!,
+                lista: lista,
+                sort: sort,
               ),
               Trends(
+                popula: popula,
                 lista: lista,
                 sort: sort,
                 type: type,

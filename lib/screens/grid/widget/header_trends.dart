@@ -6,10 +6,14 @@ import 'package:get/get.dart';
 class HeaderTrends extends StatelessWidget {
   final List<Media>? lista;
   final String title;
+  final bool popula;
+  final String sort;
 
   const HeaderTrends({
     required this.title,
     required this.lista,
+    required this.popula,
+    required this.sort,
     Key? key,
   }) : super(key: key);
 
@@ -66,11 +70,14 @@ class HeaderTrends extends StatelessWidget {
             //   ),
             // );
             // },
-            onTap: () async => Get.to(
-              MangaGridS(
+            onTap: () => Get.to(
+              () => MangaGridS(
+                lista: lista!,
                 main: true,
+                popula: popula,
+                sort: sort,
               ),
-              arguments: lista!,
+              // arguments: lista!,
             ),
             child: Text(
               'View all',

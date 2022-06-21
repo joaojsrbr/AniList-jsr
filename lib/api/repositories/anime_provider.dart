@@ -15,10 +15,14 @@ import 'package:anisearch2/api/models/api_graphql_variables.dart';
 class AnimeProvider extends ChangeNotifier {
   bool _isLoading = false;
   List<Media> _anime = [];
+  List<Media> _animep = [];
   PageInfo _pageInfoA = PageInfo();
+  PageInfo _pageInfoAp = PageInfo();
 
   PageInfo get pageInfoA => _pageInfoA;
+  PageInfo get pageInfoAp => _pageInfoAp;
   UnmodifiableListView<Media> get anime => UnmodifiableListView(_anime);
+  UnmodifiableListView<Media> get animep => UnmodifiableListView(_animep);
   bool get isLoading => _isLoading;
 
   Future<void> Function(
@@ -29,6 +33,7 @@ class AnimeProvider extends ChangeNotifier {
 
   AnimeProvider() {
     _getHomeAnime();
+    _getHomeAnimep();
   }
 
   Future<void> getMore({
@@ -67,6 +72,43 @@ class AnimeProvider extends ChangeNotifier {
 
     temppageInfo = repositories.page!.pageInfo!;
     _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> _getHomeAnimep({
+    List<String> sort = const ["POPULARITY_DESC"],
+    type = 'ANIME',
+    int perPage = 25,
+    int page = 0,
+  }) async {
+    List<Media> tempData = [];
+    PageInfo temppageInfo;
+    _isLoading = true;
+
+    final QueryOptions options = QueryOptions(
+      document: gql(queryRes),
+      variables: variablesG(
+        sort: sort,
+        type: type,
+        page: page,
+        perPage: perPage,
+      ),
+    );
+
+    final QueryResult result = await _client(apiHttpURL).query(options);
+
+    var repositories = ApiGraphQLModel.fromJson(result.data!);
+
+    tempData = _returnMedia(repositories.page!.media!);
+
+    temppageInfo = repositories.page!.pageInfo!;
+
+    _pageInfoAp = temppageInfo;
+
+    _animep = tempData;
+
+    _isLoading = false;
+
     notifyListeners();
   }
 

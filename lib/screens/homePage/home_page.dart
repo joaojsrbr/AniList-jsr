@@ -42,7 +42,7 @@ class Homepage extends GetView<HomepageController> {
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {},
       // ),
-      // key: scaffoldKey,
+      key: controller.scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
       body: NestedScrollView(
         headerSliverBuilder: (context, _) {
@@ -122,8 +122,9 @@ class Homepage extends GetView<HomepageController> {
                             : MangaGridM(
                                 type: "MANGA",
                                 sort: "TRENDING_DESC",
-                                key: const Key('ListaManga'),
                                 lista: manga.manga,
+                                key: const Key('1'),
+                                lista2: manga.mangap,
                                 pageInfo: manga.pageInfoM,
                               );
                       },
@@ -136,9 +137,10 @@ class Homepage extends GetView<HomepageController> {
                         return anime.isLoading
                             ? child!
                             : MangaGridM(
+                                lista2: anime.animep,
                                 type: "ANIME",
+                                key: const Key('2'),
                                 sort: "TRENDING_DESC",
-                                key: const Key('ListaAnime'),
                                 lista: anime.anime,
                                 pageInfo: anime.pageInfoA,
                               );

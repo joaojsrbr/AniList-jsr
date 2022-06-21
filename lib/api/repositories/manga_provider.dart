@@ -15,9 +15,13 @@ import 'package:anisearch2/api/models/api_graphql_variables.dart';
 class MangaProvider extends ChangeNotifier {
   bool _isLoading = false;
   List<Media> _manga = [];
+  List<Media> _mangap = [];
   PageInfo _pageInfoM = PageInfo();
+  PageInfo _pageInfoMp = PageInfo();
 
   PageInfo get pageInfoM => _pageInfoM;
+  PageInfo get pageInfoMp => _pageInfoMp;
+  UnmodifiableListView<Media> get mangap => UnmodifiableListView(_mangap);
   UnmodifiableListView<Media> get manga => UnmodifiableListView(_manga);
   bool get isLoading => _isLoading;
 
@@ -30,6 +34,44 @@ class MangaProvider extends ChangeNotifier {
 
   MangaProvider() {
     _getHomeManga();
+    _getHomeMangaP();
+  }
+
+  Future<void> _getHomeMangaP({
+    List<String> sort = const ["POPULARITY_DESC"],
+    type = 'MANGA',
+    int perPage = 25,
+    int page = 0,
+  }) async {
+    List<Media> tempData = [];
+    _isLoading = true;
+    PageInfo temppageInfo;
+
+    final QueryOptions options = QueryOptions(
+      document: gql(queryRes),
+      variables: variablesG(
+        sort: sort,
+        type: type,
+        page: page,
+        perPage: perPage,
+      ),
+    );
+
+    final QueryResult result = await _client(apiHttpURL).query(options);
+
+    var repositories = ApiGraphQLModel.fromJson(result.data!);
+
+    tempData = _returnMedia(repositories.page!.media!);
+
+    _mangap = tempData;
+
+    temppageInfo = repositories.page!.pageInfo!;
+
+    _pageInfoMp = temppageInfo;
+
+    _isLoading = false;
+
+    notifyListeners();
   }
 
   Future<void> getMore({
@@ -37,6 +79,7 @@ class MangaProvider extends ChangeNotifier {
     required type,
     int perPage = 25,
     int page = 0,
+    required bool popula,
   }) async {
     List<Media> tempData = [];
     _isLoading = true;
@@ -55,18 +98,44 @@ class MangaProvider extends ChangeNotifier {
     var repositories = ApiGraphQLModel.fromJson(result.data!);
     tempData = _returnMedia(repositories.page!.media!);
 
-    for (var i in tempData) {
-      var tempMap = manga.map((e) => e.id).toString();
-      if (kDebugMode) {
-        print(
-            'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id}');
+    if (popula == true) {
+      for (var i in tempData) {
+        var tempMap = manga.map((e) => e.id).toString();
+        if (kDebugMode) {
+          print(
+              'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- $popula');
+        }
+        if (tempMap != i.id.toString()) {
+          _mangap.add(i);
+        }
       }
-      if (tempMap != i.id.toString()) {
-        _manga.add(i);
+      // temppageInfo = repositories.page!.pageInfo!;
+      // _isLoading = false;
+      // notifyListeners();
+    } else {
+      for (var i in tempData) {
+        var tempMap = manga.map((e) => e.id).toString();
+        if (kDebugMode) {
+          print(
+              'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id}');
+        }
+        if (tempMap != i.id.toString()) {
+          _manga.add(i);
+        }
       }
     }
 
     temppageInfo = repositories.page!.pageInfo!;
+    // for (var i in tempData) {
+    //   var tempMap = manga.map((e) => e.id).toString();
+    //   if (kDebugMode) {
+    //     print(
+    //         'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id}');
+    //   }
+    //   if (tempMap != i.id.toString()) {
+    //     _manga.add(i);
+    //   }
+    // }
     _isLoading = false;
     notifyListeners();
   }

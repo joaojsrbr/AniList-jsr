@@ -21,8 +21,10 @@ class Trends extends StatefulWidget {
     required this.type,
     required this.sort,
     required this.lista,
+    required this.popula,
   });
   final String sort;
+  final bool popula;
   final String type;
   final List<Media>? lista;
 
@@ -43,7 +45,8 @@ class _TrendsState extends State<Trends> {
 
   void getData() {
     final controller = Get.find<MangaGridSController>();
-    controller.onLoading(context, widget.sort, widget.type, widget.lista!);
+    controller.onLoading(
+        context, widget.sort, widget.type, widget.lista!, widget.popula);
     Get.find<HomepageController>().length.value = widget.lista!.length;
   }
 
@@ -128,36 +131,18 @@ class _TrendsState extends State<Trends> {
                     : urlA;
               }
 
-              // final title = listaU.title!.english ??
-              //     listaU.title!.romaji ??
-              //     listaU.title!.native ??
-              //     '';
-
               final isCurrentPage = index == cardIndex;
               final isScrolling =
                   _pageController.position.isScrollingNotifier.value;
               final isFirstPage = index == 0;
 
-              // Future<double> averageScore(int? value) {
-              //   double calc(int? value) {
-              //     return (value ?? 0) / 10;
-              //   }
-
-              //   return compute(calc, value);
-              // }
-
-              // final averageScore = compute(
-              //   calc ,/ 10
-              // )
-
-              // ((listaU.averageScore ?? 0) / 10);
               final style = Theme.of(context).textTheme.button!.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                   );
 
               return Padding(
-                padding: const EdgeInsets.only(top: 10, left: 20),
+                padding: const EdgeInsets.only(top: 10, left: 20, bottom: 5),
                 child: Transform.scale(
                   alignment: Alignment.lerp(
                     Alignment.centerLeft,
@@ -201,8 +186,8 @@ class _TrendsState extends State<Trends> {
                             : constraints.maxWidth * .020,
                         height: (GetPlatform.isWeb)
                             ? (MediaQuery.of(context).size.height >= 900)
-                                ? constraints.maxHeight
-                                : constraints.maxHeight
+                                ? constraints.maxHeight * .2
+                                : constraints.maxHeight * .2
                             : constraints.maxHeight,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,

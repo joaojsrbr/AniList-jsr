@@ -76,21 +76,6 @@ class HeroImageGrid extends StatelessWidget {
                 ),
               ),
               main
-                  ? const Positioned(
-                      left: -1,
-                      bottom: -1,
-                      child: CardS(
-                        height: 35,
-                        width: 35,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8.4),
-                          bottomRight: Radius.circular(8.4),
-                        ),
-                        image: true,
-                      ),
-                    )
-                  : Container(),
-              main
                   ? Positioned(
                       right: -1,
                       bottom: -1,
