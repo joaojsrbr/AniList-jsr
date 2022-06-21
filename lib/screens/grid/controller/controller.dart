@@ -1,12 +1,13 @@
 // ignore_for_file: file_names
 
+import 'package:anisearch2/api/repositories/anime_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/api/repositories/manga_anime_provider.dart';
+import 'package:anisearch2/api/repositories/manga_provider.dart';
 
 class MangaGridSController extends GetxController {
   RxInt page = 1.obs;
@@ -33,13 +34,21 @@ class MangaGridSController extends GetxController {
     dynamic type,
   ) async {
     page.value += 1;
-    await Provider.of<ApiProvider>(context, listen: false).getMore(
-      sort: [sort],
-      perPage: 25,
-      page: page.value,
-      type: type!,
-      mangas: manga,
-    );
+    if (manga == true) {
+      await Provider.of<MangaProvider>(context, listen: false).getMore(
+        sort: [sort],
+        perPage: 25,
+        page: page.value,
+        type: type!,
+      );
+    } else {
+      await Provider.of<AnimeProvider>(context, listen: false).getMore(
+        sort: [sort],
+        perPage: 25,
+        page: page.value,
+        type: type!,
+      );
+    }
   }
 
   void onLoading(

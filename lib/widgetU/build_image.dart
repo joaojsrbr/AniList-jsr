@@ -135,7 +135,7 @@ class BuildImageWidget extends StatelessWidget {
                         width: (constraints == null)
                             ? width
                             : constraints!.maxWidth,
-                        constraints: constraints,
+                        // constraints: constraints,
                         child: CachedNetworkImage(
                           // maxWidthDiskCache: 500,
                           // maxHeightDiskCache: 700,

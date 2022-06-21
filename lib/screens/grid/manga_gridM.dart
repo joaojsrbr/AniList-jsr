@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
 import 'package:anisearch2/api/models/api_graphql_pageinfo_model.dart';
-import 'package:anisearch2/screens/mangaGrid/controller/controller.dart';
-import 'package:anisearch2/screens/mangaGrid/widget/header_trends.dart';
-import 'package:anisearch2/screens/mangaGrid/widget/trends.dart';
+import 'package:anisearch2/screens/grid/controller/controller.dart';
+import 'package:anisearch2/screens/grid/widget/header_trends.dart';
+import 'package:anisearch2/screens/grid/widget/trends.dart';
 
 class MangaGridM extends GetView<MangaGridSController> {
   final List<Media>? lista;
@@ -25,31 +25,27 @@ class MangaGridM extends GetView<MangaGridSController> {
     this.type,
     this.lista,
   });
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     // final isLoading = Provider.of<ApiProvider>(context).isLoading;
-
     return Scaffold(
-      key: _scaffoldKey,
+      key: scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: lista!.isEmpty
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Column(
-              children: <Widget>[
-                Flexible(
-                  child: _CopyWidget(
-                    lista: lista,
-                    type: type!,
-                    sort: sort!,
-                    title: 'Trending',
-                  ),
-                ),
-              ],
+      body: Column(
+        children: <Widget>[
+          Flexible(
+            child: _CopyWidget(
+              lista: lista,
+              type: type!,
+              sort: sort!,
+              title: 'Trending',
             ),
+          ),
+        ],
+      ),
     );
   }
 }

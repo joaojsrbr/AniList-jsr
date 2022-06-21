@@ -1,10 +1,11 @@
 // ignore_for_file: file_names, must_be_immutable
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/api/repositories/manga_anime_provider.dart';
-import 'package:anisearch2/screens/mangaDetails/manga_details.dart';
-import 'package:anisearch2/screens/mangaGrid/controller/controller.dart';
-import 'package:anisearch2/screens/mangaGrid/hero/hero_image.dart';
+import 'package:anisearch2/api/repositories/anime_provider.dart';
+import 'package:anisearch2/api/repositories/manga_provider.dart';
+import 'package:anisearch2/screens/details/manga_details.dart';
+import 'package:anisearch2/screens/grid/controller/controller.dart';
+import 'package:anisearch2/screens/grid/hero/hero_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -23,11 +24,15 @@ class MangaGridS extends GetView<MangaGridSController> {
   @override
   Widget build(BuildContext context) {
     // final sw = Get.find<MangaGridSController>();
-    final List<Media> listaManga = Provider.of<ApiProvider>(context).manga;
-    final List<Media> listaAnime = Provider.of<ApiProvider>(context).anime;
+    // final List<Media> listaManga = Provider.of<ApiProvider>(context).manga;
+    // final List<Media> listaAnime = Provider.of<ApiProvider>(context).anime;
     final RefreshController refreshController =
         RefreshController(initialRefresh: false);
+
+    final List<Media> listaManga = Provider.of<MangaProvider>(context).manga;
+    final List<Media> listaAnime = Provider.of<AnimeProvider>(context).anime;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: (main == true)
           ? AppBar(
               surfaceTintColor: Theme.of(context).colorScheme.background,
@@ -36,7 +41,7 @@ class MangaGridS extends GetView<MangaGridSController> {
           : null,
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: LayoutBuilder(
           builder: (context, constraints) {
             if (main == true) {
@@ -129,10 +134,7 @@ class MangaGridS extends GetView<MangaGridSController> {
                             pageBuilder: (_, animation, __) {
                               return FadeTransition(
                                 opacity: animation,
-                                child: SizeTransition(
-                                  sizeFactor: animation,
-                                  child: const MangaDetailsR(),
-                                ),
+                                child: const MangaDetailsR(),
                               );
                             },
                           ),
@@ -239,16 +241,13 @@ class MangaGridS extends GetView<MangaGridSController> {
                         settings: RouteSettings(
                           arguments: lista![index],
                         ),
-                        transitionDuration: const Duration(milliseconds: 1000),
+                        transitionDuration: const Duration(milliseconds: 200),
                         reverseTransitionDuration:
-                            const Duration(milliseconds: 1000),
+                            const Duration(milliseconds: 200),
                         pageBuilder: (_, animation, __) {
                           return FadeTransition(
                             opacity: animation,
-                            child: SizeTransition(
-                              sizeFactor: animation,
-                              child: const MangaDetailsR(),
-                            ),
+                            child: const MangaDetailsR(),
                           );
                         },
                       ),

@@ -4,9 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/screens/mangaDetails/hero/hero_image.dart';
-import 'package:anisearch2/screens/mangaDetails/hero/hero_row_score.dart';
-import 'package:anisearch2/screens/mangaDetails/hero/hero_title.dart';
+import 'package:anisearch2/screens/details/hero/hero_image.dart';
+import 'package:anisearch2/screens/details/hero/hero_row_score.dart';
+import 'package:anisearch2/screens/details/hero/hero_title.dart';
+import 'package:get/get.dart';
 
 class MangaDetailsR extends StatefulWidget {
   const MangaDetailsR({Key? key}) : super(key: key);
@@ -58,10 +59,9 @@ class _MangaDetailsRState extends State<MangaDetailsR> {
                         ),
                         Positioned(
                           top: h * .09,
-                          right: 2,
-                          left: w * .47,
+                          right: GetPlatform.isWindows ? 0 : 2,
+                          left: GetPlatform.isWindows ? w * .25 : w * .47,
                           height: h * .2,
-                          // width: w * .48,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

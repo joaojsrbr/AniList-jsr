@@ -1,13 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:anisearch2/api/repositories/anime_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 
-import 'package:anisearch2/api/repositories/manga_anime_provider.dart';
+import 'package:anisearch2/api/repositories/manga_provider.dart';
 import 'package:anisearch2/screens/homePage/controller/controller.dart';
 import 'package:anisearch2/screens/homePage/widget_List/widgets_model_list.dart';
-import 'package:anisearch2/screens/mangaGrid/manga_gridM.dart';
+import 'package:anisearch2/screens/grid/manga_gridM.dart';
 
 class Homepage extends GetView<HomepageController> {
   const Homepage({
@@ -29,20 +30,19 @@ class Homepage extends GetView<HomepageController> {
       );
     }
 
-    final listaManga = Provider.of<ApiProvider>(context).manga;
+    // final listaManga = Provider.of<MangaProvider>(context).manga;
 
-    final listaAnime = Provider.of<ApiProvider>(context).anime;
+    // final listaAnime = Provider.of<ApiProvider>(context).anime;
 
-    final pageInfoA = Provider.of<ApiProvider>(context).pageInfoA;
+    // final pageInfoA = Provider.of<ApiProvider>(context).pageInfoA;
 
-    final pageInfoM = Provider.of<ApiProvider>(context).pageInfoM;
-
+    // final pageInfoM = Provider.of<ApiProvider>(context).pageInfoM;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-      ),
-      // key: controller.scaffoldKey,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      // ),
+      // key: scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
       body: NestedScrollView(
         headerSliverBuilder: (context, _) {
@@ -115,19 +115,37 @@ class Homepage extends GetView<HomepageController> {
                   physics: const NeverScrollableScrollPhysics(),
                   controller: controller.tabcontroller,
                   children: [
-                    MangaGridM(
-                      type: "MANGA",
-                      sort: "TRENDING_DESC",
-                      key: const Key('ListaManga'),
-                      lista: listaManga,
-                      pageInfo: pageInfoM,
+                    Consumer<MangaProvider>(
+                      builder: (context, manga, child) {
+                        return manga.isLoading
+                            ? child!
+                            : MangaGridM(
+                                type: "MANGA",
+                                sort: "TRENDING_DESC",
+                                key: const Key('ListaManga'),
+                                lista: manga.manga,
+                                pageInfo: manga.pageInfoM,
+                              );
+                      },
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
-                    MangaGridM(
-                      type: "ANIME",
-                      sort: "TRENDING_DESC",
-                      key: const Key('ListaAnime'),
-                      lista: listaAnime,
-                      pageInfo: pageInfoA,
+                    Consumer<AnimeProvider>(
+                      builder: (context, anime, child) {
+                        return anime.isLoading
+                            ? child!
+                            : MangaGridM(
+                                type: "ANIME",
+                                sort: "TRENDING_DESC",
+                                key: const Key('ListaAnime'),
+                                lista: anime.anime,
+                                pageInfo: anime.pageInfoA,
+                              );
+                      },
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
                   ],
                 ),

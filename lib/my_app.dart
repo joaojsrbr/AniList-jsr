@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 import 'package:provider/provider.dart';
 
-import 'package:anisearch2/api/repositories/manga_anime_provider.dart';
+import 'package:anisearch2/api/repositories/anime_provider.dart';
+import 'package:anisearch2/api/repositories/manga_provider.dart';
+import 'package:anisearch2/api/repositories/search_provider.dart';
 import 'package:anisearch2/module/page/homepage_module.dart';
 import 'package:anisearch2/module/page/mangadetailsr_module.dart';
 import 'package:anisearch2/module/page/mangagridm_module.dart';
@@ -27,8 +29,18 @@ class _MyAppState extends State<MyApp> {
 
     final localizations = KLocalizations.of(context);
 
-    return ChangeNotifierProvider(
-      create: (context) => ApiProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => MangaProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => AnimeProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => SearchProvider(),
+        ),
+      ],
       child: DynamicColorBuilder(
         builder: (lightDynamic, darkDynamic) {
           ColorScheme lightColorScheme;
@@ -42,10 +54,12 @@ class _MyAppState extends State<MyApp> {
             lightColorScheme = ColorScheme.fromSeed(
               seedColor: const Color.fromARGB(255, 231, 129, 6),
               background: const Color.fromRGBO(35, 36, 54, 1),
+              surfaceTint: const Color.fromRGBO(35, 36, 54, 1),
             );
             darkColorScheme = ColorScheme.fromSeed(
               seedColor: const Color.fromARGB(255, 231, 197, 6),
               background: const Color.fromRGBO(35, 36, 54, 1),
+              surfaceTint: const Color.fromRGBO(35, 36, 54, 1),
               brightness: Brightness.dark,
             );
           }
@@ -90,15 +104,15 @@ class _MyAppState extends State<MyApp> {
               ),
               GetPage(
                 name: '/g',
-                page: () => const MangaGridMModule(),
+                page: () => const GridMModule(),
               ),
               GetPage(
                 name: '/s',
-                page: () => const MangaGridSModule(),
+                page: () => const GridSModule(),
               ),
               GetPage(
                 name: '/d',
-                page: () => const MangaDetailsRModule(),
+                page: () => const DetailsRModule(),
               ),
             ],
           );

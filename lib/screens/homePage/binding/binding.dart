@@ -1,7 +1,7 @@
 import 'package:anisearch2/screens/homePage/controller/controller.dart';
 import 'package:get/get.dart';
 
-import '../../mangaGrid/controller/controller.dart';
+import '../../grid/controller/controller.dart';
 
 class ControllerBinding implements Bindings {
   @override

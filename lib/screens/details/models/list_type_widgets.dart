@@ -1,6 +1,6 @@
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/screens/mangaDetails/models/list_type.dart';
-import 'package:anisearch2/screens/mangaDetails/widget/card_w.dart';
+import 'package:anisearch2/screens/details/models/list_type.dart';
+import 'package:anisearch2/screens/details/widget/card_w.dart';
 import 'package:flutter/material.dart';
 import 'package:klocalizations_flutter/klocalizations_flutter.dart';
 

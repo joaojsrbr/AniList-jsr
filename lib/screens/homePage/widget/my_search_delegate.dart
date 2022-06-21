@@ -1,7 +1,9 @@
-import 'package:anisearch2/screens/mangaGrid/manga_gridS.dart';
+import 'package:anisearch2/api/repositories/anime_provider.dart';
+import 'package:anisearch2/api/repositories/search_provider.dart';
+import 'package:anisearch2/screens/grid/manga_gridS.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:anisearch2/api/repositories/manga_anime_provider.dart';
+import 'package:anisearch2/api/repositories/manga_provider.dart';
 
 class MySearchDelegate extends SearchDelegate {
   BuildContext context;
@@ -23,7 +25,7 @@ class MySearchDelegate extends SearchDelegate {
   });
 
   void searchDataSu(String query, bool manga) {
-    Provider.of<ApiProvider>(context).searchDataSu(
+    Provider.of<SearchProvider>(context).searchDataSu(
       query: query,
     );
   }
@@ -64,13 +66,13 @@ class MySearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     if (query.isNotEmpty) {
       searchDataSu(query, manga);
-      final queryMain = Provider.of<ApiProvider>(context).searchListSu;
+      final queryMain = Provider.of<SearchProvider>(context).searchListSu;
       return MangaGridS(
         lista: manga ? queryMain : queryMain,
         key: const PageStorageKey('Results'),
       );
     } else {
-      final queryMainManga = Provider.of<ApiProvider>(context).manga;
+      final queryMainManga = Provider.of<MangaProvider>(context).manga;
       return MangaGridS(
         lista: queryMainManga,
         key: const PageStorageKey('Results'),
@@ -79,15 +81,15 @@ class MySearchDelegate extends SearchDelegate {
   }
 
   Future<void> getHomeManga(List<String> sort, String type) async {
-    await Provider.of<ApiProvider>(context, listen: false)
+    await Provider.of<MangaProvider>(context, listen: false)
         .getHomeManga(sort: sort, type: type);
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final queryMainAnime = Provider.of<ApiProvider>(context).anime;
+    final queryMainAnime = Provider.of<AnimeProvider>(context).anime;
 
-    final queryMainManga = Provider.of<ApiProvider>(context).manga;
+    final queryMainManga = Provider.of<MangaProvider>(context).manga;
 
     // final queryMain = Provider.of<ApiProvider>(context).searchListSu;
 

@@ -1,5 +1,5 @@
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/screens/mangaGrid/manga_gridS.dart';
+import 'package:anisearch2/screens/grid/manga_gridS.dart';
 import 'package:anisearch2/widgetU/build_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +12,7 @@ class HeroImageGrid extends StatelessWidget {
     required this.listaU,
     required this.constraints,
     required this.style,
-    this.main = false,
+    this.main = true,
     this.averageScore,
   }) : super(key: key);
 
@@ -21,6 +21,7 @@ class HeroImageGrid extends StatelessWidget {
   final String Function() url;
   final bool isCurrentPage;
   final Media listaU;
+
   final bool main;
   final BoxConstraints constraints;
 
@@ -45,7 +46,7 @@ class HeroImageGrid extends StatelessWidget {
                   ),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(
-                    Radius.circular(25),
+                    Radius.circular(10),
                   ),
                   // boxShadow: [
                   //   BoxShadow(
@@ -147,7 +148,7 @@ class HeroImageGrid extends StatelessWidget {
                     ),
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(15),
+                      Radius.circular(10),
                     ),
                   ),
                   duration: const Duration(milliseconds: 300),

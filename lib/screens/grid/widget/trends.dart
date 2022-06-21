@@ -3,17 +3,17 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:anisearch2/screens/homePage/controller/controller.dart';
-import 'package:anisearch2/screens/mangaGrid/hero/hero_image.dart';
+import 'package:anisearch2/screens/grid/hero/hero_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/screens/mangaDetails/hero/hero_row_score.dart';
-import 'package:anisearch2/screens/mangaDetails/hero/hero_title.dart';
-import 'package:anisearch2/screens/mangaDetails/manga_details.dart';
-import 'package:anisearch2/screens/mangaGrid/controller/controller.dart';
-import 'package:anisearch2/screens/mangaGrid/widget/dialog.dart';
+import 'package:anisearch2/screens/details/hero/hero_row_score.dart';
+import 'package:anisearch2/screens/details/hero/hero_title.dart';
+import 'package:anisearch2/screens/details/manga_details.dart';
+import 'package:anisearch2/screens/grid/controller/controller.dart';
+import 'package:anisearch2/screens/grid/widget/dialog.dart';
 
 class Trends extends StatefulWidget {
   const Trends({
@@ -168,7 +168,7 @@ class _TrendsState extends State<Trends> {
                   child: GestureDetector(
                     onTap: () {
                       _details.value = !_details.value;
-                      const transitionDuration = Duration(milliseconds: 550);
+                      const transitionDuration = Duration(milliseconds: 600);
                       Navigator.of(context).push(
                         PageRouteBuilder(
                           settings: RouteSettings(
@@ -179,10 +179,7 @@ class _TrendsState extends State<Trends> {
                           pageBuilder: (_, animation, __) {
                             return FadeTransition(
                               opacity: animation,
-                              child: SizeTransition(
-                                sizeFactor: animation,
-                                child: const MangaDetailsR(),
-                              ),
+                              child: const MangaDetailsR(),
                             );
                           },
                         ),
