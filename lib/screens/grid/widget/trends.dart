@@ -91,7 +91,8 @@ class _TrendsState extends State<Trends> {
 
           return PageView.builder(
             onPageChanged: (value) {
-              debugPrint('${value + 1}');
+              debugPrint(
+                  'title: ${widget.lista![value].title!.english ?? widget.lista![value].title!.romaji ?? widget.lista![value].title!.native} -- popula: ${widget.popula}');
               if (value + 1 == widget.lista!.length) {
                 if (mounted) {
                   Get.find<HomepageController>().streamController.add(Root(

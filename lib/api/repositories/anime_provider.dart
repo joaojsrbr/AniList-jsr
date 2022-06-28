@@ -43,6 +43,7 @@ class AnimeProvider extends ChangeNotifier {
     required type,
     int perPage = 25,
     int page = 0,
+    required bool popula,
   }) async {
     List<Media> tempData = [];
     _isLoading = true;
@@ -58,17 +59,38 @@ class AnimeProvider extends ChangeNotifier {
     );
 
     final QueryResult result = await _client(apiHttpURL).query(options);
+
+    // * ApiGraphQLModel
     var repositories = ApiGraphQLModel.fromJson(result.data!);
+
+    // * List<Media>
     tempData = _returnMedia(repositories.page!.media!);
 
-    for (var i in tempData) {
-      var tempMap = anime.map((e) => e.id).toString();
-      if (kDebugMode) {
-        print(
-            'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id}');
+    if (popula == true) {
+      for (var i in tempData) {
+        // * Check _animep == tempData
+        if (i.equa(animep) == false) {
+          if (kDebugMode) {
+            // * print result
+            print(
+                'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- ${i.equa(animep)}');
+          }
+          // * add Media to list
+          _animep.add(i);
+        }
       }
-      if (tempMap != i.id.toString()) {
-        _anime.add(i);
+    } else {
+      for (var i in tempData) {
+        // * Check _anime == tempData
+        if (i.equa(anime) == false) {
+          if (kDebugMode) {
+            // * print result
+            print(
+                'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- ${i.equa(anime)}');
+          }
+          // * add Media to list
+          _anime.add(i);
+        }
       }
     }
 

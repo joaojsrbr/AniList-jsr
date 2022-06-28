@@ -1,7 +1,24 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/foundation.dart';
+
 import 'package:anisearch2/api/models/api_graphql_coverimage_model.dart';
 import 'package:anisearch2/api/models/api_graphql_recommendations_model.dart';
 import 'package:anisearch2/api/models/api_graphql_startdate_model.dart';
 import 'package:anisearch2/api/models/api_graphql_title_model.dart';
+
+extension Equa on Media {
+  bool? equa(List<Media> other) {
+    if (other.isNotEmpty) {
+      for (var i in other) {
+        return i == this;
+      }
+      // return true;
+    } else {
+      return false;
+    }
+  }
+}
+
 /* 
 {
   "data": {
@@ -247,5 +264,62 @@ class Media {
       data['title'] = title!.toJson();
     }
     return data;
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is Media &&
+        other.sTypename == sTypename &&
+        other.description == description &&
+        other.id == id &&
+        other.bannerImage == bannerImage &&
+        other.status == status &&
+        other.startDate == startDate &&
+        other.endDate == endDate &&
+        other.meanScore == meanScore &&
+        other.idr == idr &&
+        other.popularity == popularity &&
+        other.favourites == favourites &&
+        other.format == format &&
+        other.source == source &&
+        listEquals(other.genres, genres) &&
+        listEquals(other.synonyms, synonyms) &&
+        other.coverImage == coverImage &&
+        other.type == type &&
+        other.episodes == episodes &&
+        other.idMal == idMal &&
+        other.recommendations == recommendations &&
+        other.averageScore == averageScore &&
+        other.countryOfOrigin == countryOfOrigin &&
+        other.title == title;
+  }
+
+  @override
+  int get hashCode {
+    return sTypename.hashCode ^
+        description.hashCode ^
+        id.hashCode ^
+        bannerImage.hashCode ^
+        status.hashCode ^
+        startDate.hashCode ^
+        endDate.hashCode ^
+        meanScore.hashCode ^
+        idr.hashCode ^
+        popularity.hashCode ^
+        favourites.hashCode ^
+        format.hashCode ^
+        source.hashCode ^
+        genres.hashCode ^
+        synonyms.hashCode ^
+        coverImage.hashCode ^
+        type.hashCode ^
+        episodes.hashCode ^
+        idMal.hashCode ^
+        recommendations.hashCode ^
+        averageScore.hashCode ^
+        countryOfOrigin.hashCode ^
+        title.hashCode;
   }
 }

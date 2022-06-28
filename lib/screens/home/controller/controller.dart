@@ -54,6 +54,7 @@ class HomepageController extends GetxController
     } else {
       load.value = true;
       await Provider.of<AnimeProvider>(context, listen: false).getMore(
+        popula: popula,
         sort: [sort],
         perPage: 25,
         page: page.value,

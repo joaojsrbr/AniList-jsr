@@ -84,8 +84,11 @@ class MangaProvider extends ChangeNotifier {
     required bool popula,
   }) async {
     List<Media> tempData = [];
+
     _isLoading = true;
+
     PageInfo temppageInfo;
+
     final QueryOptions options = QueryOptions(
       document: gql(queryRes),
       variables: variablesG(
@@ -97,48 +100,45 @@ class MangaProvider extends ChangeNotifier {
     );
 
     final QueryResult result = await _client(apiHttpURL).query(options);
+
+    // * ApiGraphQLModel
     var repositories = ApiGraphQLModel.fromJson(result.data!);
+
+    // * List<Media>
     tempData = _returnMedia(repositories.page!.media!);
 
     if (popula == true) {
       for (var i in tempData) {
-        var tempMap = manga.map((e) => e.id).toString();
-        if (kDebugMode) {
-          print(
-              'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- $popula');
-        }
-        if (tempMap != i.id.toString()) {
+        // * Check _mangap == tempData
+        if (i.equa(mangap) == false) {
+          if (kDebugMode) {
+            // * print result
+            print(
+                'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- igual: ${i.equa(mangap)}');
+          }
+          // * add to list
           _mangap.add(i);
         }
       }
-      // temppageInfo = repositories.page!.pageInfo!;
-      // _isLoading = false;
-      // notifyListeners();
     } else {
       for (var i in tempData) {
-        var tempMap = manga.map((e) => e.id).toString();
-        if (kDebugMode) {
-          print(
-              'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id}');
-        }
-        if (tempMap != i.id.toString()) {
+        // * Check _manga == tempData
+        if (i.equa(manga) == false) {
+          if (kDebugMode) {
+            // * print result
+            print(
+                'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- igual: ${i.equa(manga)}');
+          }
+          // * add to list
           _manga.add(i);
         }
       }
     }
 
     temppageInfo = repositories.page!.pageInfo!;
-    // for (var i in tempData) {
-    //   var tempMap = manga.map((e) => e.id).toString();
-    //   if (kDebugMode) {
-    //     print(
-    //         'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id}');
-    //   }
-    //   if (tempMap != i.id.toString()) {
-    //     _manga.add(i);
-    //   }
-    // }
+
     _isLoading = false;
+
     notifyListeners();
   }
 
