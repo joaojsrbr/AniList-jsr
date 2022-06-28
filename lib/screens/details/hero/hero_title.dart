@@ -15,10 +15,8 @@ class HeroTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: ObjectKey(media.title!.english ??
-          media.title!.romaji ??
-          media.title!.native ??
-          ''),
+      tag: ObjectKey(
+          media.title!.english ?? media.title!.romaji ?? media.title!.native),
       child: Text(
         media.title!.english ??
             media.title!.romaji ??

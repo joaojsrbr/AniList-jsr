@@ -48,8 +48,8 @@ class HeroImage extends StatelessWidget {
         child: Material(
           type: MaterialType.transparency,
           child: Hero(
-            key: ObjectKey(dataProvider.id),
-            tag: ObjectKey(dataProvider.id),
+            key: ObjectKey(dataProvider.idr),
+            tag: ObjectKey(dataProvider.idr),
             child: Stack(
               fit: StackFit.expand,
               clipBehavior: Clip.none,

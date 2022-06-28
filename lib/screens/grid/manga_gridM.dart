@@ -1,55 +1,102 @@
 // ignore_for_file: file_names
 
+import 'package:anisearch2/api/repositories/anime_provider.dart';
+import 'package:anisearch2/api/repositories/manga_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/api/models/api_graphql_pageinfo_model.dart';
 import 'package:anisearch2/screens/grid/controller/controller.dart';
 import 'package:anisearch2/screens/grid/widget/header_trends.dart';
 import 'package:anisearch2/screens/grid/widget/trends.dart';
+import 'package:provider/provider.dart';
+
+class ConsumerTwo<AnimeProvider, MangaProvider> extends StatelessWidget {
+  const ConsumerTwo({
+    Key? key,
+    required this.builder,
+  }) : super(key: key);
+
+  final Widget Function(BuildContext context, AnimeProvider anime,
+      MangaProvider manga, Widget child) builder;
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<MangaProvider>(
+      builder: (context, manga, child) {
+        return Consumer<AnimeProvider>(
+          builder: (context, anime, child) {
+            return builder(context, anime, manga, child!);
+          },
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      },
+    );
+  }
+}
 
 class MangaGridM extends GetView<MangaGridSController> {
-  final List<Media>? lista;
-
-  final PageInfo? pageInfo;
   final String? sort;
   final bool search;
   final String? type;
 
-  final List<Media>? lista2;
-
   const MangaGridM({
     super.key,
-    this.lista2,
-    this.pageInfo,
     this.search = false,
     this.sort,
     this.type,
-    this.lista,
   });
   // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    // final isLoading = Provider.of<ApiProvider>(context).isLoading;
     return Scaffold(
       // key: scaffoldKey,
       backgroundColor: Theme.of(context).colorScheme.background,
       body: ListView(
         children: <Widget>[
-          _CopyWidget(
-            lista: lista,
-            type: type!,
-            sort: sort!,
-            title: 'Trending',
+          ConsumerTwo<AnimeProvider, MangaProvider>(
+            builder: (context, anime, manga, child) {
+              if (type == 'MANGA') {
+                return _CopyWidget(
+                  lista: manga.manga,
+                  type: type!,
+                  sort: sort!,
+                  title: 'Trending',
+                );
+              } else {
+                return _CopyWidget(
+                  title: 'Trending',
+                  // sort: "POPULARITY_DESC",
+                  sort: sort!,
+                  type: type!,
+                  lista: anime.anime,
+                );
+              }
+            },
           ),
-          _CopyWidget(
-            lista: lista2,
-            type: type!,
-            popula: true,
-            sort: "POPULARITY_DESC",
-            title: 'All Time Popular',
+          ConsumerTwo<AnimeProvider, MangaProvider>(
+            builder: (context, anime, manga, child) {
+              if (type == 'MANGA') {
+                return _CopyWidget(
+                  lista: manga.mangap,
+                  type: type!,
+                  popula: true,
+                  sort: "POPULARITY_DESC",
+                  title: 'All Time Popular',
+                );
+              } else {
+                return _CopyWidget(
+                  title: 'All Time Popular',
+                  popula: true,
+                  sort: "POPULARITY_DESC",
+                  // sort: sort!,
+                  type: type!,
+                  lista: anime.animep,
+                );
+              }
+            },
           ),
         ],
       ),

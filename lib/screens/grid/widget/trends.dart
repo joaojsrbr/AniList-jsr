@@ -2,9 +2,8 @@
 import 'dart:async';
 import 'dart:ui' as ui;
 
-import 'package:anisearch2/screens/homePage/controller/controller.dart';
+import 'package:anisearch2/screens/home/controller/controller.dart';
 import 'package:anisearch2/screens/grid/hero/hero_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,7 +11,6 @@ import 'package:anisearch2/api/models/api_graphql_media_model.dart';
 import 'package:anisearch2/screens/details/hero/hero_row_score.dart';
 import 'package:anisearch2/screens/details/hero/hero_title.dart';
 import 'package:anisearch2/screens/details/manga_details.dart';
-import 'package:anisearch2/screens/grid/controller/controller.dart';
 import 'package:anisearch2/screens/grid/widget/dialog.dart';
 
 class Trends extends StatefulWidget {
@@ -39,31 +37,30 @@ class _TrendsState extends State<Trends> {
   final _details = ValueNotifier(true);
   late PageController _pageController;
 
-  late StreamController<int> streamController;
+  // late StreamController<int> streamController;
 
-  late Stream<int> onload;
+  // late Stream<int> onload;
 
-  void getData() {
-    final controller = Get.find<MangaGridSController>();
-    controller.onLoading(
-        context, widget.sort, widget.type, widget.lista!, widget.popula);
-    Get.find<HomepageController>().length.value = widget.lista!.length;
-  }
+  // void getData() {
+  //   final controller = Get.find<HomepageController>();
+  //   controller.loadMore(context, widget.sort, widget.type, widget.popula);
+  //   Get.find<HomepageController>().length.value = widget.lista!.length;
+  // }
 
   @override
   void initState() {
-    streamController = StreamController();
+    // streamController = StreamController();
 
-    onload = streamController.stream;
-    onload.listen(
-      (event) async {
-        final controller = Get.find<HomepageController>();
-        controller.load.value = true;
-        getData();
-        await Future.delayed(const Duration(seconds: 2));
-        controller.load.value = false;
-      },
-    );
+    // onload = streamController.stream;
+    // onload.listen(
+    //   (event) async {
+    //     final controller = Get.find<HomepageController>();
+    //     controller.load.value = true;
+    //     getData();
+    //     await Future.delayed(const Duration(seconds: 2));
+    //     controller.load.value = false;
+    //   },
+    // );
     _pageController = PageController(viewportFraction: 0.77)
       ..addListener(percentListener);
     super.initState();
@@ -74,7 +71,7 @@ class _TrendsState extends State<Trends> {
     _pageController
       ..removeListener(percentListener)
       ..dispose();
-    streamController.close();
+    // streamController.close();
     super.dispose();
   }
 
@@ -94,12 +91,15 @@ class _TrendsState extends State<Trends> {
 
           return PageView.builder(
             onPageChanged: (value) {
-              if (kDebugMode) {
-                print(value + 1);
-              }
+              debugPrint('${value + 1}');
               if (value + 1 == widget.lista!.length) {
                 if (mounted) {
-                  streamController.sink.add(value);
+                  Get.find<HomepageController>().streamController.add(Root(
+                        context: context,
+                        sort: widget.sort,
+                        type: widget.lista!.first.type,
+                        popula: widget.popula,
+                      ));
                 }
               }
             },

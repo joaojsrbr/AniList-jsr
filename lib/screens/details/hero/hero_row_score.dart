@@ -19,7 +19,10 @@ class HeroRowScore extends StatelessWidget {
 
     // final double avengescore = compute(calc, dataProvider.averageScore ?? 0);
     return Hero(
-      tag: ObjectKey(dataProvider.recommendations!),
+      tag: ObjectKey((dataProvider.coverImage!.extraLarge ??
+          dataProvider.coverImage!.large ??
+          dataProvider.coverImage!.medium ??
+          dataProvider.coverImage!.color)),
       child: Row(
         children: [
           Padding(

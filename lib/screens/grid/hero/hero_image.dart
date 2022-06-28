@@ -29,8 +29,8 @@ class HeroImageGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       child: Hero(
-        key: ObjectKey(listaU.id),
-        tag: ObjectKey(listaU.id),
+        key: ObjectKey(listaU.idr),
+        tag: ObjectKey(listaU.idr),
         child: Material(
           type: MaterialType.transparency,
           child: Stack(

@@ -1,9 +1,7 @@
 name: anisearch2
 description: A new Flutter project.
 
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none' 
 
 version: 1.0.0+1
 
@@ -17,7 +15,7 @@ dependencies:
   http: ^0.13.4
   # Utils
   provider: ^6.0.3
-  get: ^4.6.5
+  get: 
   # get_it: ^7.2.0
   # linked_scroll_controller: ^0.2.0
   percent_indicator: ^4.0.1
@@ -55,6 +53,9 @@ dependencies:
   # animations  
   flutter_staggered_animations: ^1.0.0
   auto_animated: ^3.0.1
+
+  # id 
+  uuid: 3.0.6
 
 
 dev_dependencies:

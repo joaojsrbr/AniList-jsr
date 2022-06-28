@@ -39,7 +39,7 @@ class _MangaDetailsRState extends State<MangaDetailsR> {
 
         if (kDebugMode) {
           print(
-              'id: ${dataProvider.id} -- title: ${dataProvider.title!.english ?? dataProvider.title!.romaji ?? dataProvider.title!.native ?? ''}\n');
+              'id: ${dataProvider.idr} -- title: ${dataProvider.title!.english ?? dataProvider.title!.romaji ?? dataProvider.title!.native ?? ''}\n');
         }
 
         return Scaffold(

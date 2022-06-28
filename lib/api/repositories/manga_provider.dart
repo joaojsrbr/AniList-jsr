@@ -11,6 +11,8 @@ import 'package:anisearch2/api/models/api_graphql_pageinfo_model.dart';
 import 'package:anisearch2/api/models/api_graphql_query.dart';
 import 'package:anisearch2/api/models/api_graphql_url.dart';
 import 'package:anisearch2/api/models/api_graphql_variables.dart';
+import 'package:uuid/uuid.dart';
+import 'package:uuid/uuid_util.dart';
 
 class MangaProvider extends ChangeNotifier {
   bool _isLoading = false;
@@ -178,10 +180,12 @@ class MangaProvider extends ChangeNotifier {
   }
 }
 
+var uuid = const Uuid(options: {'grng': UuidUtil.cryptoRNG});
 List<Media> _returnMedia(List<Media>? media) {
   return media!
       .map(
         (e) => Media(
+          idr: uuid.v4(),
           sTypename: e.sTypename,
           description: e.description,
           bannerImage: e.bannerImage,

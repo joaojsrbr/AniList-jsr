@@ -1,13 +1,14 @@
 // ignore_for_file: file_names, must_be_immutable
 
+import 'dart:async';
+
 import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/api/repositories/manga_provider.dart';
 import 'package:anisearch2/screens/details/manga_details.dart';
 import 'package:anisearch2/screens/grid/controller/controller.dart';
 import 'package:anisearch2/screens/grid/hero/hero_image.dart';
+import 'package:anisearch2/screens/home/controller/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MangaGridS extends GetView<MangaGridSController> {
@@ -25,62 +26,56 @@ class MangaGridS extends GetView<MangaGridSController> {
 
   @override
   Widget build(BuildContext context) {
-    // final sw = Get.find<MangaGridSController>();
-    // final List<Media> listaManga = Provider.of<ApiProvider>(context).manga;
-    // final List<Media> listaAnime = Provider.of<ApiProvider>(context).anime;
     final RefreshController refreshController =
         RefreshController(initialRefresh: false);
 
-    return Consumer<MangaProvider>(
-      builder: (context, value, child) => Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: (main == true)
-            ? AppBar(
-                surfaceTintColor: Theme.of(context).colorScheme.background,
-                elevation: 0,
-              )
-            : null,
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              if (main == true) {
-                // final dataProvider =
-                //     ModalRoute.of(context)!.settings.arguments as List<Media>;
-
-                // lista = dataProvider;
-
-                // if (kDebugMode) {
-                //   print(lista);
-                // }
-
-                return SmartRefresher(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: (main == true)
+          ? AppBar(
+              surfaceTintColor: Theme.of(context).colorScheme.background,
+              elevation: 0,
+            )
+          : null,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            if (main == true) {
+              return GetBuilder<HomepageController>(
+                id: 20,
+                builder: (controller) => SmartRefresher(
                   enablePullDown: false,
                   enablePullUp: true,
                   semanticChildCount: lista!.length,
-                  onLoading: () {
+                  onLoading: () async {
                     if (lista!.first.type == 'MANGA') {
-                      final sw = Get.find<MangaGridSController>();
-                      sw.onLoading(
-                        context,
-                        sort!,
-                        lista!.first.type,
-                        lista!,
-                        popula!,
+                      refreshController.requestLoading();
+
+                      controller.streamController.add(
+                        Root(
+                          context: context,
+                          sort: sort!,
+                          type: lista!.first.type,
+                          popula: popula,
+                        ),
                       );
+                      Future.delayed(const Duration(seconds: 1));
 
                       refreshController.loadComplete();
                     } else {
-                      final sw = Get.find<MangaGridSController>();
-                      sw.onLoading(
-                        context,
-                        sort!,
-                        lista!.first.type,
-                        lista!,
-                        popula!,
+                      refreshController.requestLoading();
+                      controller.streamController.add(
+                        Root(
+                          context: context,
+                          sort: sort!,
+                          type: lista!.first.type,
+                          popula: popula,
+                        ),
                       );
 
+                      Future.delayed(const Duration(seconds: 1));
                       refreshController.loadComplete();
                     }
                   },
@@ -195,117 +190,116 @@ class MangaGridS extends GetView<MangaGridSController> {
                       );
                     },
                   ),
-                );
-              }
-              return GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: constraints.maxWidth > 600
-                      ? 3
-                      : constraints.maxWidth > 200
-                          ? 2
-                          : 1,
                 ),
-                itemCount: lista!.length,
-                itemBuilder: (context, index) {
-                  // final url = lista![index].coverImage!.extraLarge ??
-                  //     lista![index].coverImage!.large ??
-                  //     lista![index].coverImage!.medium ??
-                  //     '';
-                  final title = lista![index].title!.english ??
-                      lista![index].title!.romaji ??
-                      lista![index].title!.native ??
-                      '';
-                  final style = Theme.of(context).textTheme.button!.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      );
-                  final isCurrent = index == index;
+              );
+            }
+            return GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: constraints.maxWidth > 600
+                    ? 3
+                    : constraints.maxWidth > 200
+                        ? 2
+                        : 1,
+              ),
+              itemCount: lista!.length,
+              itemBuilder: (context, index) {
+                // final url = lista![index].coverImage!.extraLarge ??
+                //     lista![index].coverImage!.large ??
+                //     lista![index].coverImage!.medium ??
+                //     '';
+                final title = lista![index].title!.english ??
+                    lista![index].title!.romaji ??
+                    lista![index].title!.native ??
+                    '';
+                final style = Theme.of(context).textTheme.button!.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    );
+                final isCurrent = index == index;
 
-                  String _url() {
-                    final urlA = lista![index].coverImage!.extraLarge ??
-                        lista![index].coverImage!.large ??
-                        lista![index].coverImage!.medium ??
-                        'https://convertingcolors.com/plain-1E2436.svg';
+                String _url() {
+                  final urlA = lista![index].coverImage!.extraLarge ??
+                      lista![index].coverImage!.large ??
+                      lista![index].coverImage!.medium ??
+                      'https://convertingcolors.com/plain-1E2436.svg';
 
-                    // final urlB = listaU.bannerImage ??
-                    //     listaU.coverImage!.extraLarge ??
-                    //     listaU.coverImage!.large ??
-                    //     listaU.coverImage!.medium ??
-                    //     'https://convertingcolors.com/plain-1E2436.svg';
-                    return GetPlatform.isWeb
-                        ? (MediaQuery.of(context).size.height >= 900)
-                            ? urlA
-                            : urlA
-                        : urlA;
-                  }
+                  // final urlB = listaU.bannerImage ??
+                  //     listaU.coverImage!.extraLarge ??
+                  //     listaU.coverImage!.large ??
+                  //     listaU.coverImage!.medium ??
+                  //     'https://convertingcolors.com/plain-1E2436.svg';
+                  return GetPlatform.isWeb
+                      ? (MediaQuery.of(context).size.height >= 900)
+                          ? urlA
+                          : urlA
+                      : urlA;
+                }
 
-                  final averageScore = lista![index].averageScore;
-                  // print(constraints.maxHeight * .2);
+                final averageScore = lista![index].averageScore;
+                // print(constraints.maxHeight * .2);
 
-                  return GestureDetector(
-                    // onTap: () => Get.toNamed(
-                    //   '/d',
-                    //   arguments: lista![index],
-                    // ),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder(
-                          settings: RouteSettings(
-                            arguments: lista![index],
-                          ),
-                          transitionDuration: const Duration(milliseconds: 200),
-                          reverseTransitionDuration:
-                              const Duration(milliseconds: 200),
-                          pageBuilder: (_, animation, __) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: const MangaDetailsR(),
-                            );
-                          },
+                return GestureDetector(
+                  // onTap: () => Get.toNamed(
+                  //   '/d',
+                  //   arguments: lista![index],
+                  // ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        settings: RouteSettings(
+                          arguments: lista![index],
                         ),
-                      );
-                    },
-                    child: Card(
-                      color: Colors.blueGrey[900],
-                      elevation: 0,
-                      child: Column(
-                        children: [
-                          HeroImageGrid(
-                            url: _url,
-                            listaU: lista![index],
-                            constraints: constraints,
-                            style: style,
-                            main: true,
-                            averageScore: (averageScore ?? 0).toDouble(),
-                            isCurrentPage: isCurrent,
-                          ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, right: 5.0),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                title,
-                                overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
+                        transitionDuration: const Duration(milliseconds: 200),
+                        reverseTransitionDuration:
+                            const Duration(milliseconds: 200),
+                        pageBuilder: (_, animation, __) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: const MangaDetailsR(),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: Card(
+                    color: Colors.blueGrey[900],
+                    elevation: 0,
+                    child: Column(
+                      children: [
+                        HeroImageGrid(
+                          url: _url,
+                          listaU: lista![index],
+                          constraints: constraints,
+                          style: style,
+                          main: true,
+                          averageScore: (averageScore ?? 0).toDouble(),
+                          isCurrentPage: isCurrent,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 5.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              title,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  );
-                },
-              );
-            },
-          ),
+                  ),
+                );
+              },
+            );
+          },
         ),
       ),
     );

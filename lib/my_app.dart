@@ -11,7 +11,7 @@ import 'package:anisearch2/module/page/homepage_module.dart';
 import 'package:anisearch2/module/page/mangadetailsr_module.dart';
 import 'package:anisearch2/module/page/mangagridm_module.dart';
 import 'package:anisearch2/module/page/mangagrids_module.dart';
-import 'package:anisearch2/screens/homePage/binding/binding.dart';
+import 'package:anisearch2/screens/home/binding/binding.dart';
 import 'package:anisearch2/scroll/scrollbehavior.dart';
 import 'package:anisearch2/theme/text_theme.dart';
 
@@ -35,9 +35,11 @@ class _MyAppState extends State<MyApp> {
           create: (context) => MangaProvider(),
         ),
         ChangeNotifierProvider(
+          lazy: true,
           create: (context) => AnimeProvider(),
         ),
         ChangeNotifierProvider(
+          lazy: true,
           create: (context) => SearchProvider(),
         ),
       ],

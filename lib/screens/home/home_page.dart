@@ -1,13 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:anisearch2/api/repositories/anime_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:provider/provider.dart';
 
-import 'package:anisearch2/api/repositories/manga_provider.dart';
-import 'package:anisearch2/screens/homePage/controller/controller.dart';
-import 'package:anisearch2/screens/homePage/widget_List/widgets_model_list.dart';
+import 'package:anisearch2/screens/home/controller/controller.dart';
+import 'package:anisearch2/screens/home/widget_List/widgets_model_list.dart';
 import 'package:anisearch2/screens/grid/manga_gridM.dart';
 
 class Homepage extends GetView<HomepageController> {
@@ -23,20 +20,13 @@ class Homepage extends GetView<HomepageController> {
           // backgroundColor: Theme.of(context).colorScheme.background,
           // expandedHeight: MediaQuery.of(context).size.height * .20,
           // pinned: true,
-          actions: ListWidget().actions(context, controller.manga.value),
+          actions: actions(context, controller.manga.value),
           surfaceTintColor: Theme.of(context).colorScheme.background,
           floating: true,
         ),
       );
     }
 
-    // final listaManga = Provider.of<MangaProvider>(context).manga;
-
-    // final listaAnime = Provider.of<ApiProvider>(context).anime;
-
-    // final pageInfoA = Provider.of<ApiProvider>(context).pageInfoA;
-
-    // final pageInfoM = Provider.of<ApiProvider>(context).pageInfoM;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       // floatingActionButton: FloatingActionButton(
@@ -114,41 +104,57 @@ class Homepage extends GetView<HomepageController> {
                 child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
                   controller: controller.tabcontroller,
-                  children: [
-                    Consumer<MangaProvider>(
-                      builder: (context, manga, child) {
-                        return manga.isLoading
-                            ? child!
-                            : MangaGridM(
-                                type: "MANGA",
-                                sort: "TRENDING_DESC",
-                                lista: manga.manga,
-                                key: const Key('1'),
-                                lista2: manga.mangap,
-                                pageInfo: manga.pageInfoM,
-                              );
-                      },
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
+                  children: const <Widget>[
+                    MangaGridM(
+                      type: "MANGA",
+                      sort: "TRENDING_DESC",
+                      key: Key('1'),
+                      // lista: manga.manga,
+                      // lista2: manga.mangap,
+                      // pageInfo: manga.pageInfoM,
                     ),
-                    Consumer<AnimeProvider>(
-                      builder: (context, anime, child) {
-                        return anime.isLoading
-                            ? child!
-                            : MangaGridM(
-                                lista2: anime.animep,
-                                type: "ANIME",
-                                key: const Key('2'),
-                                sort: "TRENDING_DESC",
-                                lista: anime.anime,
-                                pageInfo: anime.pageInfoA,
-                              );
-                      },
-                      child: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
+                    MangaGridM(
+                      type: "ANIME",
+                      key: Key('2'),
+                      sort: "TRENDING_DESC",
+                      // lista2: anime.animep,
+                      // lista: anime.anime,
+                      // pageInfo: anime.pageInfoA,
+                    )
+                    // Consumer<MangaProvider>(
+                    //   builder: (context, manga, child) {
+                    //     return manga.isLoading
+                    //         ? child!
+                    //         : MangaGridM(
+                    //             type: "MANGA",
+                    //             sort: "TRENDING_DESC",
+                    //             lista: manga.manga,
+                    //             key: const Key('1'),
+                    //             lista2: manga.mangap,
+                    //             pageInfo: manga.pageInfoM,
+                    //           );
+                    //   },
+                    //   child: const Center(
+                    //     child: CircularProgressIndicator(),
+                    //   ),
+                    // ),
+                    // Consumer<AnimeProvider>(
+                    //   builder: (context, anime, child) {
+                    //     return anime.isLoading
+                    //         ? child!
+                    //         : MangaGridM(
+                    //             lista2: anime.animep,
+                    //             type: "ANIME",
+                    //             key: const Key('2'),
+                    //             sort: "TRENDING_DESC",
+                    //             lista: anime.anime,
+                    //             pageInfo: anime.pageInfoA,
+                    //           );
+                    //   },
+                    //   child: const Center(
+                    //     child: CircularProgressIndicator(),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
