@@ -1,6 +1,6 @@
-import 'package:anisearch2/module/page/load_module.dart';
+import 'package:ani_search/module/page/load_module.dart';
 import 'package:flutter/material.dart';
-import 'package:anisearch2/screens/grid/manga_gridM.dart'
+import 'package:ani_search/screens/grid/manga_gridM.dart'
     deferred as mangagridm_page;
 
 class GridMModule extends StatelessWidget {

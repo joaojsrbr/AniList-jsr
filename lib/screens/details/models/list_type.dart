@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, depend_on_referenced_packages
 import 'package:intl/intl.dart';
 
-import 'package:anisearch2/api/models/api_graphql_media_model.dart';
+import 'package:ani_search/api/models/api_graphql_media_model.dart';
 
 const List<String> tablistString = [
   'Overview',

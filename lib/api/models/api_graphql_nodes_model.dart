@@ -1,4 +1,4 @@
-import 'package:anisearch2/api/models/api_graphql_mediarecommendation_model.dart';
+import 'package:ani_search/api/models/api_graphql_mediarecommendation_model.dart';
 
 class Nodes {
   MediaRecommendation? mediaRecommendation;

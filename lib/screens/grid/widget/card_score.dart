@@ -1,5 +1,5 @@
-import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/screens/grid/widget/cards.dart';
+import 'package:ani_search/api/models/api_graphql_media_model.dart';
+import 'package:ani_search/screens/grid/widget/cards.dart';
 import 'package:flutter/material.dart';
 
 class CardScore extends StatelessWidget {

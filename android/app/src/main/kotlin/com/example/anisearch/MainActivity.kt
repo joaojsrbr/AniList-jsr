@@ -1,4 +1,4 @@
-package com.example.anisearch2
+package com.example.anisearch
 
 import io.flutter.embedding.android.FlutterActivity
 

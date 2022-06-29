@@ -4,15 +4,15 @@ import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 import 'package:graphql/client.dart';
-
-import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/api/models/api_graphql_model.dart';
-import 'package:anisearch2/api/models/api_graphql_pageinfo_model.dart';
-import 'package:anisearch2/api/models/api_graphql_query.dart';
-import 'package:anisearch2/api/models/api_graphql_url.dart';
-import 'package:anisearch2/api/models/api_graphql_variables.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/uuid_util.dart';
+
+import 'package:ani_search/api/models/api_graphql_media_model.dart';
+import 'package:ani_search/api/models/api_graphql_model.dart';
+import 'package:ani_search/api/models/api_graphql_pageinfo_model.dart';
+import 'package:ani_search/api/models/api_graphql_query.dart';
+import 'package:ani_search/api/models/api_graphql_url.dart';
+import 'package:ani_search/api/models/api_graphql_variables.dart';
 
 class AnimeProvider extends ChangeNotifier {
   bool _isLoading = false;
@@ -61,14 +61,14 @@ class AnimeProvider extends ChangeNotifier {
     final QueryResult result = await _client(apiHttpURL).query(options);
 
     // * ApiGraphQLModel
-    var repositories = ApiGraphQLModel.fromJson(result.data!);
+    ApiGraphQLModel repositories = ApiGraphQLModel.fromJson(result.data!);
 
     // * List<Media>
     tempData = _returnMedia(repositories.page!.media!);
 
     if (popula == true) {
       for (var i in tempData) {
-        // * Check _animep == tempData
+        // * Check animep == tempData
         if (i.equa(animep) == false) {
           if (kDebugMode) {
             // * print result
@@ -81,7 +81,7 @@ class AnimeProvider extends ChangeNotifier {
       }
     } else {
       for (var i in tempData) {
-        // * Check _anime == tempData
+        // * Check anime == tempData
         if (i.equa(anime) == false) {
           if (kDebugMode) {
             // * print result
@@ -121,7 +121,7 @@ class AnimeProvider extends ChangeNotifier {
 
     final QueryResult result = await _client(apiHttpURL).query(options);
 
-    var repositories = ApiGraphQLModel.fromJson(result.data!);
+    ApiGraphQLModel repositories = ApiGraphQLModel.fromJson(result.data!);
 
     tempData = _returnMedia(repositories.page!.media!);
 
@@ -158,7 +158,7 @@ class AnimeProvider extends ChangeNotifier {
 
     final QueryResult result = await _client(apiHttpURL).query(options);
 
-    var repositories = ApiGraphQLModel.fromJson(result.data!);
+    ApiGraphQLModel repositories = ApiGraphQLModel.fromJson(result.data!);
 
     tempData = _returnMedia(repositories.page!.media!);
 

@@ -1,4 +1,4 @@
-import 'package:anisearch2/widgetU/build_widget.dart';
+import 'package:ani_search/widgetU/build_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -145,15 +145,24 @@ class BuildImageWidget extends StatelessWidget {
                           key: cachedkey,
                           imageUrl: imageUrl,
 
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Container(
+                            alignment: Alignment.center,
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            width: MediaQuery.of(context).size.width,
+                            child: CircularProgressIndicator(
+                              value: downloadProgress.progress,
+                            ),
+                          ),
                           // colorBlendMode: colorBlendMode,
                           // height: height,
                           // width: width,
                           color: color,
                           filterQuality: filterQuality,
                           fit: fit,
-                          placeholder: (context, url) => Container(
-                            color: Colors.black12,
-                          ),
+                          // placeholder: (context, url) => Container(
+                          //   color: Colors.black12,
+                          // ),
                           errorWidget: (context, url, error) => Center(
                             child: Container(
                               color: Colors.black12,

@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, body_might_complete_normally_nullable
 import 'package:flutter/foundation.dart';
 
-import 'package:anisearch2/api/models/api_graphql_coverimage_model.dart';
-import 'package:anisearch2/api/models/api_graphql_recommendations_model.dart';
-import 'package:anisearch2/api/models/api_graphql_startdate_model.dart';
-import 'package:anisearch2/api/models/api_graphql_title_model.dart';
+import 'package:ani_search/api/models/api_graphql_coverimage_model.dart';
+import 'package:ani_search/api/models/api_graphql_recommendations_model.dart';
+import 'package:ani_search/api/models/api_graphql_startdate_model.dart';
+import 'package:ani_search/api/models/api_graphql_title_model.dart';
 
 extension Equa on Media {
   bool? equa(List<Media> other) {
@@ -12,7 +12,7 @@ extension Equa on Media {
       for (var i in other) {
         return i == this;
       }
-      // return true;
+      return null;
     } else {
       return false;
     }

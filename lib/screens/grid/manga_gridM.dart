@@ -1,14 +1,14 @@
 // ignore_for_file: file_names
 
-import 'package:anisearch2/api/repositories/anime_provider.dart';
-import 'package:anisearch2/api/repositories/manga_provider.dart';
+import 'package:ani_search/api/repositories/anime_provider.dart';
+import 'package:ani_search/api/repositories/manga_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/screens/grid/controller/controller.dart';
-import 'package:anisearch2/screens/grid/widget/header_trends.dart';
-import 'package:anisearch2/screens/grid/widget/trends.dart';
+import 'package:ani_search/api/models/api_graphql_media_model.dart';
+import 'package:ani_search/screens/grid/controller/controller.dart';
+import 'package:ani_search/screens/grid/widget/header_trends.dart';
+import 'package:ani_search/screens/grid/widget/trends.dart';
 import 'package:provider/provider.dart';
 
 class ConsumerTwo<AnimeProvider, MangaProvider> extends StatelessWidget {
@@ -68,6 +68,7 @@ class MangaGridM extends GetView<MangaGridSController> {
               } else {
                 return _CopyWidget(
                   title: 'Trending',
+
                   // sort: "POPULARITY_DESC",
                   sort: sort!,
                   type: type!,

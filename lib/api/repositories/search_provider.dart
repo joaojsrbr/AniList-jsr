@@ -2,10 +2,10 @@
 
 import 'dart:collection';
 
-import 'package:anisearch2/api/models/api_graphql_model.dart';
-import 'package:anisearch2/api/models/api_graphql_query.dart';
-import 'package:anisearch2/api/models/api_graphql_url.dart';
-import 'package:anisearch2/api/models/api_graphql_variables.dart';
+import 'package:ani_search/api/models/api_graphql_model.dart';
+import 'package:ani_search/api/models/api_graphql_query.dart';
+import 'package:ani_search/api/models/api_graphql_url.dart';
+import 'package:ani_search/api/models/api_graphql_variables.dart';
 import 'package:flutter/material.dart';
 import 'package:graphql/client.dart';
 import 'package:uuid/uuid.dart';
@@ -68,7 +68,7 @@ class SearchProvider extends ChangeNotifier {
 
     final QueryResult result = await _client(apiHttpURL).query(options);
 
-    var repositories = ApiGraphQLModel.fromJson(result.data!);
+    ApiGraphQLModel repositories = ApiGraphQLModel.fromJson(result.data!);
 
     tempData = _returnMedia(repositories.page!.media!);
 

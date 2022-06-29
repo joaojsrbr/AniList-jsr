@@ -5,12 +5,12 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:graphql/client.dart';
 
-import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/api/models/api_graphql_model.dart';
-import 'package:anisearch2/api/models/api_graphql_pageinfo_model.dart';
-import 'package:anisearch2/api/models/api_graphql_query.dart';
-import 'package:anisearch2/api/models/api_graphql_url.dart';
-import 'package:anisearch2/api/models/api_graphql_variables.dart';
+import 'package:ani_search/api/models/api_graphql_media_model.dart';
+import 'package:ani_search/api/models/api_graphql_model.dart';
+import 'package:ani_search/api/models/api_graphql_pageinfo_model.dart';
+import 'package:ani_search/api/models/api_graphql_query.dart';
+import 'package:ani_search/api/models/api_graphql_url.dart';
+import 'package:ani_search/api/models/api_graphql_variables.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/uuid_util.dart';
 
@@ -61,7 +61,7 @@ class MangaProvider extends ChangeNotifier {
 
     final QueryResult result = await _client(apiHttpURL).query(options);
 
-    var repositories = ApiGraphQLModel.fromJson(result.data!);
+    ApiGraphQLModel repositories = ApiGraphQLModel.fromJson(result.data!);
 
     tempData = _returnMedia(repositories.page!.media!);
 
@@ -102,14 +102,14 @@ class MangaProvider extends ChangeNotifier {
     final QueryResult result = await _client(apiHttpURL).query(options);
 
     // * ApiGraphQLModel
-    var repositories = ApiGraphQLModel.fromJson(result.data!);
+    ApiGraphQLModel repositories = ApiGraphQLModel.fromJson(result.data!);
 
     // * List<Media>
     tempData = _returnMedia(repositories.page!.media!);
 
     if (popula == true) {
       for (var i in tempData) {
-        // * Check _mangap == tempData
+        // * Check mangap == tempData
         if (i.equa(mangap) == false) {
           if (kDebugMode) {
             // * print result
@@ -122,7 +122,7 @@ class MangaProvider extends ChangeNotifier {
       }
     } else {
       for (var i in tempData) {
-        // * Check _manga == tempData
+        // * Check manga == tempData
         if (i.equa(manga) == false) {
           if (kDebugMode) {
             // * print result
@@ -164,7 +164,7 @@ class MangaProvider extends ChangeNotifier {
 
     final QueryResult result = await _client(apiHttpURL).query(options);
 
-    var repositories = ApiGraphQLModel.fromJson(result.data!);
+    ApiGraphQLModel repositories = ApiGraphQLModel.fromJson(result.data!);
 
     tempData = _returnMedia(repositories.page!.media!);
 

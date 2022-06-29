@@ -1,4 +1,4 @@
-import 'package:anisearch2/api/models/api_graphql_page_model.dart';
+import 'package:ani_search/api/models/api_graphql_page_model.dart';
 
 class ApiGraphQLModel {
   String? sTypename;

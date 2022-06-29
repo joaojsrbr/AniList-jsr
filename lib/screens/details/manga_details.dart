@@ -3,10 +3,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/screens/details/hero/hero_image.dart';
-import 'package:anisearch2/screens/details/hero/hero_row_score.dart';
-import 'package:anisearch2/screens/details/hero/hero_title.dart';
+import 'package:ani_search/api/models/api_graphql_media_model.dart';
+import 'package:ani_search/screens/details/hero/hero_image.dart';
+import 'package:ani_search/screens/details/hero/hero_row_score.dart';
+import 'package:ani_search/screens/details/hero/hero_title.dart';
 import 'package:get/get.dart';
 
 class MangaDetailsR extends StatefulWidget {

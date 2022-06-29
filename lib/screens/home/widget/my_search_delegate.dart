@@ -1,9 +1,9 @@
-import 'package:anisearch2/api/repositories/anime_provider.dart';
-import 'package:anisearch2/api/repositories/search_provider.dart';
-import 'package:anisearch2/screens/grid/manga_gridS.dart';
+import 'package:ani_search/api/repositories/anime_provider.dart';
+import 'package:ani_search/api/repositories/manga_provider.dart';
+import 'package:ani_search/api/repositories/search_provider.dart';
+import 'package:ani_search/screens/grid/manga_gridS.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:anisearch2/api/repositories/manga_provider.dart';
 
 class MySearchDelegate extends SearchDelegate {
   BuildContext context;

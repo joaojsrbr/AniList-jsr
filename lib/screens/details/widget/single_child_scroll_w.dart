@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/screens/details/models/list_type_widgets.dart';
-import 'package:anisearch2/screens/details/utils/parse_html_to_string.dart';
+import 'package:ani_search/api/models/api_graphql_media_model.dart';
+import 'package:ani_search/screens/details/models/list_type_widgets.dart';
+import 'package:ani_search/screens/details/utils/parse_html_to_string.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';

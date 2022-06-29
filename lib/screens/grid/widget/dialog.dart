@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:anisearch2/api/models/api_graphql_media_model.dart';
+import 'package:ani_search/api/models/api_graphql_media_model.dart';
 
 AlertDialog dialog(
     BuildContext context, BoxConstraints constraints, Media listaU) {

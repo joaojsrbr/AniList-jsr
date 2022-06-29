@@ -1,6 +1,6 @@
-import 'package:anisearch2/module/page/load_module.dart';
+import 'package:ani_search/module/page/load_module.dart';
 import 'package:flutter/material.dart';
-import 'package:anisearch2/screens/home/home_page.dart'
+import 'package:ani_search/screens/home/home_page.dart'
     deferred as homepage_page;
 
 class HomepageModule extends StatelessWidget {

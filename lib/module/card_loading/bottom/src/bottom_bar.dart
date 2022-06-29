@@ -1,6 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'package:anisearch2/module/card_loading/bottom/flutter_floating_bottom_bar.dart';
+import 'package:ani_search/module/card_loading/bottom/flutter_floating_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 

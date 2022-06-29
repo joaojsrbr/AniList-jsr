@@ -1,7 +1,7 @@
-import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/screens/details/manga_details.dart';
-import 'package:anisearch2/screens/grid/hero/hero_image.dart';
-import 'package:anisearch2/screens/home/controller/controller.dart';
+import 'package:ani_search/api/models/api_graphql_media_model.dart';
+import 'package:ani_search/screens/details/manga_details.dart';
+import 'package:ani_search/screens/grid/hero/hero_image.dart';
+import 'package:ani_search/screens/home/controller/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -108,14 +108,14 @@ class SmartRBuild extends StatelessWidget {
               //   arguments: lista![index],
               // ),
               onTap: () {
+                const transitionDuration = Duration(milliseconds: 600);
                 Navigator.of(context).push(
                   PageRouteBuilder(
                     settings: RouteSettings(
                       arguments: lista![index],
                     ),
-                    transitionDuration: const Duration(milliseconds: 700),
-                    reverseTransitionDuration:
-                        const Duration(milliseconds: 700),
+                    transitionDuration: transitionDuration,
+                    reverseTransitionDuration: transitionDuration,
                     pageBuilder: (_, animation, __) {
                       return FadeTransition(
                         opacity: animation,

@@ -1,4 +1,4 @@
-import 'package:anisearch2/screens/home/controller/controller.dart';
+import 'package:ani_search/screens/home/controller/controller.dart';
 import 'package:get/get.dart';
 
 import '../../grid/controller/controller.dart';

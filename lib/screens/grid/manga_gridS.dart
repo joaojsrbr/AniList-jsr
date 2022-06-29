@@ -1,9 +1,9 @@
 // ignore_for_file: file_names, must_be_immutable
 
-import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/screens/grid/controller/controller.dart';
-import 'package:anisearch2/screens/grid/widget/grid_build.dart';
-import 'package:anisearch2/screens/grid/widget/smartr_build.dart';
+import 'package:ani_search/api/models/api_graphql_media_model.dart';
+import 'package:ani_search/screens/grid/controller/controller.dart';
+import 'package:ani_search/screens/grid/widget/grid_build.dart';
+import 'package:ani_search/screens/grid/widget/smartr_build.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

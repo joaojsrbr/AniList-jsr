@@ -1,5 +1,5 @@
+import 'package:ani_search/screens/home/widget/my_search_delegate.dart';
 import 'package:flutter/material.dart';
-import 'package:anisearch2/screens/home/widget/my_search_delegate.dart';
 
 Widget buildSheet() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),

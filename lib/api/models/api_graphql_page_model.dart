@@ -1,5 +1,5 @@
-import 'package:anisearch2/api/models/api_graphql_media_model.dart';
-import 'package:anisearch2/api/models/api_graphql_pageinfo_model.dart';
+import 'package:ani_search/api/models/api_graphql_media_model.dart';
+import 'package:ani_search/api/models/api_graphql_pageinfo_model.dart';
 
 class Page {
   String? sTypename;
