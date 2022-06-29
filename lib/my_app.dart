@@ -1,3 +1,9 @@
+import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:klocalizations_flutter/klocalizations_flutter.dart';
+import 'package:provider/provider.dart';
+
 import 'package:ani_search/api/repositories/anime_provider.dart';
 import 'package:ani_search/api/repositories/manga_provider.dart';
 import 'package:ani_search/api/repositories/search_provider.dart';
@@ -8,11 +14,6 @@ import 'package:ani_search/module/page/mangagrids_module.dart';
 import 'package:ani_search/screens/home/binding/binding.dart';
 import 'package:ani_search/scroll/scrollbehavior.dart';
 import 'package:ani_search/theme/text_theme.dart';
-import 'package:dynamic_color/dynamic_color.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:klocalizations_flutter/klocalizations_flutter.dart';
-import 'package:provider/provider.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
