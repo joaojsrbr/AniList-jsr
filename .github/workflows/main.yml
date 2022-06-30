@@ -31,7 +31,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/flutter-apk/*.apk"
-          tag: v1.0.${{ github.run_number }}
+          tag: v0.0.${{ github.run_number }}-b1
           token: ${{ secrets.TOKEN }}  
       - name: Telegram<apk>
         uses: appleboy/telegram-action@master
