@@ -1,5 +1,5 @@
 import 'package:ani_search/api/models/api_graphql_media_model.dart';
-import 'package:ani_search/screens/details/manga_details.dart';
+import 'package:ani_search/screens/details/details_page.dart';
 import 'package:ani_search/screens/grid/hero/hero_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

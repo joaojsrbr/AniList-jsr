@@ -19,6 +19,7 @@ dependencies:
   # get_it: ^7.2.0
   # linked_scroll_controller: ^0.2.0
   percent_indicator: ^4.0.1
+  flutter_layout_grid: ^2.0.1
 
   # Monet
   dynamic_color: ^1.1.2

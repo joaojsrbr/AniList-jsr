@@ -108,7 +108,7 @@ class MangaProvider extends ChangeNotifier {
     tempData = _returnMedia(repositories.page!.media!);
 
     if (popula == true) {
-      for (var i in tempData) {
+      for (Media i in tempData) {
         // * Check mangap == tempData
         if (i.equa(mangap) == false) {
           if (kDebugMode) {
@@ -121,7 +121,7 @@ class MangaProvider extends ChangeNotifier {
         }
       }
     } else {
-      for (var i in tempData) {
+      for (Media i in tempData) {
         // * Check manga == tempData
         if (i.equa(manga) == false) {
           if (kDebugMode) {

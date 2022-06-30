@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:ani_search/api/models/api_graphql_media_model.dart';
 import 'package:ani_search/screens/details/hero/hero_row_score.dart';
 import 'package:ani_search/screens/details/hero/hero_title.dart';
-import 'package:ani_search/screens/details/manga_details.dart';
+import 'package:ani_search/screens/details/details_page.dart';
 import 'package:ani_search/screens/grid/widget/dialog.dart';
 
 class Trends extends StatefulWidget {
@@ -149,15 +149,17 @@ class PageBuildWidget extends StatelessWidget {
     return PageView.builder(
       onPageChanged: (value) {
         debugPrint(
-            'title: ${lista![value].title!.english ?? lista![value].title!.romaji ?? lista![value].title!.native} -- popula: $popula');
+            'title: ${lista![value].title!.english ?? lista![value].title!.romaji ?? lista![value].title!.native} -- popula: $popula -- ${value + 1}');
         if (value + 1 == lista!.length) {
           if (mounted) {
-            Get.find<HomepageController>().streamController.add(Root(
-                  context: context,
-                  sort: sort,
-                  type: lista!.first.type,
-                  popula: popula,
-                ));
+            Get.find<HomepageController>().streamController.add(
+                  Root(
+                    context: context,
+                    sort: sort,
+                    type: lista!.first.type,
+                    popula: popula,
+                  ),
+                );
           }
         }
       },

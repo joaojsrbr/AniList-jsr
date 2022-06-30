@@ -67,7 +67,7 @@ class AnimeProvider extends ChangeNotifier {
     tempData = _returnMedia(repositories.page!.media!);
 
     if (popula == true) {
-      for (var i in tempData) {
+      for (Media i in tempData) {
         // * Check animep == tempData
         if (i.equa(animep) == false) {
           if (kDebugMode) {
@@ -80,7 +80,7 @@ class AnimeProvider extends ChangeNotifier {
         }
       }
     } else {
-      for (var i in tempData) {
+      for (Media i in tempData) {
         // * Check anime == tempData
         if (i.equa(anime) == false) {
           if (kDebugMode) {

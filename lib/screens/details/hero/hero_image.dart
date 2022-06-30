@@ -36,46 +36,35 @@ class HeroImage extends StatelessWidget {
           : urlA;
     }
 
-    return Positioned(
-      top: h * .08,
-      width: GetPlatform.isWindows ? w * .3 : w * .48,
-      left: 2,
-      height: GetPlatform.isWindows ? h * .5 : h * .25,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: w * .06,
-        ),
-        child: Material(
-          type: MaterialType.transparency,
-          child: Hero(
-            key: ObjectKey(dataProvider.idr),
-            tag: ObjectKey(dataProvider.idr),
-            child: Stack(
-              fit: StackFit.expand,
-              clipBehavior: Clip.none,
-              alignment: Alignment.bottomCenter,
-              children: [
-                _Card(
-                  image: url(),
-                ),
-                const Positioned(
-                  // width: 40,
-                  // height: 40,
-                  bottom: -0.5,
-                  left: -0.5,
-                  child: CardS(
-                    height: 30,
-                    width: 30,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(7.5),
-                    ),
-                    image: true,
-                  ),
-                ),
-              ],
+    return Material(
+      type: MaterialType.transparency,
+      child: Hero(
+        key: ObjectKey(dataProvider.idr),
+        tag: ObjectKey(dataProvider.idr),
+        child: Stack(
+          fit: StackFit.expand,
+          clipBehavior: Clip.none,
+          alignment: Alignment.bottomCenter,
+          children: [
+            _Card(
+              image: url(),
             ),
-          ),
+            const Positioned(
+              // width: 40,
+              // height: 40,
+              bottom: -0.5,
+              left: -0.5,
+              child: CardS(
+                height: 30,
+                width: 30,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(7.5),
+                ),
+                image: true,
+              ),
+            ),
+          ],
         ),
       ),
     );
