@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:ani_search/api/models/api_graphql_media_model.dart';
-import 'package:ani_search/screens/details/models/list_type_widgets.dart';
 import 'package:ani_search/screens/details/utils/parse_html_to_string.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
@@ -165,12 +164,12 @@ class _SingleChildScrollWState extends State<SingleChildScrollW>
                     ),
                   ),
                 ),
-                Wrap(
-                  // spacing: 0.01,
-                  // runSpacing: 0.1,
-                  // crossAxisAlignment: WrapCrossAlignment.end,
-                  children: listCard(context, widget.dataProvider!),
-                )
+                // Wrap(
+                //   // spacing: 0.01,
+                //   // runSpacing: 0.1,
+                //   // crossAxisAlignment: WrapCrossAlignment.end,
+                //   children: listCard(context, widget.dataProvider!),
+                // )
               ],
             ),
             title: Text(

@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:ani_search/api/models/api_graphql_media_model.dart';
 import 'package:ani_search/screens/details/hero/hero_row_score.dart';
 import 'package:ani_search/screens/details/hero/hero_title.dart';
-import 'package:ani_search/screens/details/details_page.dart';
+import 'package:ani_search/screens/details/page/details_page.dart';
 import 'package:ani_search/screens/grid/widget/dialog.dart';
 
 class Trends extends StatefulWidget {

@@ -1,7 +1,9 @@
+import 'package:ani_search/i18n/repositories/locale_provider.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:klocalizations_flutter/klocalizations_flutter.dart';
+import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
 import 'package:ani_search/api/repositories/anime_provider.dart';
@@ -27,10 +29,15 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     // debugInvertOversizedImages = true;
 
-    final localizations = KLocalizations.of(context);
+    // final localizations = KLocalizations.of(context);
+
+    LocalJsonLocalization.delegate.directories = ['i18n'];
 
     return MultiProvider(
       providers: [
+        Provider(
+          create: (context) => LocaleProvider(),
+        ),
         ChangeNotifierProvider(
           create: (context) => MangaProvider(),
         ),
@@ -67,13 +74,17 @@ class _MyAppState extends State<MyApp> {
           }
           return GetMaterialApp(
             color: Theme.of(context).colorScheme.background,
-            locale: localizations.locale,
-            supportedLocales: localizations.supportedLocales,
+            supportedLocales: const [
+              Locale('en', 'US'),
+              Locale('pt', 'BR'),
+            ],
             localizationsDelegates: [
-              localizations.delegate,
+              // delegate from flutter_localization
               GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate
+              // delegate from localization package.
+              LocalJsonLocalization.delegate,
             ],
             scrollBehavior: MyScrollBehavior(),
             debugShowCheckedModeBanner: false,
@@ -98,28 +109,30 @@ class _MyAppState extends State<MyApp> {
 
             initialRoute: '/h',
             initialBinding: ControllerBinding(),
-            getPages: [
-              // GetPage(name: '/r', page: () => const HomepageRouter()),
-              GetPage(
-                name: '/h',
-                page: () => const HomepageModule(),
-              ),
-              GetPage(
-                name: '/g',
-                page: () => const GridMModule(),
-              ),
-              GetPage(
-                name: '/s',
-                page: () => const GridSModule(),
-              ),
-              GetPage(
-                name: '/d',
-                page: () => const DetailsRModule(),
-              ),
-            ],
+            getPages: _pages,
           );
         },
       ),
     );
   }
 }
+
+List<GetPage<dynamic>> _pages = [
+  // GetPage(name: '/r', page: () => const HomepageRouter()),
+  GetPage(
+    name: '/h',
+    page: () => const HomepageModule(),
+  ),
+  GetPage(
+    name: '/g',
+    page: () => const GridMModule(),
+  ),
+  GetPage(
+    name: '/s',
+    page: () => const GridSModule(),
+  ),
+  GetPage(
+    name: '/d',
+    page: () => const DetailsRModule(),
+  ),
+];

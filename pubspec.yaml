@@ -10,6 +10,8 @@ environment:
 
 
 dependencies:
+  flutter_localizations: 
+    sdk: flutter
   flutter:
     sdk: flutter
   http: ^0.13.4
@@ -37,7 +39,8 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # Localizations
-  klocalizations_flutter: ^0.0.7
+  # klocalizations_flutter: ^0.0.7
+  localization: ^2.1.0
 
   # Api 
   graphql: ^5.1.1
@@ -73,7 +76,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/translations/
+    - i18n/
     - assets/img/
 
 

@@ -1,7 +1,7 @@
 import 'package:ani_search/api/repositories/anime_provider.dart';
 import 'package:ani_search/api/repositories/manga_provider.dart';
 import 'package:ani_search/api/repositories/search_provider.dart';
-import 'package:ani_search/screens/grid/manga_gridS_page.dart';
+import 'package:ani_search/screens/grid/page/manga_grids_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

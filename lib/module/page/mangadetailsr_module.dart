@@ -1,6 +1,6 @@
 import 'package:ani_search/module/page/load_module.dart';
 import 'package:flutter/material.dart';
-import 'package:ani_search/screens/details/details_page.dart'
+import 'package:ani_search/screens/details/page/details_page.dart'
     deferred as mangadetailsr_page;
 
 class DetailsRModule extends StatelessWidget {

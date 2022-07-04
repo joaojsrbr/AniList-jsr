@@ -2,6 +2,7 @@
 
 import 'package:ani_search/api/repositories/anime_provider.dart';
 import 'package:ani_search/api/repositories/manga_provider.dart';
+import 'package:ani_search/widgetU/consumer_two_value.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -9,32 +10,6 @@ import 'package:ani_search/api/models/api_graphql_media_model.dart';
 import 'package:ani_search/screens/grid/controller/controller.dart';
 import 'package:ani_search/screens/grid/widget/header_trends.dart';
 import 'package:ani_search/screens/grid/widget/trends.dart';
-import 'package:provider/provider.dart';
-
-class ConsumerTwo<AnimeProvider, MangaProvider> extends StatelessWidget {
-  const ConsumerTwo({
-    Key? key,
-    required this.builder,
-  }) : super(key: key);
-
-  final Widget Function(BuildContext context, AnimeProvider anime,
-      MangaProvider manga, Widget child) builder;
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<MangaProvider>(
-      builder: (context, manga, child) {
-        return Consumer<AnimeProvider>(
-          builder: (context, anime, child) {
-            return builder(context, anime, manga, child!);
-          },
-          child: const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
-      },
-    );
-  }
-}
 
 class MangaGridM extends GetView<MangaGridSController> {
   final String? sort;

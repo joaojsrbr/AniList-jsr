@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 
-import 'package:ani_search/screens/details/models/list_type.dart';
+import 'package:ani_search/i18n/repositories/locale_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
@@ -10,6 +10,7 @@ import 'package:ani_search/api/models/api_graphql_media_model.dart';
 import 'package:ani_search/screens/details/hero/hero_image.dart';
 import 'package:ani_search/screens/details/hero/hero_row_score.dart';
 import 'package:ani_search/screens/details/hero/hero_title.dart';
+import 'package:provider/provider.dart';
 
 Size _viewportSize = Size.zero;
 
@@ -76,77 +77,80 @@ class _MangaDetailsRState extends State<MangaDetailsR>
           body: NestedScrollView(
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return <Widget>[
-                SliverAppBar(
-                  pinned: true,
-                  surfaceTintColor: Theme.of(context).colorScheme.background,
-                  // collapsedHeight: .1.vh,
-                  expandedHeight: .75.vh,
-                  bottom: TabBar(
-                    indicatorWeight: 1,
-                    isScrollable: true,
-                    controller: tabController,
-                    tabs: tablistString
-                        .map(
-                          (e) => Tab(
-                            child: Text(
-                              e,
-                              // overflow: TextOverflow.clip,
-                              style: const TextStyle(
-                                fontSize: 15,
+                Consumer<LocaleProvider>(
+                  builder: (context, value, child) => SliverAppBar(
+                    pinned: true,
+                    surfaceTintColor: Theme.of(context).colorScheme.background,
+                    // collapsedHeight: .1.vh,
+                    expandedHeight: .75.vh,
+                    bottom: TabBar(
+                      indicatorWeight: 1,
+                      isScrollable: true,
+                      controller: tabController,
+                      tabs: value.tabs
+                          .map(
+                            (e) => Tab(
+                              child: Text(
+                                e,
+                                // overflow: TextOverflow.clip,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: SafeArea(
-                      child: Container(
-                        padding: EdgeInsets.only(top: .12.vw),
-                        child: LayoutGrid(
-                          columnGap: 0.004.vwp,
-                          rowGap: 0.9.vwp,
-                          // columnGap: 12,
-                          // rowGap: 12,
-                          columnSizes: repeat(2, [1.fr]),
+                          )
+                          .toList(),
+                    ),
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: SafeArea(
+                        child: Container(
+                          padding: EdgeInsets.only(top: .12.vw),
+                          child: LayoutGrid(
+                            columnGap: 0.004.vwp,
+                            rowGap: 0.9.vwp,
+                            // columnGap: 12,
+                            // rowGap: 12,
+                            columnSizes: repeat(2, [1.fr]),
 
-                          rowSizes: repeat(2, [auto]),
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: .03.vw),
-                              child: ImageGrid(
-                                h: h,
-                                w: w,
-                                dataProvider: dataProvider,
+                            rowSizes: repeat(2, [auto]),
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsets.symmetric(horizontal: .03.vw),
+                                child: ImageGrid(
+                                  h: h,
+                                  w: w,
+                                  dataProvider: dataProvider,
+                                ),
+                              ).withGridPlacement(
+                                columnStart: 0,
+                                rowStart: 0,
                               ),
-                            ).withGridPlacement(
-                              columnStart: 0,
-                              rowStart: 0,
-                            ),
-                            TextGrid(dataProvider: dataProvider)
-                                .withGridPlacement(
-                              columnStart: 1,
-                              rowStart: 0,
-                            ),
-                            Container(
-                              // color: Colors.black,
-                              padding: const EdgeInsets.only(
-                                  left: 10, right: 10, top: 8),
-                              height: .30.vh,
-                              // child: TextGrid(dataProvider: dataProvider),
-                              child: ListView(
-                                children: [
-                                  HtmlWidget(
-                                    dataProvider.description!,
-                                  ),
-                                ],
+                              TextGrid(dataProvider: dataProvider)
+                                  .withGridPlacement(
+                                columnStart: 1,
+                                rowStart: 0,
                               ),
-                            ).withGridPlacement(
-                              columnStart: 0,
-                              rowStart: 1,
-                              columnSpan: 2,
-                            ),
-                          ],
+                              Container(
+                                // color: Colors.black,
+                                padding: const EdgeInsets.only(
+                                    left: 10, right: 10, top: 8),
+                                height: .30.vh,
+                                // child: TextGrid(dataProvider: dataProvider),
+                                child: ListView(
+                                  children: [
+                                    HtmlWidget(
+                                      dataProvider.description!,
+                                    ),
+                                  ],
+                                ),
+                              ).withGridPlacement(
+                                columnStart: 0,
+                                rowStart: 1,
+                                columnSpan: 2,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
