@@ -36,18 +36,19 @@ jobs:
           tag: v0.0.${{ github.run_number }}-b1
           token: ${{ secrets.TOKEN }}
       - name: Build Web
-      - run: flutter build web --release 
+        run: flutter build web --release 
         run: | 
-            cd build/web
-            git init
-            git config --global user.email joaovitor.jsr@gmail.com
-            git config --global user.name joaojsrbr
-            git status
-            git remote add get-master https://${{secrets.TOKEN}}@github.com/joaojsrbr/AniList-jsr.git
-            git checkout -b gh-pages
-            git add --all
-            git commit -m "update"
-            git push get-master gh-pages:gh-pages
+          cd build/web
+          git init
+          git config --global user.email joaovitor.jsr@gmail.com
+          git config --global user.name joaojsrbr
+          git status
+          git remote add get-master https://${{secrets.TOKEN}}@github.com/joaojsrbr/AniList-jsr.git
+          git checkout -b gh-pages
+          git add --all
+          git commit -m "update"
+          git push get-master gh-pages:gh-pages
+
       - name: Telegram<apk>
         uses: appleboy/telegram-action@master
         with:
