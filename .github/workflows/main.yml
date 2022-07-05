@@ -36,7 +36,7 @@ jobs:
           tag: v0.0.${{ github.run_number }}-b1
           token: ${{ secrets.TOKEN }}
       - name: Build Web
-        run: flutter build web --release 
+      - run: flutter build web --release 
         run: | 
           cd build/web
           git init
