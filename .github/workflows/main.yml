@@ -43,7 +43,7 @@ jobs:
           git status
           git remote add origin https://${{secrets.TOKEN}}@github.com/joaojsrbr/AniList-jsr.git
           git checkout -b gh-pages
-          git pull origin gh-pages
+          # git pull origin gh-pages
           git add .
           git commit -m "update"
           git push origin gh-pages -f
