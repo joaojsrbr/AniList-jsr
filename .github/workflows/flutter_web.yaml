@@ -1,0 +1,35 @@
+
+on: 
+  push:
+    branches: 
+      - get-master
+
+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
+
+jobs: 
+  build:
+    name: Build & Release
+    runs-on: ubuntu-latest
+    env:
+      JAVA_VERSION: "11.0"
+      FLUTTER_VERSION: "3.0.3"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{env.FLUTTER_VERSION}}
+        run: flutter pub get
+      - name: Build Web
+        run: flutter build web --release
+      - name: Deploy
+        run: | 
+          cd build/web
+          git init
+          git config --global user.email joaovitor.jsr@gmail.com
+          git config --global user.name joaojsrbr
+          git status
+          git remote add web https://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@github.com/joaojsrbr/AniList-jsr.git
+
+  
