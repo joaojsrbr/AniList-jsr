@@ -36,8 +36,8 @@ jobs:
           tag: v0.0.${{ github.run_number }}-b1
           token: ${{ secrets.TOKEN }}
       - name: Build Web
-      - run: flutter build web --release 
-        run: | 
+        run: |
+          flutter build web --release  
           cd build/web
           git init
           git config --global user.email joaovitor.jsr@gmail.com
