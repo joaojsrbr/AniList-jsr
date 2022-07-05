@@ -1,10 +1,12 @@
 on:
-  pull_request:
-    branches:
-      - get-master
+  # pull_request:
+  #   branches:
+  #     - get-master
   push:
     branches:
       - get-master
+    tags:
+      - "v*"
 
 name: "Build & Release"
  
@@ -27,12 +29,17 @@ jobs:
       - run: flutter analyze
       - run: flutter build apk --release
       - run: flutter build apk --split-per-abi --release 
+      - run: flutter build web --release 
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/flutter-apk/*.apk"
           tag: v0.0.${{ github.run_number }}-b1
-          token: ${{ secrets.TOKEN }}  
+          token: ${{ secrets.TOKEN }}
+      # - name: push to /docs
+      #   uses: ncipollo/release-action@v1
+      #   with: 
+      #     artifacts: "build/web/*"
       - name: Telegram<apk>
         uses: appleboy/telegram-action@master
         with:
