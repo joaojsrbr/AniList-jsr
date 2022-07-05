@@ -1,4 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: must_be_immutable
+
 import 'dart:async';
 import 'dart:ui' as ui;
 
@@ -14,17 +15,19 @@ import 'package:ani_search/screens/details/page/details_page.dart';
 import 'package:ani_search/screens/grid/widget/dialog.dart';
 
 class Trends extends StatefulWidget {
-  const Trends({
+  Trends({
     super.key,
     required this.type,
     required this.sort,
     required this.lista,
     required this.popula,
+    this.streamController,
   });
   final String sort;
   final bool popula;
   final String type;
   final List<Media>? lista;
+  StreamController<int>? streamController;
 
   @override
   State<Trends> createState() => _TrendsState();
@@ -40,7 +43,7 @@ class _TrendsState extends State<Trends>
 
   // late StreamController<int> streamController;
 
-  // late Stream<int> onload;
+  // late Stream<int> page;
 
   // void getData() {
   //   final controller = Get.find<HomepageController>();
@@ -51,9 +54,44 @@ class _TrendsState extends State<Trends>
   @override
   bool get wantKeepAlive => true;
 
+  // @override
+  // void didUpdateWidget(covariant Trends oldWidget) {
+  //   if (oldWidget.streamController!.isClosed &&
+  //       widget.streamController != null) {
+  //     print('1');
+  //   }
+  //   super.didUpdateWidget(oldWidget);
+  // }
+
   @override
   void initState() {
     // streamController = StreamController();
+
+    // if (_pageController.page!.toInt() == 1) {
+    //   Get.find<HomepageController>().enable.value = false;
+    // }
+
+    // if (widget.streamController != null) {
+    // Get.find<HomepageController>().pageindexcontroller =
+    //     StreamController.broadcast();
+
+    // widget.streamController = StreamController.broadcast();
+
+    // page = widget.streamController!.stream;
+
+    //   page.listen((event) {
+    //     // print(event);
+    //     if (event == 1) {
+    //       _pageController.nextPage(
+    //           duration: const Duration(milliseconds: 500), curve: Curves.ease);
+    //       percentListener();
+    //     } else {
+    //       _pageController.previousPage(
+    //           duration: const Duration(milliseconds: 500), curve: Curves.ease);
+    //       percentListener();
+    //     }
+    //   });
+    // }
 
     // onload = streamController.stream;
     // onload.listen(
@@ -76,10 +114,17 @@ class _TrendsState extends State<Trends>
       // = PageController(viewportFraction: 0.77)
       ..removeListener(percentListener)
       ..dispose();
+    // if (Get.find<HomepageController>().enable.value == false) {
+    //   if (widget.streamController != null) {
+    //     widget.streamController!.close();
+    //   }
+    // }
 
     // streamController.close();
     super.dispose();
   }
+
+  bool firstLoad = true;
 
   percentListener() {
     setState(() {
@@ -116,9 +161,9 @@ class _TrendsState extends State<Trends>
 
 class PageBuildWidget extends StatelessWidget {
   const PageBuildWidget({
-    Key? key,
+    super.key,
     required this.mounted,
-    required PageController pageController,
+    required this.pageController,
     required this.cardPage,
     required this.popula,
     required this.lista,
@@ -126,10 +171,8 @@ class PageBuildWidget extends StatelessWidget {
     required this.type,
     required this.cardIndex,
     required this.constraints,
-    required ValueNotifier<bool> details,
-  })  : _pageController = pageController,
-        _details = details,
-        super(key: key);
+    required this.details,
+  });
 
   final bool mounted;
   final String sort;
@@ -137,12 +180,12 @@ class PageBuildWidget extends StatelessWidget {
   final String type;
   final BoxConstraints constraints;
   final List<Media>? lista;
-  final PageController _pageController;
+  final PageController pageController;
 
   final double cardPage;
 
   final int cardIndex;
-  final ValueNotifier<bool> _details;
+  final ValueNotifier<bool> details;
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +193,13 @@ class PageBuildWidget extends StatelessWidget {
       onPageChanged: (value) {
         debugPrint(
             'title: ${lista![value].title!.english ?? lista![value].title!.romaji ?? lista![value].title!.native} -- popula: $popula -- ${value + 1}');
+
+        // if (value + 1 >= 5) {
+        //   Get.find<HomepageController>().enable.value = true;
+        // } else {
+        //   Get.find<HomepageController>().enable.value = false;
+        // }
+
         if (value + 1 == lista!.length) {
           if (mounted) {
             Get.find<HomepageController>().streamController.add(
@@ -165,7 +215,7 @@ class PageBuildWidget extends StatelessWidget {
       },
       clipBehavior: Clip.none,
       // key: PageStorageKey(PageStorage.of(context)?.readState(context)),
-      controller: _pageController,
+      controller: pageController,
       physics: const BouncingScrollPhysics(),
       itemCount: lista!.length,
       scrollDirection: Axis.horizontal,
@@ -193,7 +243,7 @@ class PageBuildWidget extends StatelessWidget {
         }
 
         final isCurrentPage = index == cardIndex;
-        final isScrolling = _pageController.position.isScrollingNotifier.value;
+        final isScrolling = pageController.position.isScrollingNotifier.value;
         final isFirstPage = index == 0;
 
         final style = Theme.of(context).textTheme.button!.copyWith(
@@ -212,7 +262,7 @@ class PageBuildWidget extends StatelessWidget {
             scale: isScrolling && isFirstPage ? 1 - progress : scale,
             child: GestureDetector(
               onTap: () {
-                _details.value = !_details.value;
+                details.value = !details.value;
                 const transitionDuration = Duration(milliseconds: 600);
                 Navigator.of(context).push(
                   PageRouteBuilder(
@@ -230,7 +280,7 @@ class PageBuildWidget extends StatelessWidget {
                   ),
                 );
                 Future.delayed(transitionDuration, () {
-                  _details.value = !_details.value;
+                  details.value = !details.value;
                 });
               },
               child: Padding(

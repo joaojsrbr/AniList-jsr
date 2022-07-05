@@ -91,10 +91,14 @@ class Homepage extends GetView<HomepageController> {
                     ),
                     Obx(
                       () => LoadOn(
+                        enable: controller.enable.value,
+                        onPressed: (index) {
+                          controller.pageindexcontroller.sink.add(index);
+                        },
                         key: ValueKey(controller.load.value),
                         onload: controller.load.value,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -119,40 +123,6 @@ class Homepage extends GetView<HomepageController> {
                       // lista: anime.anime,
                       // pageInfo: anime.pageInfoA,
                     )
-                    // Consumer<MangaProvider>(
-                    //   builder: (context, manga, child) {
-                    //     return manga.isLoading
-                    //         ? child!
-                    //         : MangaGridM(
-                    //             type: "MANGA",
-                    //             sort: "TRENDING_DESC",
-                    //             lista: manga.manga,
-                    //             key: const Key('1'),
-                    //             lista2: manga.mangap,
-                    //             pageInfo: manga.pageInfoM,
-                    //           );
-                    //   },
-                    //   child: const Center(
-                    //     child: CircularProgressIndicator(),
-                    //   ),
-                    // ),
-                    // Consumer<AnimeProvider>(
-                    //   builder: (context, anime, child) {
-                    //     return anime.isLoading
-                    //         ? child!
-                    //         : MangaGridM(
-                    //             lista2: anime.animep,
-                    //             type: "ANIME",
-                    //             key: const Key('2'),
-                    //             sort: "TRENDING_DESC",
-                    //             lista: anime.anime,
-                    //             pageInfo: anime.pageInfoA,
-                    //           );
-                    //   },
-                    //   child: const Center(
-                    //     child: CircularProgressIndicator(),
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -168,13 +138,17 @@ class LoadOn extends StatelessWidget {
   const LoadOn({
     Key? key,
     required this.onload,
-    this.height = 20,
-    this.width = 20,
+    required this.enable,
+    required this.onPressed,
+    this.height = 25,
+    this.width = 25,
     this.value,
   }) : super(key: key);
 
   final bool onload;
   final double? height;
+  final bool enable;
+  final void Function(int)? onPressed;
   final double? width;
   final double? value;
 
@@ -191,6 +165,30 @@ class LoadOn extends StatelessWidget {
               ),
             ),
           )
-        : Container();
+        : enable
+            ? Container(
+                // width: MediaQuery.of(context).size.width * .26,
+                height: 45,
+                color: Theme.of(context).buttonTheme.colorScheme?.background,
+                child: ToggleButtons(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  onPressed: onPressed,
+                  isSelected: const [
+                    false,
+                    false,
+                  ],
+                  children: const [
+                    Icon(
+                      Icons.chevron_left,
+                    ),
+                    Icon(
+                      Icons.chevron_right,
+                    ),
+                  ],
+                ),
+              )
+            : Container();
   }
 }

@@ -14,8 +14,8 @@ class HeaderTrends extends StatelessWidget {
     required this.lista,
     required this.popula,
     required this.sort,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

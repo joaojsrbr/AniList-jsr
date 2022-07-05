@@ -26,6 +26,12 @@ class HomepageController extends GetxController
   // late ScrollController scrollController;
   RxInt page = 1.obs;
 
+  late StreamController<int> pageindexcontroller;
+
+  RxInt cardindex = 0.obs;
+
+  RxBool enable = false.obs;
+
   RxBool manga = false.obs;
 
   // final controller = StreamController.broadcast();
@@ -73,6 +79,7 @@ class HomepageController extends GetxController
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   void onInit() {
+    pageindexcontroller = StreamController.broadcast();
     streamController = StreamController.broadcast();
     onload = streamController.stream;
     onload.listen(
@@ -98,6 +105,7 @@ class HomepageController extends GetxController
     tabcontroller.dispose();
     // scrollController.dispose();
     streamController.close();
+    pageindexcontroller.close();
     super.onClose();
   }
 }

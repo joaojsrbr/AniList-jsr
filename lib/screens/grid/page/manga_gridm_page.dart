@@ -1,4 +1,6 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, unused_element
+
+import 'dart:async';
 
 import 'package:ani_search/api/repositories/anime_provider.dart';
 import 'package:ani_search/api/repositories/manga_provider.dart';
@@ -36,6 +38,8 @@ class MangaGridM extends GetView<MangaGridSController> {
               if (type == 'MANGA') {
                 return _CopyWidget(
                   lista: manga.manga,
+                  // streamController:
+                  //     Get.find<HomepageController>().pageindexcontroller,
                   type: type!,
                   sort: sort!,
                   title: 'Trending',
@@ -43,7 +47,8 @@ class MangaGridM extends GetView<MangaGridSController> {
               } else {
                 return _CopyWidget(
                   title: 'Trending',
-
+                  // streamController:
+                  //     Get.find<HomepageController>().pageindexcontroller,
                   // sort: "POPULARITY_DESC",
                   sort: sort!,
                   type: type!,
@@ -87,17 +92,14 @@ class _CopyWidget extends StatelessWidget {
     required this.sort,
     required this.type,
     required this.lista,
+    this.streamController,
     this.popula = false,
   }) : super(key: key);
   final bool popula;
   final List<Media>? lista;
+  final StreamController<int>? streamController;
   final String sort, type, title;
 
-// aspectRatio: (GetPlatform.isWeb)
-//               ? (MediaQuery.of(context).size.height >= 900)
-//                   ? (38 / 16)
-//                   : (8 / 10.5)
-//               : (8 / 9.9),
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -117,6 +119,7 @@ class _CopyWidget extends StatelessWidget {
                 sort: sort,
               ),
               Trends(
+                streamController: streamController,
                 popula: popula,
                 lista: lista,
                 sort: sort,
