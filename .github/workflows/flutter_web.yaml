@@ -9,8 +9,6 @@ on:
       - "v*"
 
 
-          # git push web gh-pages -f
-
 name: "Build Web"
 
 jobs:
@@ -28,11 +26,11 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{env.FLUTTER_VERSION}}
-      - run: flutter pub get
+        run: flutter pub get
       - name: Build Web
-      - run: flutter build web --release
+        run: flutter build web --release
       - name: Deploy
-      - run: | 
+        run: | 
           cd build/web
           git init
           git config --global user.email joaovitor.jsr@gmail.com
