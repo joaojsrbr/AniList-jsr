@@ -1,19 +1,25 @@
-
-on: 
+on:
+  # pull_request:
+  #   branches:
+  #     - get-master
   push:
-    branches: 
+    branches:
       - get-master
+    tags:
+      - "v*"
 
 
           # git push web gh-pages -f
 
+name: "Build Web"
+
 jobs:
   build:
-    name: Build & Release
+    name: Build Web
     runs-on: ubuntu-latest
     env:
       JAVA_VERSION: "11.0"
-      FLUTTER_VERSION: "3.0.2"
+      FLUTTER_VERSION: "3.0.3"
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
