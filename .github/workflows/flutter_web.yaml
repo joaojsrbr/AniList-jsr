@@ -4,7 +4,8 @@ on:
     branches: 
       - get-master
 
-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
+
+          # git push web gh-pages -f
 
 jobs: 
   build:
@@ -30,6 +31,12 @@ jobs:
           git config --global user.email joaovitor.jsr@gmail.com
           git config --global user.name joaojsrbr
           git status
-          git remote add web https://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@github.com/joaojsrbr/AniList-jsr.git
+          git remote add get-master https://${{secrets.TOKEN}}@github.com/joaojsrbr/AniList-jsr.git
+          git checkout -b gh-pages
+          git add --all
+          git commit -m "update"
+          git push get-master gh-pages:gh-pages
+
+
 
   
