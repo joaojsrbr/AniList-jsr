@@ -1,8 +1,13 @@
-# anisearch2
+# AniList-jsr
 
 A new Flutter project.
 
+# Web
+
+Ainda não fiz a parte da web. 
+
 ## Getting Started
+
 
 This project is a starting point for a Flutter application.
 
