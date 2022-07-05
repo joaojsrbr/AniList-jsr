@@ -27,7 +27,7 @@ jobs:
       - run: flutter analyze
       - run: flutter build apk --release
       - run: flutter build apk --split-per-abi --release 
-      - run: flutter build web --release 
+      - run: flutter build web --release --base-href="/AniList-jsr/" 
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
