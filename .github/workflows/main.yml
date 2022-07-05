@@ -29,6 +29,7 @@ jobs:
       - run: flutter analyze
       - run: flutter build apk --release
       - run: flutter build apk --split-per-abi --release 
+      - run: flutter build web --release 
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
@@ -36,8 +37,7 @@ jobs:
           tag: v0.0.${{ github.run_number }}-b1
           token: ${{ secrets.TOKEN }}
       - name: Build Web
-        run: |
-          flutter build web --release  
+        run: | 
           cd build/web
           git init
           git config --global user.email joaovitor.jsr@gmail.com
@@ -45,6 +45,7 @@ jobs:
           git status
           git remote add get-master https://${{secrets.TOKEN}}@github.com/joaojsrbr/AniList-jsr.git
           git checkout -b gh-pages
+          git pull
           git add --all
           git commit -m "update"
           git push get-master gh-pages:gh-pages
