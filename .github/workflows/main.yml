@@ -7,7 +7,7 @@ on:
       - get-master
 
 name: "Build & Release"
- 
+  
 jobs:
   build:
     name: Build & Release
