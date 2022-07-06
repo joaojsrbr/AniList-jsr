@@ -1,7 +1,7 @@
 on:
-  # pull_request:
-  #   branches:
-  #     - get-master
+  pull_request:
+    branches:
+      - get-master
   # push:
   #   branches:
   #     - get-master
