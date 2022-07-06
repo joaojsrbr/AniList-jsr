@@ -222,105 +222,6 @@ class MangaGridM extends GetResponsiveView<MangaGridSController> {
                                       ),
                                     );
                                   },
-
-                                  // itemBuilder: (context, index) {
-                                  //   final lista = (type == 'MANGA')
-                                  //       ? manga.manga[index]
-                                  //       : anime.anime[index];
-
-                                  //   String _imageUrl() {
-                                  //     return lista.coverImage!.extraLarge ??
-                                  //         lista.coverImage!.large ??
-                                  //         lista.coverImage!.medium ??
-                                  //         '';
-                                  //   }
-
-                                  //   String _text() {
-                                  //     return lista.title!.english ??
-                                  //         lista.title!.romaji ??
-                                  //         lista.title!.native ??
-                                  //         '';
-                                  //   }
-
-                                  //   final length = (type == 'MANGA')
-                                  //       ? manga.manga.length
-                                  //       : anime.anime.length;
-
-                                  //   if (index + 1 == length) {
-                                  //     Get.find<HomepageController>()
-                                  //         .streamController
-                                  //         .add(
-                                  //           Root(
-                                  //             context: context,
-                                  //             sort: sort,
-                                  //             type: lista.type,
-                                  //             // popula: popula,
-                                  //           ),
-                                  //         );
-                                  //   }
-
-                                  //   // debugPrint(
-                                  //   //     'title: ${lista.title!.english ?? lista.title!.romaji ?? lista.title!.native} -- ${index + 1}');
-
-                                  //   return GestureDetector(
-                                  //     onTap: () {
-                                  //       const transitionDuration =
-                                  //           Duration(milliseconds: 600);
-                                  //       Navigator.of(context).push(
-                                  //         PageRouteBuilder(
-                                  //           settings: RouteSettings(
-                                  //             arguments: lista,
-                                  //           ),
-                                  //           transitionDuration:
-                                  //               transitionDuration,
-                                  //           reverseTransitionDuration:
-                                  //               transitionDuration,
-                                  //           pageBuilder: (_, animation, __) {
-                                  //             return FadeTransition(
-                                  //               opacity: animation,
-                                  //               child: const MangaDetailsR(),
-                                  //             );
-                                  //           },
-                                  //         ),
-                                  //       );
-                                  //     },
-                                  //     child: Container(
-                                  //       decoration: BoxDecoration(
-                                  //         borderRadius:
-                                  //             BorderRadius.circular(15),
-                                  //       ),
-                                  //       child: Column(
-                                  //         crossAxisAlignment:
-                                  //             CrossAxisAlignment.stretch,
-                                  //         children: [
-                                  //           Flexible(
-                                  //             child: HeroImage(
-                                  //               h: h,
-                                  //               w: w,
-                                  //               dataProvider: lista,
-                                  //             ),
-                                  //           ),
-                                  //           HeroTitle(
-                                  //             media: lista,
-                                  //             maxLines: 1,
-                                  //             style: Theme.of(context)
-                                  //                 .textTheme
-                                  //                 .headline6!
-                                  //                 .copyWith(
-                                  //                   fontSize: 15,
-                                  //                   fontWeight: FontWeight.bold,
-                                  //                 ),
-                                  //           ),
-
-                                  //           // Main(
-                                  //           //   media: lista,
-                                  //           //   maxLines: 1,
-                                  //           // )
-                                  //         ],
-                                  //       ),
-                                  //     ),
-                                  //   );
-                                  // },
                                 )
                               : controller.select1.value
                                   ? Container()
@@ -331,108 +232,57 @@ class MangaGridM extends GetResponsiveView<MangaGridSController> {
               ),
             ],
           ),
-
-          // body: ListView(
-          //   children: <Widget>[
-          //     ConsumerTwo<AnimeProvider, MangaProvider>(
-          //       builder: (context, anime, manga, child) {
-          //         if (type == 'MANGA') {
-          //           return _CopyWidget(
-          //             lista: manga.manga,
-          //             // streamController:
-          //             //     Get.find<HomepageController>().pageindexcontroller,
-          //             type: type!,
-          //             sort: sort!,
-          //             title: 'Trending',
-          //           );
-          //         } else {
-          //           return _CopyWidget(
-          //             title: 'Trending',
-          //             // streamController:
-          //             //     Get.find<HomepageController>().pageindexcontroller,
-          //             // sort: "POPULARITY_DESC",
-          //             sort: sort!,
-          //             type: type!,
-          //             lista: anime.anime,
-          //           );
-          //         }
-          //       },
-          //     ),
-          //     ConsumerTwo<AnimeProvider, MangaProvider>(
-          //       builder: (context, anime, manga, child) {
-          //         if (type == 'MANGA') {
-          //           return _CopyWidget(
-          //             lista: manga.mangap,
-          //             type: type!,
-          //             popula: true,
-          //             sort: "POPULARITY_DESC",
-          //             title: 'All Time Popular',
-          //           );
-          //         } else {
-          //           return _CopyWidget(
-          //             title: 'All Time Popular',
-          //             popula: true,
-          //             sort: "POPULARITY_DESC",
-          //             // sort: sort!,
-          //             type: type!,
-          //             lista: anime.animep,
-          //           );
-          //         }
-          //       },
-          //     ),
-          //   ],
-          // ),
         );
       },
     );
   }
 }
 
-class _CopyWidget extends StatelessWidget {
-  const _CopyWidget({
-    Key? key,
-    required this.title,
-    required this.sort,
-    required this.type,
-    required this.lista,
-    this.streamController,
-    this.popula = false,
-  }) : super(key: key);
-  final bool popula;
-  final List<Media>? lista;
-  final StreamController<int>? streamController;
-  final String sort, type, title;
+// class _CopyWidget extends StatelessWidget {
+//   const _CopyWidget({
+//     Key? key,
+//     required this.title,
+//     required this.sort,
+//     required this.type,
+//     required this.lista,
+//     this.streamController,
+//     this.popula = false,
+//   }) : super(key: key);
+//   final bool popula;
+//   final List<Media>? lista;
+//   final StreamController<int>? streamController;
+//   final String sort, type, title;
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15),
-      child: SafeArea(
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * .59,
-          child: Column(
-            // primary: true,
-            // mainAxisAlignment: MainAxisAlignment.start,
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HeaderTrends(
-                popula: popula,
-                title: title,
-                lista: lista,
-                sort: sort,
-              ),
-              Trends(
-                streamController: streamController,
-                popula: popula,
-                lista: lista,
-                sort: sort,
-                type: type,
-              ),
-              // const Recents()
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: const EdgeInsets.only(top: 15),
+//       child: SafeArea(
+//         child: SizedBox(
+//           height: MediaQuery.of(context).size.height * .59,
+//           child: Column(
+//             // primary: true,
+//             // mainAxisAlignment: MainAxisAlignment.start,
+//             // crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               HeaderTrends(
+//                 popula: popula,
+//                 title: title,
+//                 lista: lista,
+//                 sort: sort,
+//               ),
+//               Trends(
+//                 streamController: streamController,
+//                 popula: popula,
+//                 lista: lista,
+//                 sort: sort,
+//                 type: type,
+//               ),
+//               // const Recents()
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

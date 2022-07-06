@@ -16,8 +16,8 @@ class Homepage extends GetView<HomepageController> {
     sliverappbar1() {
       return Obx(
         () => SliverAppBar(
+          backgroundColor: Theme.of(context).colorScheme.background,
           actions: actions(context, controller.manga.value),
-          surfaceTintColor: Theme.of(context).colorScheme.background,
           floating: true,
         ),
       );
