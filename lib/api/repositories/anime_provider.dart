@@ -67,7 +67,6 @@ class AnimeProvider extends ChangeNotifier {
     tempData = _returnMedia(repositories.page!.media!);
 
     // if (popula == true) {
-
     //   for (Media i in tempData) {
     //     // * Check animep == tempData
     //     if (i.equa(animep) == false) {
