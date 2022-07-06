@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: file_names, unused_element
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
@@ -14,8 +12,6 @@ import 'package:ani_search/screens/details/hero/hero_image.dart';
 import 'package:ani_search/screens/details/hero/hero_title.dart';
 import 'package:ani_search/screens/details/page/details_page.dart';
 import 'package:ani_search/screens/grid/controller/controller.dart';
-import 'package:ani_search/screens/grid/widget/header_trends.dart';
-import 'package:ani_search/screens/grid/widget/trends.dart';
 import 'package:ani_search/widgetU/consumer_two_value.dart';
 
 class GridViewP<A> extends StatelessWidget {
