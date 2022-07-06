@@ -1,14 +1,20 @@
+# on:
+#   pull_request:
+#     types: [closed]
+#   push:
+#     branches:
+#       - get-master
 on:
-  pull_request:
-    types: [closed]
-  # push:
-  #   branches:
-  #     - get-master
+  pull_request_target:
+    types:
+      - closed
+
 
 name: "Build & Release"
   
 jobs:
-  build:
+  if_merged:
+    if: github.event.pull_request.merged == true
     name: Build & Release
     runs-on: ubuntu-latest
     env:
