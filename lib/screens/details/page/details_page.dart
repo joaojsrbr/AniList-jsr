@@ -80,7 +80,7 @@ class _MangaDetailsRState extends State<MangaDetailsR>
                 Consumer<LocaleProvider>(
                   builder: (context, value, child) => SliverAppBar(
                     pinned: true,
-                    surfaceTintColor: Theme.of(context).colorScheme.background,
+                    backgroundColor: Theme.of(context).colorScheme.background,
                     // collapsedHeight: .1.vh,
                     expandedHeight: .75.vh,
                     bottom: TabBar(
