@@ -23,6 +23,7 @@ class HeroTitle extends StatelessWidget {
             media.title!.native ??
             '',
         overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.left,
         style: style ??
             Theme.of(context).textTheme.headline6!.copyWith(
                   fontSize: 20,

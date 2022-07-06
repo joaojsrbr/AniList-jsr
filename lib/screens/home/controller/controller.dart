@@ -12,12 +12,11 @@ class Root {
   BuildContext? context;
   String? sort;
   dynamic type;
-  bool? popula;
+
   Root({
     this.context,
     this.sort,
     this.type,
-    this.popula,
   });
 }
 
@@ -44,13 +43,13 @@ class HomepageController extends GetxController
     BuildContext context,
     String sort,
     dynamic type,
-    bool popula,
+    // bool popula,
   ) async {
     page.value += 1;
     if (type == 'MANGA') {
       load.value = true;
       await Provider.of<MangaProvider>(context, listen: false).getMore(
-        popula: popula,
+        // popula: popula,
         sort: [sort],
         perPage: 25,
         page: page.value,
@@ -60,7 +59,7 @@ class HomepageController extends GetxController
     } else {
       load.value = true;
       await Provider.of<AnimeProvider>(context, listen: false).getMore(
-        popula: popula,
+        // popula: popula,
         sort: [sort],
         perPage: 25,
         page: page.value,
@@ -84,13 +83,18 @@ class HomepageController extends GetxController
     onload = streamController.stream;
     onload.listen(
       (event) {
-        loadMore(event.context!, event.sort!, event.type, event.popula!);
+        loadMore(
+          event.context!,
+          event.sort!,
+          event.type,
+          // event.popula!,
+        );
       },
     );
 
-    const duration = Duration(milliseconds: 0);
+    // const duration = Duration(milliseconds: 0);
     tabcontroller = TabController(
-      animationDuration: duration,
+      // animationDuration: duration,
       initialIndex: 0,
       length: 2,
       vsync: this,

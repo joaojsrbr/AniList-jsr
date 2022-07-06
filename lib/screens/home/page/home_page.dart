@@ -1,3 +1,4 @@
+import 'package:ani_search/screens/grid/controller/controller.dart';
 import 'package:ani_search/screens/grid/page/manga_gridm_page.dart';
 import 'package:ani_search/screens/home/controller/controller.dart';
 import 'package:ani_search/screens/home/widget_List/widgets_model_list.dart';
@@ -15,9 +16,6 @@ class Homepage extends GetView<HomepageController> {
     sliverappbar1() {
       return Obx(
         () => SliverAppBar(
-          // backgroundColor: Theme.of(context).colorScheme.background,
-          // expandedHeight: MediaQuery.of(context).size.height * .20,
-          // pinned: true,
           actions: actions(context, controller.manga.value),
           surfaceTintColor: Theme.of(context).colorScheme.background,
           floating: true,
@@ -106,18 +104,18 @@ class Homepage extends GetView<HomepageController> {
                 child: TabBarView(
                   physics: const NeverScrollableScrollPhysics(),
                   controller: controller.tabcontroller,
-                  children: const <Widget>[
+                  children: <Widget>[
                     MangaGridM(
                       type: "MANGA",
                       sort: "TRENDING_DESC",
-                      key: Key('1'),
+                      key: const PageStorageKey('1'),
                       // lista: manga.manga,
                       // lista2: manga.mangap,
                       // pageInfo: manga.pageInfoM,
                     ),
                     MangaGridM(
                       type: "ANIME",
-                      key: Key('2'),
+                      key: const PageStorageKey('2'),
                       sort: "TRENDING_DESC",
                       // lista2: anime.animep,
                       // lista: anime.anime,
@@ -154,6 +152,11 @@ class LoadOn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<MangaGridSController>();
+    final double heightp = (MediaQuery.of(context).size.height * .045);
+
+    const EdgeInsets padding = EdgeInsets.all(3.5);
+
     return onload
         ? SizedBox(
             height: height,
@@ -189,6 +192,54 @@ class LoadOn extends StatelessWidget {
                   ],
                 ),
               )
-            : Container();
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  // const Text('data'),
+                  // const VerticalDivider(
+                  //   thickness: 2,
+                  //   color: Colors.black,
+                  // ),
+                  Obx(
+                    () => ToggleButtons(
+                      constraints: const BoxConstraints(
+                        maxHeight: 80,
+                        minHeight: 20,
+                        maxWidth: 45,
+                        minWidth: 20,
+                      ),
+                      onPressed: (index) {
+                        controller.selectOne(index);
+                      },
+                      borderRadius: BorderRadius.circular(10),
+                      isSelected: [
+                        controller.select0.value,
+                        controller.select1.value,
+                        controller.select2.value,
+                      ],
+                      children: [
+                        Container(
+                          padding: padding,
+                          alignment: Alignment.center,
+                          height: MediaQuery.of(context).size.height * .045,
+                          child: Image.asset('assets/img/image.png'),
+                        ),
+                        Container(
+                          padding: padding,
+                          alignment: Alignment.center,
+                          height: heightp,
+                          child: Image.asset('assets/img/image3.png'),
+                        ),
+                        Container(
+                          padding: padding,
+                          alignment: Alignment.center,
+                          height: heightp,
+                          child: Image.asset('assets/img/image4.png'),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:ani_search/i18n/repositories/locale_provider.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,10 +8,11 @@ import 'package:provider/provider.dart';
 import 'package:ani_search/api/repositories/anime_provider.dart';
 import 'package:ani_search/api/repositories/manga_provider.dart';
 import 'package:ani_search/api/repositories/search_provider.dart';
-import 'package:ani_search/module/page/homepage_module.dart';
+import 'package:ani_search/i18n/repositories/locale_provider.dart';
 import 'package:ani_search/module/page/detailsr_module.dart';
 import 'package:ani_search/module/page/gridm_module.dart';
 import 'package:ani_search/module/page/grids_module.dart';
+import 'package:ani_search/module/page/homepage_module.dart';
 import 'package:ani_search/screens/home/binding/binding.dart';
 import 'package:ani_search/scroll/scrollbehavior.dart';
 import 'package:ani_search/theme/text_theme.dart';
@@ -35,6 +35,9 @@ class _MyAppState extends State<MyApp> {
 
     return MultiProvider(
       providers: [
+        // ChangeNotifierProvider(
+        //   create: (context) => HiveService(),
+        // ),
         Provider(
           create: (context) => LocaleProvider(),
         ),
@@ -96,7 +99,7 @@ class _MyAppState extends State<MyApp> {
               ),
               colorScheme: lightColorScheme,
             ),
-            title: 'AsS',
+            title: 'AniList-jsr',
             // initialBinding: ControllerBinding(),
             darkTheme: ThemeData(
               useMaterial3: true,

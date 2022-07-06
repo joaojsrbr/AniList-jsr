@@ -207,7 +207,7 @@ class PageBuildWidget extends StatelessWidget {
                     context: context,
                     sort: sort,
                     type: lista!.first.type,
-                    popula: popula,
+                    // popula: popula,
                   ),
                 );
           }

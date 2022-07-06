@@ -81,7 +81,7 @@ class MangaProvider extends ChangeNotifier {
     required type,
     int perPage = 25,
     int page = 0,
-    required bool popula,
+    // required bool popula,
   }) async {
     List<Media> tempData = [];
 
@@ -107,31 +107,30 @@ class MangaProvider extends ChangeNotifier {
     // * List<Media>
     tempData = _returnMedia(repositories.page!.media!);
 
-    if (popula == true) {
-      for (Media i in tempData) {
-        // * Check mangap == tempData
-        if (i.equa(mangap) == false) {
-          if (kDebugMode) {
-            // * print result
-            print(
-                'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- igual: ${i.equa(mangap)}');
-          }
-          // * add to list
-          _mangap.add(i);
+    // if (popula == true) {
+    //   for (Media i in tempData) {
+    //     // * Check mangap == tempData
+    //     if (i.equa(mangap) == false) {
+    //       if (kDebugMode) {
+    //         // * print result
+    //         print(
+    //             'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- igual: ${i.equa(mangap)}');
+    //       }
+    //       // * add to list
+    //       _mangap.add(i);
+    //     }
+    //   }
+    // } else {
+    for (Media i in tempData) {
+      // * Check manga == tempData
+      if (i.equa(manga) == false) {
+        if (kDebugMode) {
+          // * print result
+          print(
+              'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- igual: ${i.equa(manga)}');
         }
-      }
-    } else {
-      for (Media i in tempData) {
-        // * Check manga == tempData
-        if (i.equa(manga) == false) {
-          if (kDebugMode) {
-            // * print result
-            print(
-                'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- igual: ${i.equa(manga)}');
-          }
-          // * add to list
-          _manga.add(i);
-        }
+        // * add to list
+        _manga.add(i);
       }
     }
 

@@ -38,7 +38,7 @@ class SmartRBuild extends StatelessWidget {
                 context: context,
                 sort: sort!,
                 type: lista!.first.type,
-                popula: popula,
+                // popula: popula,
               ),
             );
             Future.delayed(const Duration(seconds: 1));
@@ -51,7 +51,7 @@ class SmartRBuild extends StatelessWidget {
                 context: context,
                 sort: sort!,
                 type: lista!.first.type,
-                popula: popula,
+                // popula: popula,
               ),
             );
 

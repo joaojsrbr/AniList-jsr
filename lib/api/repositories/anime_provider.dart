@@ -43,7 +43,7 @@ class AnimeProvider extends ChangeNotifier {
     required type,
     int perPage = 25,
     int page = 0,
-    required bool popula,
+    // required bool popula,
   }) async {
     List<Media> tempData = [];
     _isLoading = true;
@@ -66,31 +66,31 @@ class AnimeProvider extends ChangeNotifier {
     // * List<Media>
     tempData = _returnMedia(repositories.page!.media!);
 
-    if (popula == true) {
-      for (Media i in tempData) {
-        // * Check animep == tempData
-        if (i.equa(animep) == false) {
-          if (kDebugMode) {
-            // * print result
-            print(
-                'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- ${i.equa(animep)}');
-          }
-          // * add Media to list
-          _animep.add(i);
+    // if (popula == true) {
+    //   for (Media i in tempData) {
+    //     // * Check animep == tempData
+    //     if (i.equa(animep) == false) {
+    //       if (kDebugMode) {
+    //         // * print result
+    //         print(
+    //             'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- ${i.equa(animep)}');
+    //       }
+    //       // * add Media to list
+    //       _animep.add(i);
+    //     }
+    //   }
+    // }
+    // else {
+    for (Media i in tempData) {
+      // * Check anime == tempData
+      if (i.equa(anime) == false) {
+        if (kDebugMode) {
+          // * print result
+          print(
+              'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- ${i.equa(anime)}');
         }
-      }
-    } else {
-      for (Media i in tempData) {
-        // * Check anime == tempData
-        if (i.equa(anime) == false) {
-          if (kDebugMode) {
-            // * print result
-            print(
-                'title: ${i.title!.english ?? i.title!.romaji ?? i.title!.native} -- id: ${i.id} -- ${i.equa(anime)}');
-          }
-          // * add Media to list
-          _anime.add(i);
-        }
+        // * add Media to list
+        _anime.add(i);
       }
     }
 
