@@ -1,5 +1,6 @@
 import 'package:ani_search/screens/home/widget/my_search_delegate.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 Widget buildSheet() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -55,23 +56,26 @@ Widget buildSheet() => Padding(
 //       ),
 //     ];
 
-List<Widget> actions(BuildContext context, bool manga) => <Widget>[
+List<Widget> actions(BuildContext context, RxBool manga) => <Widget>[
       Padding(
         padding: const EdgeInsets.only(right: 10.0),
         child: Material(
-          clipBehavior: Clip.antiAlias,
           type: MaterialType.button,
           borderRadius: BorderRadius.circular(12),
           color: Theme.of(context).colorScheme.background,
           child: IconButton(
-              // autofocus: true,
-              onPressed: () {
-                showSearch(
+            // autofocus: true,
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: MySearchDelegate(
                   context: context,
-                  delegate: MySearchDelegate(context: context, manga: manga),
-                );
-              },
-              icon: const Icon(Icons.search)),
+                  manga: manga.value,
+                ),
+              );
+            },
+            icon: const Icon(Icons.search),
+          ),
         ),
       ),
       Padding(

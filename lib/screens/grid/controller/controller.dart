@@ -9,9 +9,6 @@ class MangaGridSController extends GetxController {
   RxInt page = 1.obs;
   RxInt index = 0.obs;
 
-  // * GridView.builder
-  RxBool select0 = true.obs;
-
   Future<void> loadmore(context, sort, type) async {
     Get.find<HomepageController>().streamController.add(
           Root(
@@ -24,6 +21,9 @@ class MangaGridSController extends GetxController {
         );
   }
 
+  // * GridView.builder
+  RxBool select0 = true.obs;
+
   // * GridView.builder 2
   RxBool select1 = false.obs;
 
@@ -35,17 +35,17 @@ class MangaGridSController extends GetxController {
       select0.value = true;
       select1.value = false;
       select2.value = false;
-      update([28]);
+      // update([28]);
     } else if (index == 1) {
       select1.value = true;
       select0.value = false;
       select2.value = false;
-      update([28]);
+      // update([28]);
     } else {
       select2.value = true;
       select1.value = false;
       select0.value = false;
-      update([28]);
+      // update([28]);
     }
   }
 }
