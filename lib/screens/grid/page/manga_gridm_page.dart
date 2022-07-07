@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: file_names, unused_element
 
+
 import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
@@ -172,8 +174,10 @@ class MangaGridM extends GetResponsiveView<MangaGridSController> {
                                           textAlign: TextAlign.left,
                                         ),
                                       ),
+
                                     ],
                                   ),
+
                                 )
                               ],
                             ),
@@ -187,6 +191,7 @@ class MangaGridM extends GetResponsiveView<MangaGridSController> {
     );
   }
 }
+
 
 class _GridView extends StatelessWidget {
   const _GridView({
@@ -299,6 +304,23 @@ class _GridView extends StatelessWidget {
 //   final List<Media>? lista;
 //   final StreamController<int>? streamController;
 //   final String sort, type, title;
+
+
+// class _CopyWidget extends StatelessWidget {
+//   const _CopyWidget({
+//     Key? key,
+//     required this.title,
+//     required this.sort,
+//     required this.type,
+//     required this.lista,
+//     this.streamController,
+//     this.popula = false,
+//   }) : super(key: key);
+//   final bool popula;
+//   final List<Media>? lista;
+//   final StreamController<int>? streamController;
+//   final String sort, type, title;
+
 
 //   @override
 //   Widget build(BuildContext context) {

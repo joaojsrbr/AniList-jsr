@@ -20,6 +20,7 @@ class Homepage extends GetView<HomepageController> {
         surfaceTintColor: Theme.of(context).colorScheme.background,
         actions: actions(context, controller.manga),
         floating: true,
+
       );
     }
 
