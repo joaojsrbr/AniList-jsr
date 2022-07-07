@@ -27,7 +27,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    debugInvertOversizedImages = true;
+    // debugInvertOversizedImages = true;
 
     // final localizations = KLocalizations.of(context);
 
