@@ -108,6 +108,7 @@ class HomepageController extends GetxController
   void onClose() {
     tabcontroller.dispose();
     // scrollController.dispose();
+    // scrollController.dispose();
     streamController.close();
     pageindexcontroller.close();
     super.onClose();

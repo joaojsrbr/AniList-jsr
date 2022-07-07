@@ -2,27 +2,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ConsumerTwo<AnimeProvider, MangaProvider> extends StatelessWidget {
-  const ConsumerTwo({
-    Key? key,
+class ConsummerPerson<A, B> extends StatelessWidget {
+  const ConsummerPerson({
+    super.key,
     required this.builder,
-  }) : super(key: key);
-
-  final Widget Function(BuildContext context, AnimeProvider anime,
-      MangaProvider manga, Widget child) builder;
+  });
+  final Widget Function(BuildContext, A value, B value1, Widget) builder;
   @override
   Widget build(BuildContext context) {
-    return Consumer<MangaProvider>(
-      builder: (context, manga, child) {
-        return Consumer<AnimeProvider>(
-          builder: (context, anime, child) {
-            return builder(context, anime, manga, child!);
-          },
-          child: const Center(
-            child: CircularProgressIndicator(),
-          ),
-        );
+    return Consumer2<A, B>(
+      builder: (context, value, value2, child) {
+        return builder(context, value, value2, child!);
       },
+      child: const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }

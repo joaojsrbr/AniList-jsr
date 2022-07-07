@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+
 import 'package:ani_search/screens/grid/controller/controller.dart';
 import 'package:ani_search/screens/grid/page/manga_gridm_page.dart';
 import 'package:ani_search/screens/home/controller/controller.dart';
 import 'package:ani_search/screens/home/widget_List/widgets_model_list.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Homepage extends GetView<HomepageController> {
   const Homepage({
@@ -14,23 +15,25 @@ class Homepage extends GetView<HomepageController> {
   @override
   Widget build(BuildContext context) {
     sliverappbar1() {
-      return Obx(
-        () => SliverAppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          actions: actions(context, controller.manga.value),
-          floating: true,
-        ),
+      return SliverAppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        surfaceTintColor: Theme.of(context).colorScheme.background,
+        actions: actions(context, controller.manga),
+        floating: true,
+
       );
     }
 
+    final controllerGrid = Get.find<MangaGridSController>();
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       resizeToAvoidBottomInset: false,
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {},
       // ),
-      key: controller.scaffoldKey,
-      backgroundColor: Theme.of(context).colorScheme.background,
+      // key: controller.scaffoldKey,
       body: NestedScrollView(
+        floatHeaderSlivers: true,
         headerSliverBuilder: (context, _) {
           return <Widget>[
             sliverappbar1(),
@@ -89,6 +92,10 @@ class Homepage extends GetView<HomepageController> {
                     ),
                     Obx(
                       () => LoadOn(
+                        onPressedT: controllerGrid.selectOne,
+                        select0: controllerGrid.select0.value,
+                        select1: controllerGrid.select1.value,
+                        select2: controllerGrid.select2.value,
                         enable: controller.enable.value,
                         onPressed: (index) {
                           controller.pageindexcontroller.sink.add(index);
@@ -108,14 +115,14 @@ class Homepage extends GetView<HomepageController> {
                     MangaGridM(
                       type: "MANGA",
                       sort: "TRENDING_DESC",
-                      key: const PageStorageKey('1'),
+                      key: const Key('1'),
                       // lista: manga.manga,
                       // lista2: manga.mangap,
                       // pageInfo: manga.pageInfoM,
                     ),
                     MangaGridM(
                       type: "ANIME",
-                      key: const PageStorageKey('2'),
+                      key: const Key('2'),
                       sort: "TRENDING_DESC",
                       // lista2: anime.animep,
                       // lista: anime.anime,
@@ -137,7 +144,11 @@ class LoadOn extends StatelessWidget {
     Key? key,
     required this.onload,
     required this.enable,
+    required this.select0,
+    required this.select1,
+    required this.select2,
     required this.onPressed,
+    this.onPressedT,
     this.height = 25,
     this.width = 25,
     this.value,
@@ -149,10 +160,13 @@ class LoadOn extends StatelessWidget {
   final void Function(int)? onPressed;
   final double? width;
   final double? value;
+  final bool select0;
+  final bool select1;
+  final bool select2;
+  final void Function(int)? onPressedT;
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<MangaGridSController>();
     final double heightp = (MediaQuery.of(context).size.height * .045);
 
     const EdgeInsets padding = EdgeInsets.all(3.5);
@@ -193,52 +207,60 @@ class LoadOn extends StatelessWidget {
                 ),
               )
             : Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   // const Text('data'),
                   // const VerticalDivider(
                   //   thickness: 2,
                   //   color: Colors.black,
                   // ),
-                  Obx(
-                    () => ToggleButtons(
-                      constraints: const BoxConstraints(
-                        maxHeight: 80,
-                        minHeight: 20,
-                        maxWidth: 45,
-                        minWidth: 20,
-                      ),
-                      onPressed: (index) {
-                        controller.selectOne(index);
-                      },
-                      borderRadius: BorderRadius.circular(10),
-                      isSelected: [
-                        controller.select0.value,
-                        controller.select1.value,
-                        controller.select2.value,
-                      ],
-                      children: [
-                        Container(
-                          padding: padding,
-                          alignment: Alignment.center,
-                          height: MediaQuery.of(context).size.height * .045,
-                          child: Image.asset('assets/img/image.png'),
-                        ),
-                        Container(
-                          padding: padding,
-                          alignment: Alignment.center,
-                          height: heightp,
-                          child: Image.asset('assets/img/image3.png'),
-                        ),
-                        Container(
-                          padding: padding,
-                          alignment: Alignment.center,
-                          height: heightp,
-                          child: Image.asset('assets/img/image4.png'),
-                        ),
-                      ],
+                  ToggleButtons(
+                    constraints: const BoxConstraints(
+                      maxHeight: 80,
+                      minHeight: 20,
+                      maxWidth: 40,
+                      minWidth: 20,
                     ),
-                  )
+                    onPressed: onPressedT,
+                    borderRadius: BorderRadius.circular(10),
+                    isSelected: [
+                      select0,
+                      select1,
+                      select2,
+                    ],
+                    children: [
+                      Container(
+                        padding: padding,
+                        alignment: Alignment.center,
+                        height: MediaQuery.of(context).size.height * .045,
+                        child: Image.asset(
+                          'assets/img/image.png',
+                          cacheWidth: 53,
+                          cacheHeight: 83,
+                        ),
+                      ),
+                      Container(
+                        padding: padding,
+                        alignment: Alignment.center,
+                        height: heightp,
+                        child: Image.asset(
+                          'assets/img/image3.png',
+                          cacheWidth: 53,
+                          cacheHeight: 83,
+                        ),
+                      ),
+                      Container(
+                        padding: padding,
+                        alignment: Alignment.center,
+                        height: heightp,
+                        child: Image.asset(
+                          'assets/img/image4.png',
+                          cacheWidth: 53,
+                          cacheHeight: 83,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               );
   }
