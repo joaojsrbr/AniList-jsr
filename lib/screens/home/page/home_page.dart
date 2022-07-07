@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
+
 import 'package:ani_search/screens/grid/controller/controller.dart';
 import 'package:ani_search/screens/grid/page/manga_gridm_page.dart';
 import 'package:ani_search/screens/home/controller/controller.dart';
 import 'package:ani_search/screens/home/widget_List/widgets_model_list.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Homepage extends GetView<HomepageController> {
   const Homepage({
