@@ -120,44 +120,40 @@ class BuildImageWidget extends StatelessWidget {
                           ),
                         ),
                       )
-                    : (imageUrl == null)
-                        ? const Center(
+                    : Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(borderradius),
+                        ),
+                        height: (constraints == null)
+                            ? height
+                            : constraints!.maxHeight,
+                        width: (constraints == null)
+                            ? width
+                            : constraints!.maxWidth,
+                        child: CachedNetworkImage(
+                          memCacheHeight: GetPlatform.isWeb ? 2000 : 600,
+                          memCacheWidth: GetPlatform.isWeb ? 2000 : 600,
+                          cacheManager: customCacheManager,
+                          key: cachedkey,
+                          imageUrl: imageUrl!,
+                          color: color,
+                          filterQuality: filterQuality,
+                          fit: fit,
+                          placeholder: (context, url) => const Center(
                             child: CircularProgressIndicator(),
-                          )
-                        : Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(borderradius),
-                            ),
-                            height: (constraints == null)
-                                ? height
-                                : constraints!.maxHeight,
-                            width: (constraints == null)
-                                ? width
-                                : constraints!.maxWidth,
-                            child: CachedNetworkImage(
-                              memCacheHeight: GetPlatform.isWeb ? 2000 : 600,
-                              memCacheWidth: GetPlatform.isWeb ? 2000 : 600,
-                              cacheManager: customCacheManager,
-                              key: cachedkey,
-                              imageUrl: imageUrl!,
-                              color: color,
-                              filterQuality: filterQuality,
-                              fit: fit,
-                              placeholder: (context, url) => Container(
-                                color: Colors.grey[400],
-                              ),
-                              errorWidget: (context, url, error) => Center(
-                                child: Container(
-                                  color: Colors.black12,
-                                  child: Icon(
-                                    Icons.error,
-                                    size: (height! * .5).toDouble(),
-                                    color: Colors.red,
-                                  ),
-                                ),
+                          ),
+                          errorWidget: (context, url, error) => Center(
+                            child: Container(
+                              color: Colors.black12,
+                              child: Icon(
+                                Icons.error,
+                                size: (height! * .5).toDouble(),
+                                color: Colors.red,
                               ),
                             ),
                           ),
+                        ),
+                      ),
               );
   }
 }
