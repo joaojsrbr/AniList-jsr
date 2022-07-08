@@ -32,332 +32,217 @@ class Homepage extends GetView<HomepageController> {
     }
 
     final background = Theme.of(context).colorScheme.background;
-
+    final h = MediaQuery.of(context).size.height;
+    final w = MediaQuery.of(context).size.width;
     return Scaffold(
-        key: controller.scaffoldKey,
-        backgroundColor: background,
-        resizeToAvoidBottomInset: false,
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {},
-        // ),
-        // key: controller.scaffoldKey,
+      key: controller.scaffoldKey,
+      backgroundColor: background,
+      resizeToAvoidBottomInset: false,
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      // ),
+      // key: controller.scaffoldKey,
 
-        body: SafeArea(
-          child: CustomScrollView(
-            cacheExtent: 200,
-            physics: const BouncingScrollPhysics(),
-            controller: controller.scrollController,
-            slivers: [
-              sliverappbar1(),
-              SliverPersistentHeader(
-                pinned: true,
-                floating: true,
-                delegate: DelegatePageHeader(
-                  maxExtent: 60,
-                  minExtent: 60,
-                  child: Container(
-                    height: 60,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                    ),
-                    color: background,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _Gnav(
-                          controller: controller,
+      body: SafeArea(
+        child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          controller: controller.scrollController,
+          slivers: [
+            sliverappbar1(),
+            SliverPersistentHeader(
+              pinned: true,
+              floating: true,
+              delegate: DelegatePageHeader(
+                maxExtent: 60,
+                minExtent: 60,
+                child: Container(
+                  height: 60,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
+                  color: background,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _Gnav(
+                        controller: controller,
+                      ),
+                      Obx(
+                        () => LoadOn(
+                          onPressedT: controller.selectOne,
+                          select0: controller.select0.value,
+                          select1: controller.select1.value,
+                          select2: controller.select2.value,
+                          enable: controller.enable.value,
+                          onPressed: (index) {
+                            controller.pageindexcontroller.sink.add(index);
+                          },
+                          key: ValueKey(controller.load.value),
+                          onload: controller.load.value,
                         ),
-                        Obx(
-                          () => LoadOn(
-                            onPressedT: controller.selectOne,
-                            select0: controller.select0.value,
-                            select1: controller.select1.value,
-                            select2: controller.select2.value,
-                            enable: controller.enable.value,
-                            onPressed: (index) {
-                              controller.pageindexcontroller.sink.add(index);
-                            },
-                            key: ValueKey(controller.load.value),
-                            onload: controller.load.value,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              // SliverToBoxAdapter(
-              //   child: _Gnav(
-              //     controller: controller,
-              //   ),
-              // ),
-              ConsummerPerson<MangaProvider, AnimeProvider>(
-                builder: (context, manga, anime, child) {
-                  // final isLoading = (controller.type.value == 'MANGA')
-                  //     ? manga.isLoading
-                  //     : anime.isLoading;
-
-                  final h = MediaQuery.of(context).size.height;
-                  final w = MediaQuery.of(context).size.width;
-
-                  return GetBuilder<HomepageController>(
-                    initState: (state) {
-                      if (manga.isLoading | anime.isLoading) {
-                        state.controller?.load.value = true;
-                      } else {
-                        state.controller?.load.value = false;
-                      }
-                    },
-                    id: 28,
-                    builder: (controller) => controller.select2.value
-                        ? LiveSliverListP<Media>(
-                            controller: controller.scrollController,
-                            lista: (controller.type.value == 'MANGA')
-                                ? manga.manga
-                                : anime.anime,
-                            key: PageStorageKey(controller.selectedIndex.value),
-                            itemBuilder: (context, index, animation, media) {
-                              final imageUrl = media.coverImage!.extraLarge ??
-                                  media.coverImage!.large ??
-                                  media.coverImage!.medium;
-                              final title = media.title!.english ??
-                                  media.title!.romaji ??
-                                  media.title!.native;
-                              return SizedBox(
-                                child: ListTile(
-                                  onTap: () {
-                                    Get.to(
-                                      const MangaDetailsR(),
-                                      arguments: media,
-                                      duration:
-                                          const Duration(milliseconds: 200),
-                                      transition: Transition.size,
-                                    );
-                                  },
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                    vertical: 2,
-                                  ),
-                                  title: Text(
-                                    title!,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline6!
-                                        .copyWith(
-                                          color: Colors.white,
-                                        ),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  subtitle: const Text('asdasd'),
-                                  leading: SizedBox(
-                                    height: 200,
-                                    width: 60,
-                                    child: ClipRRect(
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(8),
+            ),
+            // SliverToBoxAdapter(
+            //   child: _Gnav(
+            //     controller: controller,
+            //   ),
+            // ),
+            ConsummerPerson<MangaProvider, AnimeProvider>(
+              builder: (context, manga, anime, child) {
+                return GetBuilder<HomepageController>(
+                  id: 28,
+                  builder: (controller) => controller.select2.value
+                      ? LiveSliverListP<Media>(
+                          controller: controller.scrollController,
+                          lista: (controller.type.value == 'MANGA')
+                              ? manga.manga
+                              : anime.anime,
+                          key: PageStorageKey(controller.selectedIndex.value),
+                          itemBuilder: (context, index, animation, media) {
+                            final imageUrl = media.coverImage!.extraLarge ??
+                                media.coverImage!.large ??
+                                media.coverImage!.medium;
+                            final title = media.title!.english ??
+                                media.title!.romaji ??
+                                media.title!.native;
+                            return SizedBox(
+                              child: ListTile(
+                                onTap: () {
+                                  Get.to(
+                                    const MangaDetailsR(),
+                                    arguments: media,
+                                    duration: const Duration(milliseconds: 200),
+                                    transition: Transition.size,
+                                  );
+                                },
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 2,
+                                ),
+                                title: Text(
+                                  title!,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline6!
+                                      .copyWith(
+                                        color: Colors.white,
                                       ),
-                                      child: CachedNetworkImage(
-                                        fit: BoxFit.fill,
-                                        imageUrl: imageUrl!,
-                                        memCacheWidth: 165,
-                                        memCacheHeight: 154,
-                                      ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                subtitle: const Text('asdasd'),
+                                leading: SizedBox(
+                                  height: 200,
+                                  width: 60,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                    child: CachedNetworkImage(
+                                      fit: BoxFit.fill,
+                                      imageUrl: imageUrl!,
+                                      memCacheWidth: 165,
+                                      memCacheHeight: 154,
                                     ),
                                   ),
                                 ),
-                              );
-                            },
-                          )
-                        : LiveSliverGridP<Media>(
-                            lista: (controller.type.value == 'MANGA')
-                                ? manga.manga
-                                : anime.anime,
-                            controller: controller.scrollController,
-                            // itemCount: (controller.type.value == 'MANGA')
-                            //     ? manga.manga.length
-                            //     : anime.anime.length,
+                              ),
+                            );
+                          },
+                        )
+                      : LiveSliverGridP<Media>(
+                          lista: (controller.type.value == 'MANGA')
+                              ? manga.manga
+                              : anime.anime,
+                          controller: controller.scrollController,
+                          reAnimateOnVisibility: true,
+                          // itemCount: (controller.type.value == 'MANGA')
+                          //     ? manga.manga.length
+                          //     : anime.anime.length,
 
-                            key: ObjectKey(controller.type.value),
-                            gridDelegate: controller.gridDelegate,
-                            itemBuilder: (BuildContext context, int index,
-                                animation, media) {
-                              return controller.select0.value
-                                  ? grid1(
-                                      h,
-                                      w,
-                                      media,
-                                      context,
-                                    )
-                                  : GestureDetector(
-                                      onTap: () {
-                                        Get.to(
-                                          const MangaDetailsR(),
-                                          arguments: media,
-                                          duration:
-                                              const Duration(milliseconds: 600),
-                                          transition: Transition.fadeIn,
-                                        );
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            // left: 8.0,
-                                            // right: 8,
-                                            ),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .background,
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Row(
-                                            children: [
-                                              Flexible(
-                                                child: SizedBox(
-                                                  width: w / 2.3,
-                                                  child: HeroImage(
-                                                    logo: false,
-                                                    h: h,
-                                                    w: w,
-                                                    dataProvider: media,
-                                                  ),
-                                                ),
-                                              ),
-                                              Flexible(
-                                                child: Column(
-                                                  children: [
-                                                    ListTile(
-                                                      subtitle: Text(
-                                                        media.type ?? '',
-                                                        textAlign:
-                                                            TextAlign.left,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                            },
-                          ),
-                  );
-                },
+                          key: ObjectKey(controller.type.value),
+                          gridDelegate: controller.gridDelegate,
+                          itemBuilder: (BuildContext context, int index,
+                              animation, media) {
+                            return controller.select0.value
+                                ? grid1(
+                                    h,
+                                    w,
+                                    media,
+                                    context,
+                                  )
+                                : grid2(
+                                    media,
+                                    context,
+                                    w,
+                                    h,
+                                  );
+                          },
+                        ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  GestureDetector grid2(media, BuildContext context, double w, double h) {
+    return GestureDetector(
+      onTap: () {
+        Get.to(
+          const MangaDetailsR(),
+          arguments: media,
+          duration: const Duration(milliseconds: 600),
+          transition: Transition.fadeIn,
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(
+            // left: 8.0,
+            // right: 8,
+            ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          alignment: Alignment.centerLeft,
+          child: Row(
+            children: [
+              Flexible(
+                child: SizedBox(
+                  width: w / 2.3,
+                  child: HeroImage(
+                    logo: false,
+                    h: h,
+                    w: w,
+                    dataProvider: media,
+                  ),
+                ),
               ),
+              Flexible(
+                child: Column(
+                  children: [
+                    ListTile(
+                      subtitle: Text(
+                        media.type ?? '',
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
-        )
-        // NestedScrollView(
-        //   controller: controller.scrollController,
-        //   physics: const BouncingScrollPhysics(),
-        //   floatHeaderSlivers: true,
-        //   headerSliverBuilder: (context, _) {
-        //     return <Widget>[
-        //       sliverappbar1(),
-        //     ];
-        //   },
-        //   body: SafeArea(
-        //     child: Column(
-        //       // mainAxisAlignment: MainAxisAlignment.center,
-        //       // crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: [
-        //         Padding(
-        //           padding:
-        //               const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-        //           child: Row(
-        //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //             // crossAxisAlignment: CrossAxisAlignment.center,
-        //             children: [
-        //               GNav(
-        //                 rippleColor: Colors.grey[300]!,
-        //                 hoverColor: Colors.grey[100]!,
-        //                 gap: 8,
-        //                 activeColor: Colors.black,
-        //                 iconSize: 20,
-        //                 mainAxisAlignment: MainAxisAlignment.start,
-        //                 padding: const EdgeInsets.symmetric(
-        //                     horizontal: 20, vertical: 12),
-        //                 duration: const Duration(milliseconds: 400),
-        //                 tabBackgroundColor: Colors.grey[100]!,
-        //                 color: Colors.white,
-        //                 onTabChange: (value) {
-        //                   WidgetsBinding.instance
-        //                       .addPostFrameCallback((timeStamp) {
-        //                     controller.tabcontroller.index = value;
-        //                     if (value == 0) {
-        //                       controller.manga.value = true;
-        //                     } else {
-        //                       controller.manga.value = false;
-        //                     }
-        //                   });
-        //                 },
-        //                 selectedIndex: controller.tabcontroller.index,
-        //                 tabs: const <GButton>[
-        //                   GButton(
-        //                     // icon: LineIcons.home,
-        //                     icon: Icons.book,
-        //                     iconActiveColor: Colors.black,
-        //                     text: 'Manga',
-        //                   ),
-        //                   GButton(
-        //                     // icon: LineIcons.home,
-        //                     icon: Icons.play_circle,
-        //                     iconActiveColor: Colors.black,
-        //                     text: 'Anime',
-        //                   ),
-        //                 ],
-        //               ),
-        //               Obx(
-        //                 () => LoadOn(
-        //                   onPressedT: controllerGrid.selectOne,
-        //                   select0: controllerGrid.select0.value,
-        //                   select1: controllerGrid.select1.value,
-        //                   select2: controllerGrid.select2.value,
-        //                   enable: controller.enable.value,
-        //                   onPressed: (index) {
-        //                     controller.pageindexcontroller.sink.add(index);
-        //                   },
-        //                   key: ValueKey(controller.load.value),
-        //                   onload: controller.load.value,
-        //                 ),
-        //               ),
-        //             ],
-        //           ),
-        //         ),
-        //         Expanded(
-        //           child: TabBarView(
-        //             physics: const NeverScrollableScrollPhysics(),
-        //             controller: controller.tabcontroller,
-        //             children: <Widget>[
-        //               MangaGridM(
-        //                 type: "MANGA",
-        //                 sort: "TRENDING_DESC",
-        //                 key: const Key('1'),
-        //                 // lista: manga.manga,
-        //                 // lista2: manga.mangap,
-        //                 // pageInfo: manga.pageInfoM,
-        //               ),
-        //               MangaGridM(
-        //                 type: "ANIME",
-        //                 key: const Key('2'),
-        //                 sort: "TRENDING_DESC",
-        //                 // lista2: anime.animep,
-        //                 // lista: anime.anime,
-        //                 // pageInfo: anime.pageInfoA,
-        //               )
-        //             ],
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        );
+        ),
+      ),
+    );
   }
 
   GestureDetector grid1(double h, double w, Media media, BuildContext context) {
@@ -505,14 +390,13 @@ class LoadOn extends StatelessWidget {
     const EdgeInsets padding = EdgeInsets.all(3.5);
 
     return onload
-        ? SizedBox(
+        ? Container(
+            alignment: Alignment.centerLeft,
             height: height,
             width: width,
-            child: const Center(
-              child: CircularProgressIndicator(
-                // value: value,
-                strokeWidth: 2,
-              ),
+            child: const CircularProgressIndicator(
+              // value: value,
+              strokeWidth: 2,
             ),
           )
         : enable
@@ -547,6 +431,7 @@ class LoadOn extends StatelessWidget {
                   //   thickness: 2,
                   //   color: Colors.black,
                   // ),
+
                   ToggleButtons(
                     constraints: const BoxConstraints(
                       maxHeight: 80,

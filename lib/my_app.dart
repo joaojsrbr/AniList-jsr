@@ -1,5 +1,4 @@
 import 'package:dynamic_color/dynamic_color.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -21,9 +20,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      debugInvertOversizedImages = true;
-    }
+    debugInvertOversizedImages = true;
+
     LocalJsonLocalization.delegate.directories = ['i18n'];
 
     return MultiProvider(
