@@ -4,8 +4,9 @@ import 'package:ani_search/api/repositories/manga_provider.dart';
 import 'package:ani_search/screens/details/page/details_page.dart';
 import 'package:ani_search/screens/home/hero/hero_image.dart';
 import 'package:ani_search/screens/home/hero/hero_title.dart';
+import 'package:ani_search/screens/home/widget/live_sliver_p.dart';
+
 import 'package:ani_search/widgetU/consumer_two_value.dart';
-import 'package:auto_animated/auto_animated.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -402,90 +403,6 @@ class Homepage extends GetView<HomepageController> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class LiveSliverListP<A> extends StatelessWidget {
-  const LiveSliverListP({
-    super.key,
-    this.lista,
-    this.itemCount = 0,
-    required this.itemBuilder,
-    required this.controller,
-    this.showItemInterval = const Duration(milliseconds: 250),
-    this.showItemDuration = const Duration(milliseconds: 250),
-    this.delay = Duration.zero,
-    this.visibleFraction = 0.025,
-    this.reAnimateOnVisibility = false,
-  });
-  final int itemCount;
-  final List<A>? lista;
-  final ScrollController controller;
-  final bool reAnimateOnVisibility;
-  final Duration showItemInterval;
-  final Duration showItemDuration;
-  final double visibleFraction;
-  final Duration delay;
-
-  final Widget Function(BuildContext, int, Animation<double>, A) itemBuilder;
-  @override
-  Widget build(BuildContext context) {
-    return LiveSliverList(
-      key: key,
-      controller: controller,
-      delay: delay,
-      reAnimateOnVisibility: reAnimateOnVisibility,
-      visibleFraction: visibleFraction,
-      showItemDuration: showItemDuration,
-      showItemInterval: showItemInterval,
-      itemCount: lista != null ? lista!.length : itemCount,
-      itemBuilder: (context, index, animation) {
-        return itemBuilder(context, index, animation, lista![index]);
-      },
-    );
-  }
-}
-
-class LiveSliverGridP<A> extends StatelessWidget {
-  const LiveSliverGridP({
-    super.key,
-    required this.itemBuilder,
-    required this.controller,
-    required this.gridDelegate,
-    this.itemCount = 0,
-    this.lista,
-    this.showItemInterval = const Duration(milliseconds: 250),
-    this.showItemDuration = const Duration(milliseconds: 250),
-    this.delay = Duration.zero,
-    this.visibleFraction = 0.025,
-    this.reAnimateOnVisibility = false,
-  });
-  final List<A>? lista;
-  final int itemCount;
-  final Widget Function(BuildContext, int, Animation<double>, A) itemBuilder;
-  final SliverGridDelegate gridDelegate;
-  final ScrollController controller;
-  final bool reAnimateOnVisibility;
-  final Duration showItemInterval;
-  final Duration showItemDuration;
-  final double visibleFraction;
-  final Duration delay;
-  @override
-  Widget build(BuildContext context) {
-    return LiveSliverGrid(
-      key: key,
-      delay: delay,
-      reAnimateOnVisibility: reAnimateOnVisibility,
-      itemCount: (lista != null) ? lista!.length : itemCount,
-      controller: controller,
-      visibleFraction: visibleFraction,
-      showItemDuration: showItemDuration,
-      showItemInterval: showItemInterval,
-      gridDelegate: gridDelegate,
-      itemBuilder: (context, index, animation) {
-        return itemBuilder(context, index, animation, lista![index]);
-      },
     );
   }
 }
