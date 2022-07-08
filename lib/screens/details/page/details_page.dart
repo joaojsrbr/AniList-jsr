@@ -1,15 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 
 import 'package:ani_search/i18n/repositories/locale_provider.dart';
+import 'package:ani_search/screens/home/hero/hero_image.dart';
+import 'package:ani_search/screens/home/hero/hero_row_score.dart';
+import 'package:ani_search/screens/home/hero/hero_title.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import 'package:ani_search/api/models/api_graphql_media_model.dart';
-import 'package:ani_search/screens/details/hero/hero_image.dart';
-import 'package:ani_search/screens/details/hero/hero_row_score.dart';
-import 'package:ani_search/screens/details/hero/hero_title.dart';
 import 'package:provider/provider.dart';
 
 Size _viewportSize = Size.zero;

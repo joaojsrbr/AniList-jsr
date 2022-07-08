@@ -1,4 +1,5 @@
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
@@ -10,27 +11,19 @@ import 'package:ani_search/api/repositories/manga_provider.dart';
 import 'package:ani_search/api/repositories/search_provider.dart';
 import 'package:ani_search/i18n/repositories/locale_provider.dart';
 import 'package:ani_search/module/page/detailsr_module.dart';
-import 'package:ani_search/module/page/gridm_module.dart';
-import 'package:ani_search/module/page/grids_module.dart';
 import 'package:ani_search/module/page/homepage_module.dart';
 import 'package:ani_search/screens/home/binding/binding.dart';
 import 'package:ani_search/scroll/scrollbehavior.dart';
 import 'package:ani_search/theme/text_theme.dart';
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
   Widget build(BuildContext context) {
-    // debugInvertOversizedImages = true;
-
-    // final localizations = KLocalizations.of(context);
-
+    if (kDebugMode) {
+      debugInvertOversizedImages = true;
+    }
     LocalJsonLocalization.delegate.directories = ['i18n'];
 
     return MultiProvider(
@@ -125,14 +118,6 @@ List<GetPage<dynamic>> _pages = [
   GetPage(
     name: '/h',
     page: () => const HomepageModule(),
-  ),
-  GetPage(
-    name: '/g',
-    page: () => const GridMModule(),
-  ),
-  GetPage(
-    name: '/s',
-    page: () => const GridSModule(),
   ),
   GetPage(
     name: '/d',

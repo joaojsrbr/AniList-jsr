@@ -65,6 +65,7 @@ dependencies:
 
   # id 
   uuid: 3.0.6
+  sliver_tools: ^0.2.7
 
 
 dev_dependencies:
