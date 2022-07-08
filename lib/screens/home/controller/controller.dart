@@ -20,26 +20,31 @@ class Root {
   });
 }
 
-class HomepageController extends GetxController
-    with GetSingleTickerProviderStateMixin {
-  // late ScrollController scrollController;
+class HomepageController extends GetxController {
   RxInt page = 1.obs;
 
   late StreamController<int> pageindexcontroller;
 
+  RxInt selectedIndex = 0.obs;
+
   RxInt cardindex = 0.obs;
+
+  RxString sort = "TRENDING_DESC".obs;
+
+  RxString type = 'MANGA'.obs;
 
   RxBool enable = false.obs;
 
   RxBool manga = false.obs;
 
+  late ScrollController scrollController;
   // final controller = StreamController.broadcast();
 
   late Stream<Root> onload;
 
   late StreamController<Root> streamController;
 
-  void loadMore(
+  Future<void> loadMore(
     BuildContext context,
     String sort,
     dynamic type,
@@ -67,23 +72,22 @@ class HomepageController extends GetxController
       );
       load.value = false;
     }
-    update([20]);
   }
 
   RxInt length = 0.obs;
 
   RxBool load = false.obs;
 
-  late TabController tabcontroller;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void onInit() {
     pageindexcontroller = StreamController.broadcast();
     streamController = StreamController.broadcast();
     onload = streamController.stream;
     onload.listen(
-      (event) {
-        loadMore(
+      (event) async {
+        await loadMore(
           event.context!,
           event.sort!,
           event.type,
@@ -92,25 +96,107 @@ class HomepageController extends GetxController
       },
     );
 
-    // const duration = Duration(milliseconds: 0);
-    tabcontroller = TabController(
-      // animationDuration: duration,
-      initialIndex: 0,
-      length: 2,
-      vsync: this,
-    );
-    // scrollController = ScrollController();
+    scrollController = ScrollController()..addListener(_scrollListener);
 
     super.onInit();
   }
 
+  void _scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      loadmore(
+        Get.context!,
+        sort.value,
+        type.value,
+      );
+    }
+  }
+
   @override
   void onClose() {
-    tabcontroller.dispose();
     // scrollController.dispose();
-    // scrollController.dispose();
+    scrollController
+      ..removeListener(_scrollListener)
+      ..dispose();
     streamController.close();
     pageindexcontroller.close();
     super.onClose();
+  }
+
+  Future<void> loadmore(context, sort, type) async {
+    Get.find<HomepageController>().streamController.add(
+          Root(
+            context: context,
+            sort: sort,
+            type: type,
+            // type: lista!.first.type,
+            // popula: popula,
+          ),
+        );
+  }
+
+  void onTabchange(int value) {
+    if (value == 0) {
+      selectedIndex.value = 0;
+      type.value = "MANGA";
+      manga.value = true;
+      update([28]);
+    } else {
+      selectedIndex.value = 1;
+      type.value = "ANIME";
+      manga.value = false;
+      update([28]);
+    }
+  }
+
+  SliverGridDelegate gridDelegate =
+      const SliverGridDelegateWithMaxCrossAxisExtent(
+    maxCrossAxisExtent: 340,
+    childAspectRatio: 1,
+    crossAxisSpacing: 0,
+    mainAxisSpacing: 15,
+    mainAxisExtent: 300,
+  );
+
+  // * GridView.builder
+  RxBool select0 = true.obs;
+
+  // * GridView.builder 2
+  RxBool select1 = false.obs;
+
+  // * ListView
+  RxBool select2 = false.obs;
+
+  void selectOne(int index) {
+    if (index == 0) {
+      gridDelegate = const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 290,
+        childAspectRatio: 1,
+        crossAxisSpacing: 0,
+        mainAxisSpacing: 15,
+        mainAxisExtent: 272,
+      );
+      select0.value = true;
+      select1.value = false;
+      select2.value = false;
+      update([28]);
+    } else if (index == 1) {
+      gridDelegate = const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 500,
+        childAspectRatio: 2 / 2,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 15,
+        mainAxisExtent: 300,
+      );
+      select1.value = true;
+      select0.value = false;
+      select2.value = false;
+      update([28]);
+    } else {
+      select2.value = true;
+      select1.value = false;
+      select0.value = false;
+      update([28]);
+    }
   }
 }

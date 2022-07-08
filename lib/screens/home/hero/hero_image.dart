@@ -1,5 +1,5 @@
 import 'package:ani_search/api/models/api_graphql_media_model.dart';
-import 'package:ani_search/screens/grid/widget/cards.dart';
+import 'package:ani_search/screens/home/widget/cards.dart';
 import 'package:ani_search/widgetU/build_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
