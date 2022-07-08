@@ -1,27 +1,27 @@
 name: ani_search
 description: asdasdas
 
-publish_to: 'none' 
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
   sdk: ">=2.17.0 <3.0.3"
 
-
 dependencies:
-  flutter_localizations: 
+  flutter_localizations:
     sdk: flutter
   flutter:
     sdk: flutter
   http: ^0.13.4
   # Utils
   provider: ^6.0.3
-  get: 
+  get:
   flutter_svg: ^1.1.1+1
   # get_it: ^7.2.0
   lazy_load_scrollview: 1.3.0
   percent_indicator: ^4.0.1
+  customtogglebuttons: ^0.0.5
   flutter_layout_grid: ^2.0.1
 
   # Monet
@@ -43,13 +43,13 @@ dependencies:
   # klocalizations_flutter: ^0.0.7
   localization: ^2.1.0
 
-  # Api 
+  # Api
   graphql: ^5.1.1
   # dio: ^4.0.6
 
   # Storage
   # hive: ^2.2.3
-  # hive_flutter: ^1.1.0 
+  # hive_flutter: ^1.1.0
 
   # Html
   flutter_widget_from_html_core: ^0.8.5+3
@@ -59,14 +59,13 @@ dependencies:
   pull_to_refresh: ^2.0.0
   # refresh_loadmore: ^2.0.5
 
-  # animations  
+  # animations
   flutter_staggered_animations: ^1.0.0
   auto_animated: ^3.0.1
 
-  # id 
+  # id
   uuid: 3.0.6
   sliver_tools: ^0.2.7
-
 
 dev_dependencies:
   flutter_test:
@@ -86,7 +85,6 @@ flutter:
   assets:
     - i18n/
     - assets/img/
-
 
   # To add assets to your application, add an assets section, like this:
   # assets:
