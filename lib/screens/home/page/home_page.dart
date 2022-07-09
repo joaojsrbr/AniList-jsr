@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, depend_on_referenced_packages
 // ignore_for_file: unused_element
 
+import 'package:boxy/boxy.dart';
+import 'package:boxy/flex.dart';
+import 'package:boxy/slivers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -118,95 +121,114 @@ class Homepage extends GetView<HomepageController> {
                           child: LinearProgressIndicator(),
                         );
                       }
+
                       return GetBuilder<HomepageController>(
                         id: 28,
                         builder: (controller) => controller.select2.value
-                            ? LiveSliverListP<Media>(
-                                semanticIndexOffset: 400,
-                                controller: controller.scrollController,
-                                lista: (controller.type.value == 'MANGA')
-                                    ? manga.manga
-                                    : anime.anime,
-                                key: typeScrollableKey(controller.type.value),
-                                // key: typeScrollableKey(
-                                // controller.selectedIndex.value),
-                                itemBuilder:
-                                    (context, index, animation, media) {
-                                  final title = media.title!.english ??
-                                      media.title!.romaji ??
-                                      media.title!.native;
-                                  final imageUrl =
-                                      media.coverImage!.extraLarge ??
-                                          media.coverImage!.large ??
-                                          media.coverImage!.medium!;
-                                  return ListTile(
-                                    key: typeScrollableKey(index),
-                                    onTap: () {
-                                      Get.to(
-                                        const MangaDetailsR(),
-                                        arguments: media,
-                                        curve: Curves.ease,
-                                        duration: controller.transitionDuration,
-                                        transition: Transition.fade,
-                                      );
-                                    },
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 2,
-                                    ),
-                                    title: Text(
-                                      title!,
-                                      style: style,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    subtitle: const Text('asdasd'),
-                                    leading: SizedBox(
-                                      height: 200,
-                                      width: 60,
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(8),
-                                        ),
-                                        child: BuildImageWidget(
-                                          fit: BoxFit.cover,
-                                          imageUrl: imageUrl,
-                                          memCacheWidth: 165,
-                                          memCacheHeight: 154,
+                            ? SliverContainer(
+                                margin: const EdgeInsets.all(8),
+                                bufferExtent: controller.select0.value ? 4 : 4,
+                                sliver: LiveSliverListP<Media>(
+                                  semanticIndexOffset: 400,
+                                  controller: controller.scrollController,
+                                  lista: (controller.type.value == 'MANGA')
+                                      ? manga.manga
+                                      : anime.anime,
+                                  key: typeScrollableKey(controller.type.value),
+                                  // key: typeScrollableKey(
+                                  // controller.selectedIndex.value),
+                                  itemBuilder:
+                                      (context, index, animation, media) {
+                                    final title = media.title!.english ??
+                                        media.title!.romaji ??
+                                        media.title!.native;
+                                    final imageUrl =
+                                        media.coverImage!.extraLarge ??
+                                            media.coverImage!.large ??
+                                            media.coverImage!.medium!;
+                                    return ListTile(
+                                      key: typeScrollableKey(index),
+                                      onTap: () {
+                                        Get.to(
+                                          const MangaDetailsR(),
+                                          arguments: media,
+                                          curve: Curves.ease,
+                                          duration:
+                                              controller.transitionDuration,
+                                          transition: Transition.fade,
+                                        );
+                                      },
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 2,
+                                      ),
+                                      title: Text(
+                                        title!,
+                                        style: style,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      subtitle: const Text('asdasd'),
+                                      leading: SizedBox(
+                                        height: 200,
+                                        width: 60,
+                                        child: ClipRRect(
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(8),
+                                          ),
+                                          child: BuildImageWidget(
+                                            fit: BoxFit.cover,
+                                            imageUrl: imageUrl,
+                                            memCacheWidth: 165,
+                                            memCacheHeight: 154,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                },
+                                    );
+                                  },
+                                ),
                               )
-                            : LiveSliverGridP<Media>(
-                                lista: (controller.type.value == 'MANGA')
-                                    ? manga.manga
-                                    : anime.anime,
-                                controller: controller.scrollController,
-                                reAnimateOnVisibility: false,
-                                key: typeScrollableKey(controller.type.value),
-                                gridDelegate: controller.gridDelegate,
-                                itemBuilder: (BuildContext context, int index,
-                                    animation, media) {
-                                  return controller.select0.value
-                                      ? grid1(
-                                          h,
-                                          w,
-                                          media,
-                                          context,
-                                          index,
-                                          animation,
-                                        )
-                                      : grid2(
-                                          media,
-                                          context,
-                                          w,
-                                          h,
-                                          index,
-                                          animation,
-                                        );
-                                },
+                            : SliverContainer(
+                                margin: const EdgeInsets.all(8),
+                                bufferExtent: controller.select0.value ? 4 : 4,
+                                sliver: LiveSliverGridP<Media>(
+                                  lista: (controller.type.value == 'MANGA')
+                                      ? manga.manga
+                                      : anime.anime,
+                                  controller: controller.scrollController,
+                                  reAnimateOnVisibility: false,
+                                  key: typeScrollableKey(controller.type.value),
+                                  gridDelegate: controller.gridDelegate,
+                                  itemBuilder: (BuildContext context, int index,
+                                      animation, media) {
+                                    return controller.select0.value
+                                        ? grid1(
+                                            h,
+                                            w,
+                                            media,
+                                            context,
+                                            index,
+                                            animation,
+                                          )
+                                        : grid2(
+                                            media,
+                                            context,
+                                            w,
+                                            h,
+                                            index,
+                                            animation,
+                                          );
+                                    // grid2(
+                                    //     media,
+                                    //     context,
+                                    //     w,
+                                    //     h,
+                                    //     index,
+                                    //     animation,
+                                    //   );
+                                  },
+                                ),
                               ),
                       );
                     },
@@ -217,14 +239,13 @@ class Homepage extends GetView<HomepageController> {
     );
   }
 
-  FadeTransition grid2(Media media, BuildContext context, double w, double h,
-      int index, Animation<double> animation) {
+  Widget grid2(Media media, BuildContext context, double w, double h, int index,
+      Animation<double> animation) {
     final style = Theme.of(context).textTheme.headline6!.copyWith(
           color: Colors.white,
         );
 
     final publishing = 'Publishing'.i18n();
-
     return FadeTransition(
       key: typeScrollableKey(index),
       opacity: animation,
@@ -238,22 +259,16 @@ class Homepage extends GetView<HomepageController> {
             transition: Transition.fade,
           );
         },
-        child: Padding(
-          padding: const EdgeInsets.only(
-              // left: 8.0,
-              // right: 8,
-              ),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              borderRadius: BorderRadius.circular(15),
-            ),
-            alignment: Alignment.centerLeft,
-            child: Row(
-              children: [
-                Flexible(
-                  child: SizedBox(
-                    width: w / 2.3,
+        child: BoxyRow(
+          children: [
+            Dominant(
+              child: CustomBoxy(
+                delegate: Mybox(),
+                children: [
+                  BoxyId(
+                    id: #image,
+                    hasData: true,
+                    data: Size(w / 2.3, h),
                     child: HeroImage(
                       logo: false,
                       h: h,
@@ -261,71 +276,64 @@ class Homepage extends GetView<HomepageController> {
                       dataProvider: media,
                     ),
                   ),
-                ),
-                Flexible(
-                  child: Column(
-                    children: [
-                      ListTile(
-                        title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '$publishing ${media.startDate!.year}',
-                              textAlign: TextAlign.left,
-                              style: style.copyWith(
-                                color: Colors.white,
-                                fontSize: 14,
-                              ),
-                            ),
-                            Text(
-                              media.type ?? '',
-                              textAlign: TextAlign.left,
-                              style: style.copyWith(
-                                color: Colors.white,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              media.description ?? '',
-                              maxLines: 12,
-                              overflow: TextOverflow.ellipsis,
-                              style: style.copyWith(
-                                color: Colors.grey[400],
-                                fontSize: 12,
-                              ),
-                            ),
-                            Wrap(
-                              clipBehavior: Clip.antiAlias,
-                              children: media.genres!
-                                  .map<Widget>(
-                                    (e) => Card(
-                                      clipBehavior: Clip.antiAlias,
-                                      child: Text(
-                                        e,
-                                        textAlign: TextAlign.center,
-                                        style: style.copyWith(
-                                          fontSize: 12,
-                                          color: AppColors().primarys(context),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                ],
+              ),
             ),
-          ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              width: w * .5,
+              child: BoxyColumn(
+                children: [
+                  Text(
+                    '$publishing ${media.startDate!.year}',
+                    textAlign: TextAlign.left,
+                    style: style.copyWith(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                  Text(
+                    media.type ?? '',
+                    textAlign: TextAlign.left,
+                    style: style.copyWith(
+                      color: Colors.white,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Text(
+                    media.description ?? '',
+                    maxLines: 12,
+                    overflow: TextOverflow.ellipsis,
+                    style: style.copyWith(
+                      color: Colors.grey[400],
+                      fontSize: 13,
+                    ),
+                  ),
+                  Dominant.expanded(
+                    flex: 2,
+                    child: Wrap(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      children: media.genres!
+                          .map<Widget>(
+                            (e) => Card(
+                              clipBehavior: Clip.antiAlias,
+                              child: Text(
+                                e,
+                                textAlign: TextAlign.center,
+                                style: style.copyWith(
+                                  fontSize: 12.5,
+                                  color: AppColors().primarys(context),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -372,6 +380,28 @@ class Homepage extends GetView<HomepageController> {
         ),
       ),
     );
+  }
+}
+
+class Mybox extends BoxyDelegate {
+  @override
+  Size layout() {
+    final image = getChild(#image);
+
+    // final main = getChild(#main);
+    // final card = getChild(#card);
+
+    final sizei = image.parentData as Size;
+
+    // main.layout(constraints.copyWith(
+    //     maxWidth: sizei.width * 2.3, minWidth: sizei.width * 2.3));
+    image.layout(
+        constraints.copyWith(maxWidth: sizei.width, minWidth: sizei.width));
+
+    // texto.layout(constraints);
+    // card.layout(constraints);
+    return image.size;
+    // return texto.size + Offset(0, card.size.height);
   }
 }
 
