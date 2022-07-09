@@ -141,8 +141,8 @@ class BottomBar extends StatefulWidget {
     this.scrollOpposite = false,
     this.hideOnScroll = true,
     this.fit = StackFit.loose,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _BottomBarState createState() => _BottomBarState();

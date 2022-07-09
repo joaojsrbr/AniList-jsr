@@ -171,7 +171,8 @@ class LiveSliverGridP<B> extends StatefulWidget {
   final ScrollController controller;
 
   /// Called, as needed, to build list item widgets.
-  final Widget Function(BuildContext, int, Animation<double>, dynamic)
+  final Widget Function(
+          BuildContext, int, Animation<double>, dynamic, ScrollController)
       itemBuilder;
 
   /// The number of items the list will start with.
@@ -197,6 +198,12 @@ class _LiveSliverGridState extends State<LiveSliverGridP>
     with TickerProviderStateMixin<LiveSliverGridP> {
   final String _keyPrefix = utils.createCryptoRandomString();
 
+  @override
+  void initState() {
+    widget.controller.jumpTo(0.0);
+    super.initState();
+  }
+
   Widget _itemBuilder(BuildContext context, int itemIndex) => AnimateIfVisible(
         key: Key('$_keyPrefix.$itemIndex'),
         duration: widget.showItemDuration,
@@ -207,6 +214,7 @@ class _LiveSliverGridState extends State<LiveSliverGridP>
           itemIndex,
           animation,
           widget.lista![itemIndex],
+          widget.controller,
         ),
       );
 

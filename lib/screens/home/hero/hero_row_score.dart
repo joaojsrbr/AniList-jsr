@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class HeroRowScore extends StatelessWidget {
   const HeroRowScore({
-    Key? key,
+    super.key,
     required this.dataProvider,
-  }) : super(key: key);
+  });
 
   final Media dataProvider;
 

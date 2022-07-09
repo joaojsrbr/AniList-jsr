@@ -21,7 +21,7 @@ extension on num {
 }
 
 class MangaDetailsR extends StatefulWidget {
-  const MangaDetailsR({Key? key}) : super(key: key);
+  const MangaDetailsR({super.key});
 
   @override
   State<MangaDetailsR> createState() => _MangaDetailsRState();
@@ -186,9 +186,9 @@ class _MangaDetailsRState extends State<MangaDetailsR>
 
 class TextGrid extends StatelessWidget {
   const TextGrid({
-    Key? key,
+    super.key,
     required this.dataProvider,
-  }) : super(key: key);
+  });
 
   final Media dataProvider;
 
@@ -219,11 +219,11 @@ class TextGrid extends StatelessWidget {
 
 class ImageGrid extends StatelessWidget {
   const ImageGrid({
-    Key? key,
+    super.key,
     required this.h,
     required this.w,
     required this.dataProvider,
-  }) : super(key: key);
+  });
 
   final double h;
   final double w;

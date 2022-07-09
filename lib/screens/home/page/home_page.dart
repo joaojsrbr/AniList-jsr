@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element
+
 import 'package:ani_search/api/models/api_graphql_media_model.dart';
 import 'package:ani_search/api/repositories/anime_provider.dart';
 import 'package:ani_search/api/repositories/manga_provider.dart';
@@ -53,170 +55,188 @@ class Homepage extends GetView<HomepageController> {
       // key: controller.scaffoldKey,
 
       body: SafeArea(
-        child: AnimateIfVisibleWrapper(
-          showItemInterval: const Duration(milliseconds: 150),
-          child: CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            controller: controller.scrollController,
-            slivers: [
-              sliverappbar1(),
-              SliverPersistentHeader(
-                pinned: true,
-                floating: true,
-                delegate: DelegatePageHeader(
-                  maxExtent: 60,
-                  minExtent: 60,
-                  child: Container(
-                    height: 60,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                    ),
-                    color: background,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _Gnav(
-                          controller: controller,
-                        ),
-                        Obx(
-                          () => LoadOn(
-                            onPressedT: controller.selectOne,
-                            select0: controller.select0.value,
-                            select1: controller.select1.value,
-                            select2: controller.select2.value,
-                            enable: controller.enable.value,
-                            onPressed: (index) {
-                              controller.pageindexcontroller.sink.add(index);
-                            },
-                            key: ValueKey(controller.load.value),
-                            onload: controller.load.value,
+        child: controller.oninit.value
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : AnimateIfVisibleWrapper(
+                showItemInterval: const Duration(milliseconds: 150),
+                child: CustomScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  controller: controller.scrollController,
+                  slivers: [
+                    sliverappbar1(),
+                    SliverPersistentHeader(
+                      pinned: true,
+                      floating: true,
+                      delegate: DelegatePageHeader(
+                        maxExtent: 60,
+                        minExtent: 60,
+                        child: Container(
+                          height: 60,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                          ),
+                          color: background,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _Gnav(
+                                controller: controller,
+                              ),
+                              Obx(
+                                () => LoadOn(
+                                  onPressedT: controller.selectOne,
+                                  select0: controller.select0.value,
+                                  select1: controller.select1.value,
+                                  select2: controller.select2.value,
+                                  enable: controller.enable.value,
+                                  onPressed: (index) {
+                                    controller.pageindexcontroller.sink
+                                        .add(index);
+                                  },
+                                  key: ValueKey(controller.load.value),
+                                  onload: controller.load.value,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-              ),
-              // SliverToBoxAdapter(
-              //   child: _Gnav(
-              //     controller: controller,
-              //   ),
-              // ),
-              ConsummerPerson<MangaProvider, AnimeProvider>(
-                builder: (context, manga, anime, child) {
-                  return GetBuilder<HomepageController>(
-                    id: 28,
-                    builder: (controller) => controller.select2.value
-                        ? LiveSliverListP<Media>(
-                            controller: controller.scrollController,
-                            lista: (controller.type.value == 'MANGA')
-                                ? manga.manga
-                                : anime.anime,
-                            key: PageStorageKey(controller.selectedIndex.value),
-                            itemBuilder: (context, index, animation, media) {
-                              final imageUrl = media.coverImage!.extraLarge ??
-                                  media.coverImage!.large ??
-                                  media.coverImage!.medium;
-                              final title = media.title!.english ??
-                                  media.title!.romaji ??
-                                  media.title!.native;
-                              return FadeTransition(
-                                opacity: Tween<double>(
-                                  begin: 0,
-                                  end: 1,
-                                ).animate(animation),
-                                alwaysIncludeSemantics: true,
-                                child: SizedBox(
-                                  child: ListTile(
-                                    onTap: () {
-                                      Get.to(
-                                        const MangaDetailsR(),
-                                        arguments: media,
-                                        curve: Curves.ease,
-                                        duration: controller.transitionDuration,
-                                        transition: Transition.fade,
-                                      );
-                                    },
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 2,
-                                    ),
-                                    title: Text(
-                                      title!,
-                                      style: style,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    subtitle: const Text('asdasd'),
-                                    leading: SizedBox(
-                                      height: 200,
-                                      width: 60,
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(8),
-                                        ),
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.fill,
-                                          imageUrl: imageUrl!,
-                                          memCacheWidth: 165,
-                                          memCacheHeight: 154,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          )
-                        : LiveSliverGridP<Media>(
-                            lista: (controller.type.value == 'MANGA')
-                                ? manga.manga
-                                : anime.anime,
-                            controller: controller.scrollController,
-                            reAnimateOnVisibility: false,
-                            delay: const Duration(milliseconds: 250),
-                            // itemCount: (controller.type.value == 'MANGA')
-                            //     ? manga.manga.length
-                            //     : anime.anime.length,
-
-                            key: ObjectKey(controller.type.value),
-                            gridDelegate: controller.gridDelegate,
-                            itemBuilder: (BuildContext context, int index,
-                                animation, media) {
-                              return controller.select0.value
-                                  ? FadeTransition(
+                    // SliverToBoxAdapter(
+                    //   child: _Gnav(
+                    //     controller: controller,
+                    //   ),
+                    // ),
+                    ConsummerPerson<MangaProvider, AnimeProvider>(
+                      builder: (context, manga, anime, child) {
+                        if (manga.isLoading && anime.isLoading) {
+                          return const SliverToBoxAdapter(
+                            child: LinearProgressIndicator(),
+                          );
+                        }
+                        return GetBuilder<HomepageController>(
+                          id: 28,
+                          builder: (controller) => controller.select2.value
+                              ? LiveSliverListP<Media>(
+                                  controller: controller.scrollController,
+                                  lista: (controller.type.value == 'MANGA')
+                                      ? manga.manga
+                                      : anime.anime,
+                                  key: PageStorageKey(
+                                      controller.selectedIndex.value),
+                                  itemBuilder:
+                                      (context, index, animation, media) {
+                                    final imageUrl =
+                                        media.coverImage!.extraLarge ??
+                                            media.coverImage!.large ??
+                                            media.coverImage!.medium;
+                                    final title = media.title!.english ??
+                                        media.title!.romaji ??
+                                        media.title!.native;
+                                    return FadeTransition(
                                       opacity: Tween<double>(
                                         begin: 0,
                                         end: 1,
                                       ).animate(animation),
                                       alwaysIncludeSemantics: true,
-                                      child: grid1(
-                                        h,
-                                        w,
-                                        media,
-                                        context,
-                                      ),
-                                    )
-                                  : FadeTransition(
-                                      opacity: Tween<double>(
-                                        begin: 0,
-                                        end: 1,
-                                      ).animate(animation),
-                                      child: grid2(
-                                        media,
-                                        context,
-                                        w,
-                                        h,
+                                      child: SizedBox(
+                                        child: ListTile(
+                                          onTap: () {
+                                            Get.to(
+                                              const MangaDetailsR(),
+                                              arguments: media,
+                                              curve: Curves.ease,
+                                              duration:
+                                                  controller.transitionDuration,
+                                              transition: Transition.fade,
+                                            );
+                                          },
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                            horizontal: 8,
+                                            vertical: 2,
+                                          ),
+                                          title: Text(
+                                            title!,
+                                            style: style,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          subtitle: const Text('asdasd'),
+                                          leading: SizedBox(
+                                            height: 200,
+                                            width: 60,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(8),
+                                              ),
+                                              child: CachedNetworkImage(
+                                                fit: BoxFit.fill,
+                                                imageUrl: imageUrl!,
+                                                memCacheWidth: 165,
+                                                memCacheHeight: 154,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     );
-                            },
-                          ),
-                  );
-                },
+                                  },
+                                )
+                              : LiveSliverGridP<Media>(
+                                  lista: (controller.type.value == 'MANGA')
+                                      ? manga.manga
+                                      : anime.anime,
+                                  controller: controller.scrollController,
+                                  reAnimateOnVisibility: false,
+
+                                  // itemCount: (controller.type.value == 'MANGA')
+                                  //     ? manga.manga.length
+                                  //     : anime.anime.length,
+
+                                  key: PageStorageKey(
+                                      ObjectKey(controller.type.value)),
+                                  gridDelegate: controller.gridDelegate,
+                                  itemBuilder: (BuildContext context, int index,
+                                      animation, media, scrollcontroller) {
+                                    return controller.select0.value
+                                        ? FadeTransition(
+                                            opacity: Tween<double>(
+                                              begin: 0,
+                                              end: 1,
+                                            ).animate(animation),
+                                            alwaysIncludeSemantics: true,
+                                            child: grid1(
+                                              h,
+                                              w,
+                                              media,
+                                              context,
+                                            ),
+                                          )
+                                        : FadeTransition(
+                                            opacity: Tween<double>(
+                                              begin: 0,
+                                              end: 1,
+                                            ).animate(animation),
+                                            alwaysIncludeSemantics: true,
+                                            child: grid2(
+                                              media,
+                                              context,
+                                              w,
+                                              h,
+                                            ),
+                                          );
+                                  },
+                                ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -397,9 +417,9 @@ class DelegatePageHeader extends SliverPersistentHeaderDelegate {
 
 class _Gnav extends StatelessWidget {
   const _Gnav({
-    Key? key,
+    super.key,
     required this.controller,
-  }) : super(key: key);
+  });
 
   final HomepageController controller;
 
@@ -438,7 +458,7 @@ class _Gnav extends StatelessWidget {
 
 class LoadOn extends StatelessWidget {
   const LoadOn({
-    Key? key,
+    super.key,
     required this.onload,
     required this.enable,
     required this.select0,
@@ -449,7 +469,7 @@ class LoadOn extends StatelessWidget {
     this.height = 25,
     this.width = 25,
     this.value,
-  }) : super(key: key);
+  });
 
   final bool onload;
   final double? height;
