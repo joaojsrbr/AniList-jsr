@@ -1,9 +1,8 @@
 {
-
-    "overview": "overview", 
-    "characters": "characters", 
-    "staff": "staff", 
-    "social": "social", 
-    "stats": "stats"
-     
+    "overview": "overview",
+    "characters": "characters",
+    "staff": "staff",
+    "social": "social",
+    "stats": "stats",
+    "Publishing": "Publishing Since"
 }

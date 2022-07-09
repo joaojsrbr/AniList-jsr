@@ -139,9 +139,6 @@ class BuildImageWidget extends StatelessWidget {
                           color: color,
                           filterQuality: filterQuality,
                           fit: fit,
-                          placeholder: (context, url) => const Center(
-                            child: CircularProgressIndicator(),
-                          ),
                           errorWidget: (context, url, error) => Center(
                             child: Container(
                               color: Colors.black12,

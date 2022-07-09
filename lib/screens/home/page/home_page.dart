@@ -4,6 +4,7 @@ import 'package:ani_search/api/repositories/manga_provider.dart';
 import 'package:ani_search/screens/details/page/details_page.dart';
 import 'package:ani_search/screens/home/hero/hero_image.dart';
 import 'package:ani_search/screens/home/hero/hero_title.dart';
+import 'package:ani_search/screens/home/widget/helpers/animate_if_visible.dart';
 import 'package:ani_search/screens/home/widget/live_sliver_p.dart';
 
 import 'package:ani_search/widgetU/consumer_two_value.dart';
@@ -14,6 +15,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'package:ani_search/screens/home/controller/controller.dart';
 import 'package:ani_search/screens/home/widget_List/widgets_model_list.dart';
+import 'package:localization/localization.dart';
 
 class Homepage extends GetView<HomepageController> {
   const Homepage({
@@ -32,8 +34,15 @@ class Homepage extends GetView<HomepageController> {
     }
 
     final background = Theme.of(context).colorScheme.background;
+
     final h = MediaQuery.of(context).size.height;
+
     final w = MediaQuery.of(context).size.width;
+
+    final style = Theme.of(context).textTheme.headline6!.copyWith(
+          color: Colors.white,
+        );
+
     return Scaffold(
       key: controller.scaffoldKey,
       backgroundColor: background,
@@ -44,162 +53,189 @@ class Homepage extends GetView<HomepageController> {
       // key: controller.scaffoldKey,
 
       body: SafeArea(
-        child: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
-          controller: controller.scrollController,
-          slivers: [
-            sliverappbar1(),
-            SliverPersistentHeader(
-              pinned: true,
-              floating: true,
-              delegate: DelegatePageHeader(
-                maxExtent: 60,
-                minExtent: 60,
-                child: Container(
-                  height: 60,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                  ),
-                  color: background,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _Gnav(
-                        controller: controller,
-                      ),
-                      Obx(
-                        () => LoadOn(
-                          onPressedT: controller.selectOne,
-                          select0: controller.select0.value,
-                          select1: controller.select1.value,
-                          select2: controller.select2.value,
-                          enable: controller.enable.value,
-                          onPressed: (index) {
-                            controller.pageindexcontroller.sink.add(index);
-                          },
-                          key: ValueKey(controller.load.value),
-                          onload: controller.load.value,
+        child: AnimateIfVisibleWrapper(
+          showItemInterval: const Duration(milliseconds: 150),
+          child: CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            controller: controller.scrollController,
+            slivers: [
+              sliverappbar1(),
+              SliverPersistentHeader(
+                pinned: true,
+                floating: true,
+                delegate: DelegatePageHeader(
+                  maxExtent: 60,
+                  minExtent: 60,
+                  child: Container(
+                    height: 60,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                    ),
+                    color: background,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _Gnav(
+                          controller: controller,
                         ),
-                      ),
-                    ],
+                        Obx(
+                          () => LoadOn(
+                            onPressedT: controller.selectOne,
+                            select0: controller.select0.value,
+                            select1: controller.select1.value,
+                            select2: controller.select2.value,
+                            enable: controller.enable.value,
+                            onPressed: (index) {
+                              controller.pageindexcontroller.sink.add(index);
+                            },
+                            key: ValueKey(controller.load.value),
+                            onload: controller.load.value,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            // SliverToBoxAdapter(
-            //   child: _Gnav(
-            //     controller: controller,
-            //   ),
-            // ),
-            ConsummerPerson<MangaProvider, AnimeProvider>(
-              builder: (context, manga, anime, child) {
-                return GetBuilder<HomepageController>(
-                  id: 28,
-                  builder: (controller) => controller.select2.value
-                      ? LiveSliverListP<Media>(
-                          controller: controller.scrollController,
-                          lista: (controller.type.value == 'MANGA')
-                              ? manga.manga
-                              : anime.anime,
-                          key: PageStorageKey(controller.selectedIndex.value),
-                          itemBuilder: (context, index, animation, media) {
-                            final imageUrl = media.coverImage!.extraLarge ??
-                                media.coverImage!.large ??
-                                media.coverImage!.medium;
-                            final title = media.title!.english ??
-                                media.title!.romaji ??
-                                media.title!.native;
-                            return SizedBox(
-                              child: ListTile(
-                                onTap: () {
-                                  Get.to(
-                                    const MangaDetailsR(),
-                                    arguments: media,
-                                    duration: const Duration(milliseconds: 200),
-                                    transition: Transition.size,
-                                  );
-                                },
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 2,
-                                ),
-                                title: Text(
-                                  title!,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6!
-                                      .copyWith(
-                                        color: Colors.white,
-                                      ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                subtitle: const Text('asdasd'),
-                                leading: SizedBox(
-                                  height: 200,
-                                  width: 60,
-                                  child: ClipRRect(
-                                    borderRadius: const BorderRadius.all(
-                                      Radius.circular(8),
+              // SliverToBoxAdapter(
+              //   child: _Gnav(
+              //     controller: controller,
+              //   ),
+              // ),
+              ConsummerPerson<MangaProvider, AnimeProvider>(
+                builder: (context, manga, anime, child) {
+                  return GetBuilder<HomepageController>(
+                    id: 28,
+                    builder: (controller) => controller.select2.value
+                        ? LiveSliverListP<Media>(
+                            controller: controller.scrollController,
+                            lista: (controller.type.value == 'MANGA')
+                                ? manga.manga
+                                : anime.anime,
+                            key: PageStorageKey(controller.selectedIndex.value),
+                            itemBuilder: (context, index, animation, media) {
+                              final imageUrl = media.coverImage!.extraLarge ??
+                                  media.coverImage!.large ??
+                                  media.coverImage!.medium;
+                              final title = media.title!.english ??
+                                  media.title!.romaji ??
+                                  media.title!.native;
+                              return FadeTransition(
+                                opacity: Tween<double>(
+                                  begin: 0,
+                                  end: 1,
+                                ).animate(animation),
+                                alwaysIncludeSemantics: true,
+                                child: SizedBox(
+                                  child: ListTile(
+                                    onTap: () {
+                                      Get.to(
+                                        const MangaDetailsR(),
+                                        arguments: media,
+                                        curve: Curves.ease,
+                                        duration: controller.transitionDuration,
+                                        transition: Transition.fade,
+                                      );
+                                    },
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 2,
                                     ),
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.fill,
-                                      imageUrl: imageUrl!,
-                                      memCacheWidth: 165,
-                                      memCacheHeight: 154,
+                                    title: Text(
+                                      title!,
+                                      style: style,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    subtitle: const Text('asdasd'),
+                                    leading: SizedBox(
+                                      height: 200,
+                                      width: 60,
+                                      child: ClipRRect(
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(8),
+                                        ),
+                                        child: CachedNetworkImage(
+                                          fit: BoxFit.fill,
+                                          imageUrl: imageUrl!,
+                                          memCacheWidth: 165,
+                                          memCacheHeight: 154,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          },
-                        )
-                      : LiveSliverGridP<Media>(
-                          lista: (controller.type.value == 'MANGA')
-                              ? manga.manga
-                              : anime.anime,
-                          controller: controller.scrollController,
-                          reAnimateOnVisibility: true,
-                          // itemCount: (controller.type.value == 'MANGA')
-                          //     ? manga.manga.length
-                          //     : anime.anime.length,
+                              );
+                            },
+                          )
+                        : LiveSliverGridP<Media>(
+                            lista: (controller.type.value == 'MANGA')
+                                ? manga.manga
+                                : anime.anime,
+                            controller: controller.scrollController,
+                            reAnimateOnVisibility: false,
+                            delay: const Duration(milliseconds: 250),
+                            // itemCount: (controller.type.value == 'MANGA')
+                            //     ? manga.manga.length
+                            //     : anime.anime.length,
 
-                          key: ObjectKey(controller.type.value),
-                          gridDelegate: controller.gridDelegate,
-                          itemBuilder: (BuildContext context, int index,
-                              animation, media) {
-                            return controller.select0.value
-                                ? grid1(
-                                    h,
-                                    w,
-                                    media,
-                                    context,
-                                  )
-                                : grid2(
-                                    media,
-                                    context,
-                                    w,
-                                    h,
-                                  );
-                          },
-                        ),
-                );
-              },
-            ),
-          ],
+                            key: ObjectKey(controller.type.value),
+                            gridDelegate: controller.gridDelegate,
+                            itemBuilder: (BuildContext context, int index,
+                                animation, media) {
+                              return controller.select0.value
+                                  ? FadeTransition(
+                                      opacity: Tween<double>(
+                                        begin: 0,
+                                        end: 1,
+                                      ).animate(animation),
+                                      alwaysIncludeSemantics: true,
+                                      child: grid1(
+                                        h,
+                                        w,
+                                        media,
+                                        context,
+                                      ),
+                                    )
+                                  : FadeTransition(
+                                      opacity: Tween<double>(
+                                        begin: 0,
+                                        end: 1,
+                                      ).animate(animation),
+                                      child: grid2(
+                                        media,
+                                        context,
+                                        w,
+                                        h,
+                                      ),
+                                    );
+                            },
+                          ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  GestureDetector grid2(media, BuildContext context, double w, double h) {
+  GestureDetector grid2(Media media, BuildContext context, double w, double h) {
+    final style = Theme.of(context).textTheme.headline6!.copyWith(
+          color: Colors.white,
+        );
+
+    final publishing = 'Publishing'.i18n();
+
     return GestureDetector(
       onTap: () {
         Get.to(
           const MangaDetailsR(),
           arguments: media,
-          duration: const Duration(milliseconds: 600),
-          transition: Transition.fadeIn,
+          curve: Curves.ease,
+          duration: controller.transitionDuration,
+          transition: Transition.fade,
         );
       },
       child: Padding(
@@ -230,9 +266,60 @@ class Homepage extends GetView<HomepageController> {
                 child: Column(
                   children: [
                     ListTile(
-                      subtitle: Text(
-                        media.type ?? '',
-                        textAlign: TextAlign.left,
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '$publishing ${media.startDate!.year}',
+                            textAlign: TextAlign.left,
+                            style: style.copyWith(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                          Text(
+                            media.type ?? '',
+                            textAlign: TextAlign.left,
+                            style: style.copyWith(
+                              color: Colors.white,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ],
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            media.description ?? '',
+                            maxLines: 12,
+                            overflow: TextOverflow.ellipsis,
+                            style: style.copyWith(
+                              color: Colors.grey[400],
+                              fontSize: 12,
+                            ),
+                          ),
+                          Wrap(
+                            clipBehavior: Clip.antiAlias,
+                            children: media.genres!
+                                .map<Widget>(
+                                  (e) => Card(
+                                    clipBehavior: Clip.antiAlias,
+                                    child: Text(
+                                      e,
+                                      textAlign: TextAlign.center,
+                                      style: style.copyWith(
+                                        fontSize: 12,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          )
+                        ],
                       ),
                     ),
                   ],
@@ -248,21 +335,13 @@ class Homepage extends GetView<HomepageController> {
   GestureDetector grid1(double h, double w, Media media, BuildContext context) {
     return GestureDetector(
       onTap: () {
-        const transitionDuration = Duration(milliseconds: 600);
-        Navigator.of(context).push(
-          PageRouteBuilder(
-            settings: RouteSettings(
-              arguments: media,
-            ),
-            transitionDuration: transitionDuration,
-            reverseTransitionDuration: transitionDuration,
-            pageBuilder: (_, animation, __) {
-              return FadeTransition(
-                opacity: animation,
-                child: const MangaDetailsR(),
-              );
-            },
-          ),
+        Get.to(
+          const MangaDetailsR(),
+          opaque: true,
+          curve: Curves.ease,
+          arguments: media,
+          duration: controller.transitionDuration,
+          transition: Transition.fade,
         );
       },
       child: Padding(

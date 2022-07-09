@@ -27,6 +27,8 @@ class HomepageController extends GetxController {
 
   RxInt selectedIndex = 0.obs;
 
+  final transitionDuration = const Duration(milliseconds: 750);
+
   RxInt cardindex = 0.obs;
 
   RxString sort = "TRENDING_DESC".obs;
