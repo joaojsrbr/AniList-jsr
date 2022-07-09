@@ -204,13 +204,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-  customtogglebuttons:
-    dependency: "direct main"
-    description:
-      name: customtogglebuttons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.5"
   dart_style:
     dependency: transitive
     description:
