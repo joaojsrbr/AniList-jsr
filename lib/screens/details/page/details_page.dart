@@ -141,6 +141,14 @@ class _MangaDetailsRState extends State<MangaDetailsR>
                                   children: [
                                     HtmlWidget(
                                       dataProvider.description!,
+                                      enableCaching: true,
+                                      textStyle: Theme.of(context)
+                                          .textTheme
+                                          .headline6!
+                                          .copyWith(
+                                            color: Colors.grey[400],
+                                            fontSize: 13,
+                                          ),
                                     ),
                                   ],
                                 ),
