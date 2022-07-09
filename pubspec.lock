@@ -57,6 +57,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  boxy:
+    dependency: "direct main"
+    description:
+      name: boxy
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.6+1"
   build:
     dependency: transitive
     description:
@@ -204,13 +211,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-  customtogglebuttons:
-    dependency: "direct main"
-    description:
-      name: customtogglebuttons
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.5"
   dart_style:
     dependency: transitive
     description:
