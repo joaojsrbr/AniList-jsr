@@ -4,7 +4,7 @@ import 'package:ani_search/screens/details/page/details_page.dart'
     deferred as mangadetailsr_page;
 
 class DetailsRModule extends StatelessWidget {
-  const DetailsRModule({Key? key}) : super(key: key);
+  const DetailsRModule({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -16,7 +16,7 @@ import 'package:ani_search/scroll/scrollbehavior.dart';
 import 'package:ani_search/theme/text_theme.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +36,9 @@ class MyApp extends StatelessWidget {
           create: (context) => MangaProvider(),
         ),
         ChangeNotifierProvider(
-          lazy: true,
           create: (context) => AnimeProvider(),
         ),
         ChangeNotifierProvider(
-          lazy: true,
           create: (context) => SearchProvider(),
         ),
       ],

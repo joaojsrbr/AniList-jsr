@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages
+// ignore_for_file: library_private_types_in_public_api, depend_on_referenced_packages, unused_element
 
 import 'dart:async';
 
@@ -114,8 +114,8 @@ class AnimateIfVisibleWrapper extends StatefulWidget {
     this.delay = Duration.zero,
     this.showItemInterval = const Duration(milliseconds: 150),
     this.controller,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ScrollController? controller;
   final Widget child;
@@ -204,10 +204,10 @@ class _AnimateIfVisibleWrapperState extends State<AnimateIfVisibleWrapper> {
 
 class _VisibilityStackProvider extends InheritedWidget {
   const _VisibilityStackProvider({
-    required Widget child,
+    required super.child,
     required this.stack,
-    Key? key,
-  }) : super(key: key, child: child);
+    super.key,
+  });
 
   final VisibilityStack? stack;
 

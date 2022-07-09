@@ -6,12 +6,12 @@ import 'package:get/get.dart';
 
 class HeroImage extends StatelessWidget {
   const HeroImage({
-    Key? key,
+    super.key,
     required this.h,
     required this.w,
     this.logo = true,
     required this.dataProvider,
-  }) : super(key: key);
+  });
 
   final double h;
   final double w;

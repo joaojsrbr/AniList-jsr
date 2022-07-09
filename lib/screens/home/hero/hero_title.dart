@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 class HeroTitle extends StatelessWidget {
   const HeroTitle({
-    Key? key,
+    super.key,
     required this.media,
     this.style,
     this.maxLines = 4,
-  }) : super(key: key);
+  });
   final int maxLines;
   final TextStyle? style;
   final Media media;

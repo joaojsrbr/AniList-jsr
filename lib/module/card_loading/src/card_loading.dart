@@ -7,7 +7,7 @@ part 'card_loading_theme.dart';
 
 class CardLoading extends StatefulWidget {
   const CardLoading({
-    Key? key,
+    super.key,
     required this.height,
     this.width,
     this.margin,
@@ -17,7 +17,7 @@ class CardLoading extends StatefulWidget {
     this.cardLoadingTheme = const CardLoadingTheme(),
     this.curve = Curves.easeInOutSine,
     this.withChangeDuration = true,
-  }) : super(key: key);
+  });
 
   /// height will be the size of [CardLoading]
   /// and this parameter is required

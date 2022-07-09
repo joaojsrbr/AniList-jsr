@@ -4,7 +4,7 @@ import 'package:ani_search/screens/home/page/home_page.dart'
     deferred as homepage_page;
 
 class HomepageModule extends StatelessWidget {
-  const HomepageModule({Key? key}) : super(key: key);
+  const HomepageModule({super.key});
 
   @override
   Widget build(BuildContext context) {

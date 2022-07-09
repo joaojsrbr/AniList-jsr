@@ -17,8 +17,8 @@ class CardS extends StatelessWidget {
       topLeft: Radius.circular(8.4),
       bottomRight: Radius.circular(8.4),
     ),
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

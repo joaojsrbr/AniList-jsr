@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 class CardScore extends StatelessWidget {
   const CardScore({
-    Key? key,
+    super.key,
     this.averageScore,
     required this.style,
     required this.media,
-  }) : super(key: key);
+  });
 
   final Media media;
   final dynamic averageScore;
