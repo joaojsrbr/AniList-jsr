@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, depend_on_referenced_packages
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -26,6 +26,8 @@ class HomepageController extends GetxController {
   late StreamController<int> pageindexcontroller;
 
   RxInt selectedIndex = 0.obs;
+
+  // RxDouble tempDouble = 0.0.obs;
 
   RxBool oninit = false.obs;
 
@@ -86,7 +88,6 @@ class HomepageController extends GetxController {
 
   @override
   void onInit() {
-    pageindexcontroller = StreamController.broadcast();
     streamController = StreamController.broadcast();
     onload = streamController.stream;
     onload.listen(
@@ -144,14 +145,19 @@ class HomepageController extends GetxController {
       selectedIndex.value = 0;
       type.value = "MANGA";
       manga.value = true;
+      scrollController.jumpTo(0.0);
       update([28]);
     } else {
       selectedIndex.value = 1;
       type.value = "ANIME";
       manga.value = false;
+
+      scrollController.jumpTo(0.0);
       update([28]);
     }
   }
+
+  GlobalKey<State> key = GlobalKey();
 
   SliverGridDelegate gridDelegate =
       const SliverGridDelegateWithMaxCrossAxisExtent(

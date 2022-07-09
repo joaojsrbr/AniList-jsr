@@ -18,10 +18,14 @@ class BuildImageWidget extends StatelessWidget {
   final BlendMode colorBlendMode;
   final FilterQuality filterQuality;
   final List<double>? stops;
+  final int? memCacheHeight;
+  final int? memCacheWidth;
   const BuildImageWidget({
     this.imageUrl,
     this.colorBlendMode = BlendMode.modulate,
     this.constraints,
+    this.memCacheHeight,
+    this.memCacheWidth,
     this.height,
     this.stops,
     this.colorfilter = false,
@@ -133,6 +137,8 @@ class BuildImageWidget extends StatelessWidget {
                         child: CachedNetworkImage(
                           // memCacheHeight: GetPlatform.isWeb ? 2000 : 600,
                           // memCacheWidth: GetPlatform.isWeb ? 2000 : 600,
+                          memCacheHeight: memCacheHeight,
+                          memCacheWidth: memCacheWidth,
                           cacheManager: customCacheManager,
                           key: cachedkey,
                           imageUrl: imageUrl!,

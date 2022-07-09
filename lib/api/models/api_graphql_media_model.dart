@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, body_might_complete_normally_nullable
+import 'package:ani_search/api/models/api_graphql_title_model.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:ani_search/api/models/api_graphql_coverimage_model.dart';
 import 'package:ani_search/api/models/api_graphql_recommendations_model.dart';
 import 'package:ani_search/api/models/api_graphql_startdate_model.dart';
-import 'package:ani_search/api/models/api_graphql_title_model.dart';
 
 extension Equa on Media {
   bool? equa(List<Media> other) {
@@ -154,6 +154,7 @@ class Media {
   String? status;
   StartDate? startDate;
   StartDate? endDate;
+
   int? meanScore;
   String? idr;
   int? popularity;
