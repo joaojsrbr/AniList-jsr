@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:ani_search/api/models/api_graphql_media_model.dart';
 import 'package:flutter/material.dart';
 
 import 'helpers/animate_if_visible.dart';
@@ -15,6 +16,7 @@ class LiveSliverListP<A> extends StatefulWidget {
     required this.controller,
     this.visibleFraction = 0.025,
     this.reAnimateOnVisibility = false,
+    this.semanticIndexOffset = 0,
     this.delay = Duration.zero,
     this.lista,
     this.showItemInterval = _kDuration,
@@ -24,6 +26,7 @@ class LiveSliverListP<A> extends StatefulWidget {
 
   LiveSliverListP.options({
     required this.itemBuilder,
+    this.semanticIndexOffset = 0,
     this.lista,
     this.itemCount = 0,
     required this.controller,
@@ -43,6 +46,8 @@ class LiveSliverListP<A> extends StatefulWidget {
 
   /// Show each item through
   final Duration showItemInterval;
+
+  final int semanticIndexOffset;
 
   /// Animation duration
   final Duration showItemDuration;
@@ -65,7 +70,7 @@ class LiveSliverListP<A> extends StatefulWidget {
   final ScrollController controller;
 
   /// Called, as needed, to build list item widgets.
-  final Widget Function(BuildContext, int, Animation<double>, dynamic)
+  final Widget Function(BuildContext, int, Animation<double>, Media)
       itemBuilder;
 
   /// The number of items the list will start with.
@@ -104,6 +109,7 @@ class _LiveSliverListState extends State<LiveSliverListP>
         child: SliverList(
           delegate: SliverChildBuilderDelegate(
             _itemBuilder,
+            semanticIndexOffset: widget.semanticIndexOffset,
             childCount: (widget.lista != null)
                 ? widget.lista!.length
                 : widget.itemCount,
@@ -171,8 +177,7 @@ class LiveSliverGridP<B> extends StatefulWidget {
   final ScrollController controller;
 
   /// Called, as needed, to build list item widgets.
-  final Widget Function(
-          BuildContext, int, Animation<double>, dynamic, ScrollController)
+  final Widget Function(BuildContext, int, Animation<double>, Media)
       itemBuilder;
 
   /// The number of items the list will start with.
@@ -198,11 +203,11 @@ class _LiveSliverGridState extends State<LiveSliverGridP>
     with TickerProviderStateMixin<LiveSliverGridP> {
   final String _keyPrefix = utils.createCryptoRandomString();
 
-  @override
-  void initState() {
-    widget.controller.jumpTo(0.0);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   widget.controller.jumpTo(0.0);
+  //   super.initState();
+  // }
 
   Widget _itemBuilder(BuildContext context, int itemIndex) => AnimateIfVisible(
         key: Key('$_keyPrefix.$itemIndex'),
@@ -210,12 +215,7 @@ class _LiveSliverGridState extends State<LiveSliverGridP>
         visibleFraction: widget.visibleFraction,
         reAnimateOnVisibility: widget.reAnimateOnVisibility,
         builder: (context, animation) => widget.itemBuilder(
-          context,
-          itemIndex,
-          animation,
-          widget.lista![itemIndex],
-          widget.controller,
-        ),
+            context, itemIndex, animation, widget.lista![itemIndex]),
       );
 
   @override
