@@ -152,13 +152,10 @@ class HomepageController extends GetxController {
   );
 
   // * GridView.builder
-  RxBool select0 = true.obs;
-
-  // * GridView.builder 2
-  RxBool select1 = false.obs;
+  RxBool gridview = true.obs;
 
   // * ListView
-  RxBool select2 = false.obs;
+  RxBool listview = false.obs;
 
   void selectOne(int index) {
     if (index == 0) {
@@ -169,9 +166,9 @@ class HomepageController extends GetxController {
         mainAxisSpacing: 15,
         mainAxisExtent: 272,
       );
-      select0.value = true;
-      select1.value = false;
-      select2.value = false;
+      gridview.value = true;
+      listview.value = false;
+
       update([28]);
     } else if (index == 1) {
       gridDelegate = const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -181,14 +178,11 @@ class HomepageController extends GetxController {
         mainAxisSpacing: 15,
         mainAxisExtent: 300,
       );
-      select1.value = true;
-      select0.value = false;
-      select2.value = false;
+      gridview.value = false;
+      listview.value = false;
       update([28]);
     } else {
-      select2.value = true;
-      select1.value = false;
-      select0.value = false;
+      listview.value = true;
       // update([28]);
     }
   }

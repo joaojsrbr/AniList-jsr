@@ -1,5 +1,6 @@
+// ignore_for_file: unused_element
+
 import 'package:ani_search/api/models/api_graphql_media_model.dart';
-import 'package:ani_search/api/repositories/manga_and_anime_repository.dart';
 import 'package:ani_search/api/repositories/search_repository.dart';
 import 'package:ani_search/screens/details/page/details_page.dart';
 import 'package:ani_search/screens/home/controller/controller.dart';
@@ -15,21 +16,21 @@ class MySearchDelegate extends SearchDelegate {
   BuildContext context;
   final bool manga;
 
-  late MangaandAnimeRepository mangaRepository = MangaandAnimeRepository(
-    manga: true,
-    type: 'MANGA',
-    sorts: "TRENDING_DESC",
-    perPage: 25,
-    page: 0,
-  );
+  // late MangaandAnimeRepository mangaRepository = MangaandAnimeRepository(
+  //   manga: true,
+  //   type: 'MANGA',
+  //   sorts: "TRENDING_DESC",
+  //   perPage: 25,
+  //   page: 0,
+  // );
 
-  late MangaandAnimeRepository animeRepository = MangaandAnimeRepository(
-    manga: true,
-    type: 'ANIME',
-    sorts: "TRENDING_DESC",
-    perPage: 25,
-    page: 0,
-  );
+  // late MangaandAnimeRepository animeRepository = MangaandAnimeRepository(
+  //   manga: true,
+  //   type: 'ANIME',
+  //   sorts: "TRENDING_DESC",
+  //   perPage: 25,
+  //   page: 0,
+  // );
 
   late SearchRepository searchRepository =
       SearchRepository(result: false, manga: manga);
@@ -61,6 +62,7 @@ class MySearchDelegate extends SearchDelegate {
             // await getData('airing');
           } else {
             query = '';
+            close(context, null);
             // getData(query);
           }
         },
@@ -111,86 +113,30 @@ class MySearchDelegate extends SearchDelegate {
     );
   }
 
-  GestureDetector grid1(double h, double w, Media media, BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        const transitionDuration = Duration(milliseconds: 600);
-        Navigator.of(context).push(
-          PageRouteBuilder(
-            settings: RouteSettings(
-              arguments: media,
-            ),
-            transitionDuration: transitionDuration,
-            reverseTransitionDuration: transitionDuration,
-            pageBuilder: (_, animation, __) {
-              return FadeTransition(
-                opacity: animation,
-                child: const MangaDetailsR(),
-              );
-            },
-          ),
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Flexible(
-              child: HeroImage(
-                h: h,
-                w: w,
-                dataProvider: media,
-              ),
-            ),
-            HeroTitle(
-              media: media,
-              maxLines: 1,
-              style: Theme.of(context).textTheme.headline6!.copyWith(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget itemBuilder(BuildContext context, Media media, int index) {
-    final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
-    return grid1(
-      h,
-      w,
-      media,
-      context,
-    );
-  }
-
   @override
   Widget buildSuggestions(BuildContext context) {
-    final controller = Get.find<HomepageController>();
-    return Scaffold(
-      body: LoadingMoreList(
-        key: PageStorageKey(controller.type.value),
-        ListConfig<Media>(
-          padding: const EdgeInsets.all(8),
-          autoLoadMore: false,
-          sourceList: manga ? mangaRepository : animeRepository,
-          itemBuilder: itemBuilder,
-          indicatorBuilder: (context, indicator) => indicatorBuilder(
-              context, indicator, manga ? mangaRepository : animeRepository),
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 340,
-            childAspectRatio: 1,
-            crossAxisSpacing: 0,
-            mainAxisSpacing: 15,
-            mainAxisExtent: 300,
-          ),
-        ),
-      ),
-    );
+    // mangaRepository.map((e){
+
+    // })
+    return _KeepLive(manga: manga);
+    // body: LoadingMoreList(
+    //   key: PageStorageKey(controller.type.value),
+    //   ListConfig<Media>(
+    //     padding: const EdgeInsets.all(8),
+    //     autoLoadMore: false,
+    //     sourceList: manga ? mangaRepository : animeRepository,
+    //     itemBuilder: itemBuilder,
+    //     indicatorBuilder: (context, indicator) => indicatorBuilder(
+    //         context, indicator, manga ? mangaRepository : animeRepository),
+    //     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+    //       maxCrossAxisExtent: 340,
+    //       childAspectRatio: 1,
+    //       crossAxisSpacing: 0,
+    //       mainAxisSpacing: 15,
+    //       mainAxisExtent: 300,
+    //     ),
+    //   ),
+    // ),
   }
 }
 
@@ -274,4 +220,108 @@ Widget indicatorBuilder(BuildContext context, IndicatorStatus status,
       break;
   }
   return widget;
+}
+
+class _KeepLive extends StatefulWidget {
+  const _KeepLive({
+    super.key,
+    required this.manga,
+  });
+  final bool manga;
+
+  @override
+  State<_KeepLive> createState() => _KeepLiveState();
+}
+
+class _KeepLiveState extends State<_KeepLive>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    final controller = Get.find<HomepageController>();
+
+    final mangaRepository =
+        widget.manga ? controller.mangaRepository : controller.animeRepository;
+
+    return Scaffold(
+      body: GridView.builder(
+        // key: ObjectKey(controller.type.value),
+        key: const PageStorageKey('Results'),
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 340,
+          childAspectRatio: 1,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 15,
+          mainAxisExtent: 300,
+        ),
+        cacheExtent: 340,
+        itemCount: mangaRepository.length,
+        itemBuilder: (context, index) => itemBuilder(
+          context,
+          mangaRepository[index],
+          index,
+        ),
+      ),
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}
+
+Widget itemBuilder(BuildContext context, Media media, int index) {
+  final h = MediaQuery.of(context).size.height;
+  final w = MediaQuery.of(context).size.width;
+  return grid1(
+    h,
+    w,
+    media,
+    context,
+  );
+}
+
+GestureDetector grid1(double h, double w, Media media, BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      const transitionDuration = Duration(milliseconds: 600);
+      Navigator.of(context).push(
+        PageRouteBuilder(
+          settings: RouteSettings(
+            arguments: media,
+          ),
+          transitionDuration: transitionDuration,
+          reverseTransitionDuration: transitionDuration,
+          pageBuilder: (_, animation, __) {
+            return FadeTransition(
+              opacity: animation,
+              child: const MangaDetailsR(),
+            );
+          },
+        ),
+      );
+    },
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Flexible(
+            child: HeroImage(
+              h: h,
+              w: w,
+              dataProvider: media,
+            ),
+          ),
+          HeroTitle(
+            media: media,
+            maxLines: 1,
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
