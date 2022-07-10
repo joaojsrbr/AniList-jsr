@@ -1,12 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, depend_on_referenced_packages
 import 'dart:async';
 
+import 'package:ani_search/api/repositories/manga_and_anime_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
-
-import 'package:ani_search/api/repositories/anime_provider.dart';
-import 'package:ani_search/api/repositories/manga_provider.dart';
 
 class Root {
   BuildContext? context;
@@ -25,11 +22,11 @@ class HomepageController extends GetxController {
 
   late StreamController<int> pageindexcontroller;
 
+  late MangaandAnimeRepository mangaandAnimeRepository;
+
   RxInt selectedIndex = 0.obs;
 
   // RxDouble tempDouble = 0.0.obs;
-
-  RxBool oninit = false.obs;
 
   final transitionDuration = const Duration(milliseconds: 750);
 
@@ -41,88 +38,57 @@ class HomepageController extends GetxController {
 
   RxBool enable = false.obs;
 
-  RxBool manga = false.obs;
+  RxBool manga = true.obs;
 
   late ScrollController scrollController;
-  // final controller = StreamController.broadcast();
 
   late Stream<Root> onload;
 
   late StreamController<Root> streamController;
 
-  Future<void> loadMore(
-    BuildContext context,
-    String sort,
-    dynamic type,
-    // bool popula,
-  ) async {
-    page.value += 1;
-    if (type == 'MANGA') {
-      load.value = true;
-      await Provider.of<MangaProvider>(context, listen: false).getMore(
-        // popula: popula,
-        sort: [sort],
-        perPage: 25,
-        page: page.value,
-        type: type!,
-      );
-      load.value = false;
-    } else {
-      load.value = true;
-      await Provider.of<AnimeProvider>(context, listen: false).getMore(
-        // popula: popula,
-        sort: [sort],
-        perPage: 25,
-        page: page.value,
-        type: type!,
-      );
-      load.value = false;
-    }
-  }
-
   RxInt length = 0.obs;
-
-  RxBool load = false.obs;
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void onInit() {
-    streamController = StreamController.broadcast();
-    onload = streamController.stream;
-    onload.listen(
-      (event) async {
-        await loadMore(
-          event.context!,
-          event.sort!,
-          event.type,
-          // event.popula!,
-        );
-      },
+    mangaandAnimeRepository = MangaandAnimeRepository(
+      manga: true,
+      type: 'MANGA',
     );
+    // streamController = StreamController.broadcast();
+    // onload = streamController.stream;
+    // onload.listen(
+    //   (event) async {
+    //     await loadMore(
+    //       event.context!,
+    //       event.sort!,
+    //       event.type,
+    //       // event.popula!,
+    //     );
+    //   },
+    // );
 
-    scrollController = ScrollController()..addListener(_scrollListener);
+    scrollController = ScrollController();
 
     super.onInit();
   }
 
-  void _scrollListener() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      loadmore(
-        Get.context!,
-        sort.value,
-        type.value,
-      );
-    }
-  }
+  // void _scrollListener() {
+  //   if (scrollController.position.pixels ==
+  //       scrollController.position.maxScrollExtent) {
+  //     loadmore(
+  //       Get.context!,
+  //       sort.value,
+  //       type.value,
+  //     );
+  //   }
+  // }
 
   @override
   void onClose() {
     // scrollController.dispose();
-    scrollController
-      ..removeListener(_scrollListener)
-      ..dispose();
+    scrollController.dispose();
     streamController.close();
     pageindexcontroller.close();
     super.onClose();
@@ -140,19 +106,28 @@ class HomepageController extends GetxController {
         );
   }
 
-  void onTabchange(int value) {
+  void onTabchange(int value) async {
     if (value == 0) {
-      selectedIndex.value = 0;
-      type.value = "MANGA";
-      manga.value = true;
       scrollController.jumpTo(0.0);
+      manga.value = true;
+      type.value = "MANGA";
+      mangaandAnimeRepository = MangaandAnimeRepository(
+        manga: manga.value,
+        type: type.value,
+      );
+      await mangaandAnimeRepository.refresh();
+      selectedIndex.value = 0;
       update([28]);
     } else {
-      selectedIndex.value = 1;
-      type.value = "ANIME";
-      manga.value = false;
-
       scrollController.jumpTo(0.0);
+      manga.value = false;
+      type.value = "ANIME";
+      mangaandAnimeRepository = MangaandAnimeRepository(
+        manga: manga.value,
+        type: type.value,
+      );
+      await mangaandAnimeRepository.refresh();
+      selectedIndex.value = 1;
       update([28]);
     }
   }
@@ -206,7 +181,7 @@ class HomepageController extends GetxController {
       select2.value = true;
       select1.value = false;
       select0.value = false;
-      update([28]);
+      // update([28]);
     }
   }
 }

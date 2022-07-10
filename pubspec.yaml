@@ -41,12 +41,10 @@ dependencies:
   cupertino_icons: ^1.0.2
 
   # Localizations
-  # klocalizations_flutter: ^0.0.7
   localization: ^2.1.0
 
   # Api
   graphql: ^5.1.1
-  # dio: ^4.0.6
 
   # Storage
   # hive: ^2.2.3
@@ -54,11 +52,9 @@ dependencies:
 
   # Html
   flutter_widget_from_html_core: ^0.8.5+3
-  # flutter_html: ^2.2.1
 
   # onload ...
-  pull_to_refresh: ^2.0.0
-  # refresh_loadmore: ^2.0.5
+  loading_more_list: ^4.1.2
 
   # animations
   flutter_staggered_animations: ^1.0.0
