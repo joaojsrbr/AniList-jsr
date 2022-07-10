@@ -18,10 +18,10 @@ var uuid = const Uuid(options: {'grng': UuidUtil.cryptoRNG});
 
 class MangaandAnimeRepository extends LoadingMoreBase<Media> {
   MangaandAnimeRepository({
-    this.sorts = "TRENDING_DESC",
-    this.type = 'MANGA',
-    this.perPage = 25,
-    this.page = 0,
+    required this.sorts,
+    required this.type,
+    required this.perPage,
+    required this.page,
     required this.manga,
   });
 

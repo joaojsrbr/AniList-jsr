@@ -1,16 +1,35 @@
 import 'package:ani_search/api/models/api_graphql_media_model.dart';
+import 'package:ani_search/api/repositories/manga_and_anime_repository.dart';
 import 'package:ani_search/api/repositories/search_repository.dart';
 import 'package:ani_search/screens/details/page/details_page.dart';
+import 'package:ani_search/screens/home/controller/controller.dart';
 import 'package:ani_search/screens/home/hero/hero_image.dart';
 import 'package:ani_search/screens/home/hero/hero_title.dart';
 import 'package:ani_search/utils/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 
 class MySearchDelegate extends SearchDelegate {
   BuildContext context;
   final bool manga;
+
+  late MangaandAnimeRepository mangaRepository = MangaandAnimeRepository(
+    manga: true,
+    type: 'MANGA',
+    sorts: "TRENDING_DESC",
+    perPage: 25,
+    page: 0,
+  );
+
+  late MangaandAnimeRepository animeRepository = MangaandAnimeRepository(
+    manga: true,
+    type: 'ANIME',
+    sorts: "TRENDING_DESC",
+    perPage: 25,
+    page: 0,
+  );
 
   late SearchRepository searchRepository =
       SearchRepository(result: false, manga: manga);
@@ -151,17 +170,17 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    final controller = Get.find<HomepageController>();
     return Scaffold(
-      key: const PageStorageKey('Suggestions'),
       body: LoadingMoreList(
-        key: const PageStorageKey('Suggestions'),
+        key: PageStorageKey(controller.type.value),
         ListConfig<Media>(
           padding: const EdgeInsets.all(8),
           autoLoadMore: false,
-          sourceList: searchRepository,
+          sourceList: manga ? mangaRepository : animeRepository,
           itemBuilder: itemBuilder,
-          indicatorBuilder: (context, indicator) =>
-              indicatorBuilder(context, indicator, searchRepository),
+          indicatorBuilder: (context, indicator) => indicatorBuilder(
+              context, indicator, manga ? mangaRepository : animeRepository),
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 340,
             childAspectRatio: 1,
@@ -176,7 +195,7 @@ class MySearchDelegate extends SearchDelegate {
 }
 
 Widget indicatorBuilder(BuildContext context, IndicatorStatus status,
-    SearchRepository searchRepository) {
+    LoadingMoreBase<Media> loadingMoreBase) {
   Widget _setbackground(
       bool full, Widget widget, double height, BuildContext context) {
     widget = Container(
@@ -226,7 +245,7 @@ Widget indicatorBuilder(BuildContext context, IndicatorStatus status,
       widget = _setbackground(false, widget, 35.0, context);
       widget = GestureDetector(
         onTap: () {
-          searchRepository.errorRefresh();
+          loadingMoreBase.errorRefresh();
         },
         child: widget,
       );
@@ -240,7 +259,7 @@ Widget indicatorBuilder(BuildContext context, IndicatorStatus status,
       widget = _setbackground(true, widget, double.infinity, context);
       widget = GestureDetector(
         onTap: () {
-          searchRepository.errorRefresh();
+          loadingMoreBase.errorRefresh();
         },
         child: widget,
       );
