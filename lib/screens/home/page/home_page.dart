@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, depend_on_referenced_packages
 // ignore_for_file: unused_element
 
+import 'package:ani_search/screens/home/widget/toggle_button.dart';
 import 'package:boxy/boxy.dart';
 import 'package:boxy/flex.dart';
 import 'package:boxy/slivers.dart';
@@ -84,9 +85,6 @@ class Homepage extends GetView<HomepageController> {
                       Obx(
                         () => LoadOn(
                           onPressedT: controller.selectOne,
-                          select0: controller.select0.value,
-                          select1: controller.select1.value,
-                          select2: controller.select2.value,
                           enable: controller.enable.value,
                           onPressed: (index) {
                             controller.pageindexcontroller.sink.add(index);
@@ -103,7 +101,7 @@ class Homepage extends GetView<HomepageController> {
               id: 28,
               builder: (controller) => SliverContainer(
                 // margin: const EdgeInsets.all(8),
-                bufferExtent: controller.select0.value ? 4 : 4,
+                bufferExtent: controller.gridview.value ? 4 : 4,
                 sliver: LoadingMoreSliverList(
                   key: PageStorageKey(controller.type.value),
                   SliverListConfig<Media>(
@@ -264,7 +262,7 @@ class Homepage extends GetView<HomepageController> {
 
     final w = MediaQuery.of(context).size.width;
 
-    return controller.select0.value
+    return controller.gridview.value
         ? grid1(
             h,
             w,
@@ -508,9 +506,6 @@ class LoadOn extends StatelessWidget {
   const LoadOn({
     super.key,
     required this.enable,
-    required this.select0,
-    required this.select1,
-    required this.select2,
     required this.onPressed,
     this.onPressedT,
     this.height = 25,
@@ -523,9 +518,6 @@ class LoadOn extends StatelessWidget {
   final void Function(int)? onPressed;
   final double? width;
   final double? value;
-  final bool select0;
-  final bool select1;
-  final bool select2;
   final void Function(int)? onPressedT;
 
   @override
@@ -566,21 +558,17 @@ class LoadOn extends StatelessWidget {
               //   thickness: 2,
               //   color: Colors.black,
               // ),
-
-              ToggleButtons(
+              ToggleButton(
+                onPressed: onPressedT,
+                normal: false,
+                initvalue: 0,
+                borderRadius: BorderRadius.circular(10),
                 constraints: const BoxConstraints(
                   maxHeight: 80,
                   minHeight: 20,
                   maxWidth: 40,
                   minWidth: 20,
                 ),
-                onPressed: onPressedT,
-                borderRadius: BorderRadius.circular(10),
-                isSelected: [
-                  select0,
-                  select1,
-                  select2,
-                ],
                 children: [
                   Container(
                     padding: padding,
@@ -613,7 +601,55 @@ class LoadOn extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
+              )
+
+              // ToggleButtons(
+              //   constraints: const BoxConstraints(
+              //     maxHeight: 80,
+              //     minHeight: 20,
+              //     maxWidth: 40,
+              //     minWidth: 20,
+              //   ),
+              //   onPressed: onPressedT,
+              //   borderRadius: BorderRadius.circular(10),
+              //   isSelected: [
+              //     select0,
+              //     select1,
+              //     select2,
+              //   ],
+              //   children: [
+              //     Container(
+              //       padding: padding,
+              //       alignment: Alignment.center,
+              //       height: MediaQuery.of(context).size.height * .045,
+              //       child: Image.asset(
+              //         'assets/img/image.png',
+              //         cacheWidth: 53,
+              //         cacheHeight: 83,
+              //       ),
+              //     ),
+              //     Container(
+              //       padding: padding,
+              //       alignment: Alignment.center,
+              //       height: heightp,
+              //       child: Image.asset(
+              //         'assets/img/image3.png',
+              //         cacheWidth: 53,
+              //         cacheHeight: 83,
+              //       ),
+              //     ),
+              //     Container(
+              //       padding: padding,
+              //       alignment: Alignment.center,
+              //       height: heightp,
+              //       child: Image.asset(
+              //         'assets/img/image4.png',
+              //         cacheWidth: 53,
+              //         cacheHeight: 83,
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           );
   }
