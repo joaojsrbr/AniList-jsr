@@ -4,23 +4,20 @@
 import 'package:boxy/boxy.dart';
 import 'package:boxy/flex.dart';
 import 'package:boxy/slivers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:loading_more_list/loading_more_list.dart';
 import 'package:localization/localization.dart';
 
 import 'package:ani_search/api/models/api_graphql_media_model.dart';
-import 'package:ani_search/api/repositories/anime_provider.dart';
-import 'package:ani_search/api/repositories/manga_provider.dart';
 import 'package:ani_search/screens/details/page/details_page.dart';
 import 'package:ani_search/screens/home/controller/controller.dart';
 import 'package:ani_search/screens/home/hero/hero_image.dart';
 import 'package:ani_search/screens/home/hero/hero_title.dart';
-import 'package:ani_search/screens/home/widget/live_sliver_p.dart';
 import 'package:ani_search/screens/home/widget_List/widgets_model_list.dart';
 import 'package:ani_search/utils/app_colors.dart';
-import 'package:ani_search/widgetU/build_image.dart';
-import 'package:ani_search/widgetU/consumer_two_value.dart';
 
 class Homepage extends GetView<HomepageController> {
   const Homepage({
@@ -43,13 +40,13 @@ class Homepage extends GetView<HomepageController> {
 
     final background = Theme.of(context).colorScheme.background;
 
-    final h = MediaQuery.of(context).size.height;
+    // final h = MediaQuery.of(context).size.height;
 
-    final w = MediaQuery.of(context).size.width;
+    // final w = MediaQuery.of(context).size.width;
 
-    final style = Theme.of(context).textTheme.headline6!.copyWith(
-          color: Colors.white,
-        );
+    // final style = Theme.of(context).textTheme.headline6!.copyWith(
+    //       color: Colors.white,
+    //     );
 
     return Scaffold(
       key: controller.scaffoldKey,
@@ -61,322 +58,355 @@ class Homepage extends GetView<HomepageController> {
       // key: controller.scaffoldKey,
 
       body: SafeArea(
-        child: controller.oninit.value
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : CustomScrollView(
-                key: controller.key,
-                physics: const BouncingScrollPhysics(),
-                controller: controller.scrollController,
-                slivers: [
-                  sliverappbar1(),
-                  SliverPersistentHeader(
-                    pinned: true,
-                    floating: true,
-                    delegate: DelegatePageHeader(
-                      maxExtent: 60,
-                      minExtent: 60,
-                      child: Container(
-                        height: 60,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                        ),
-                        color: background,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _Gnav(
-                              controller: controller,
-                            ),
-                            Obx(
-                              () => LoadOn(
-                                onPressedT: controller.selectOne,
-                                select0: controller.select0.value,
-                                select1: controller.select1.value,
-                                select2: controller.select2.value,
-                                enable: controller.enable.value,
-                                onPressed: (index) {
-                                  controller.pageindexcontroller.sink
-                                      .add(index);
-                                },
-                                key: ValueKey(controller.load.value),
-                                onload: controller.load.value,
-                              ),
-                            ),
-                          ],
+        child: LoadingMoreCustomScrollView(
+          controller: controller.scrollController,
+          rebuildCustomScrollView: true,
+          slivers: [
+            sliverappbar1(),
+            SliverPersistentHeader(
+              pinned: true,
+              floating: true,
+              delegate: DelegatePageHeader(
+                maxExtent: 60,
+                minExtent: 60,
+                child: Container(
+                  height: 60,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
+                  color: background,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _Gnav(
+                        controller: controller,
+                      ),
+                      Obx(
+                        () => LoadOn(
+                          onPressedT: controller.selectOne,
+                          select0: controller.select0.value,
+                          select1: controller.select1.value,
+                          select2: controller.select2.value,
+                          enable: controller.enable.value,
+                          onPressed: (index) {
+                            controller.pageindexcontroller.sink.add(index);
+                          },
+                          key: ValueKey(controller.cardindex.value),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                  // SliverToBoxAdapter(
-                  //   child: _Gnav(
-                  //     controller: controller,
-                  //   ),
-                  // ),
-                  ConsummerPerson<MangaProvider, AnimeProvider>(
-                    builder: (context, manga, anime, child) {
-                      if (manga.isLoading && anime.isLoading) {
-                        return const SliverToBoxAdapter(
-                          child: LinearProgressIndicator(),
-                        );
-                      }
-
-                      return GetBuilder<HomepageController>(
-                        id: 28,
-                        builder: (controller) => controller.select2.value
-                            ? SliverContainer(
-                                margin: const EdgeInsets.all(8),
-                                bufferExtent: controller.select0.value ? 4 : 4,
-                                sliver: LiveSliverListP<Media>(
-                                  semanticIndexOffset: 400,
-                                  controller: controller.scrollController,
-                                  lista: (controller.type.value == 'MANGA')
-                                      ? manga.manga
-                                      : anime.anime,
-                                  key: typeScrollableKey(controller.type.value),
-                                  // key: typeScrollableKey(
-                                  // controller.selectedIndex.value),
-                                  itemBuilder:
-                                      (context, index, animation, media) {
-                                    final title = media.title!.english ??
-                                        media.title!.romaji ??
-                                        media.title!.native;
-                                    final imageUrl =
-                                        media.coverImage!.extraLarge ??
-                                            media.coverImage!.large ??
-                                            media.coverImage!.medium!;
-                                    return ListTile(
-                                      key: typeScrollableKey(index),
-                                      onTap: () {
-                                        Get.to(
-                                          const MangaDetailsR(),
-                                          arguments: media,
-                                          curve: Curves.ease,
-                                          duration:
-                                              controller.transitionDuration,
-                                          transition: Transition.fade,
-                                        );
-                                      },
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 2,
-                                      ),
-                                      title: Text(
-                                        title!,
-                                        style: style,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      subtitle: const Text('asdasd'),
-                                      leading: SizedBox(
-                                        height: 200,
-                                        width: 60,
-                                        child: ClipRRect(
-                                          borderRadius: const BorderRadius.all(
-                                            Radius.circular(8),
-                                          ),
-                                          child: BuildImageWidget(
-                                            fit: BoxFit.cover,
-                                            imageUrl: imageUrl,
-                                            memCacheWidth: 165,
-                                            memCacheHeight: 154,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              )
-                            : SliverContainer(
-                                margin: const EdgeInsets.all(8),
-                                bufferExtent: controller.select0.value ? 4 : 4,
-                                sliver: LiveSliverGridP<Media>(
-                                  lista: (controller.type.value == 'MANGA')
-                                      ? manga.manga
-                                      : anime.anime,
-                                  controller: controller.scrollController,
-                                  reAnimateOnVisibility: false,
-                                  key: typeScrollableKey(controller.type.value),
-                                  gridDelegate: controller.gridDelegate,
-                                  itemBuilder: (BuildContext context, int index,
-                                      animation, media) {
-                                    return controller.select0.value
-                                        ? grid1(
-                                            h,
-                                            w,
-                                            media,
-                                            context,
-                                            index,
-                                            animation,
-                                          )
-                                        : grid2(
-                                            media,
-                                            context,
-                                            w,
-                                            h,
-                                            index,
-                                            animation,
-                                          );
-                                    // grid2(
-                                    //     media,
-                                    //     context,
-                                    //     w,
-                                    //     h,
-                                    //     index,
-                                    //     animation,
-                                    //   );
-                                  },
-                                ),
-                              ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-      ),
-    );
-  }
-
-  Widget grid2(Media media, BuildContext context, double w, double h, int index,
-      Animation<double> animation) {
-    final style = Theme.of(context).textTheme.headline6!.copyWith(
-          color: Colors.white,
-        );
-
-    final publishing = 'Publishing'.i18n();
-    return FadeTransition(
-      key: typeScrollableKey(index),
-      opacity: animation,
-      child: GestureDetector(
-        onTap: () {
-          Get.to(
-            const MangaDetailsR(),
-            arguments: media,
-            curve: Curves.ease,
-            duration: controller.transitionDuration,
-            transition: Transition.fade,
-          );
-        },
-        child: BoxyRow(
-          children: [
-            Dominant(
-              child: CustomBoxy(
-                delegate: Mybox(),
-                children: [
-                  BoxyId(
-                    id: #image,
-                    hasData: true,
-                    data: Size(w / 2.3, h),
-                    child: HeroImage(
-                      logo: false,
-                      h: h,
-                      w: w,
-                      dataProvider: media,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              width: w * .5,
-              child: BoxyColumn(
-                children: [
-                  Text(
-                    '$publishing ${media.startDate!.year}',
-                    textAlign: TextAlign.left,
-                    style: style.copyWith(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
+            GetBuilder<HomepageController>(
+              id: 28,
+              builder: (controller) => SliverContainer(
+                // margin: const EdgeInsets.all(8),
+                bufferExtent: controller.select0.value ? 4 : 4,
+                sliver: LoadingMoreSliverList(
+                  key: PageStorageKey(controller.type.value),
+                  SliverListConfig<Media>(
+                    indicatorBuilder: indicatorBuilder,
+                    gridDelegate: controller.gridDelegate,
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    itemBuilder: itemBuilder,
+                    sourceList: controller.mangaandAnimeRepository,
                   ),
-                  Text(
-                    media.type ?? '',
-                    textAlign: TextAlign.left,
-                    style: style.copyWith(
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  ),
-                  Text(
-                    media.description ?? '',
-                    maxLines: 12,
-                    overflow: TextOverflow.ellipsis,
-                    style: style.copyWith(
-                      color: Colors.grey[400],
-                      fontSize: 13,
-                    ),
-                  ),
-                  Dominant.expanded(
-                    flex: 2,
-                    child: Wrap(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      children: media.genres!
-                          .map<Widget>(
-                            (e) => Card(
-                              clipBehavior: Clip.antiAlias,
-                              child: Text(
-                                e,
-                                textAlign: TextAlign.center,
-                                style: style.copyWith(
-                                  fontSize: 12.5,
-                                  color: AppColors().primarys(context),
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                    ),
-                  )
-                ],
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 
-  FadeTransition grid1(double h, double w, Media media, BuildContext context,
-      int index, Animation<double> animation) {
-    return FadeTransition(
-      key: typeScrollableKey(index),
-      opacity: animation,
-      child: GestureDetector(
-        onTap: () {
-          Get.to(
-            const MangaDetailsR(),
-            opaque: true,
-            curve: Curves.ease,
-            arguments: media,
-            duration: controller.transitionDuration,
-            transition: Transition.fade,
+  Widget indicatorBuilder(BuildContext context, IndicatorStatus status) {
+    Widget _setbackground(
+        bool full, Widget widget, double height, BuildContext context) {
+      widget = Container(
+        width: double.infinity,
+        height: height,
+        color: AppColors().background(context),
+        alignment: Alignment.center,
+        child: widget,
+      );
+      return widget;
+    }
+
+    Widget getIndicator(BuildContext context) {
+      final ThemeData theme = Theme.of(context);
+      return theme.platform == TargetPlatform.iOS
+          ? const CupertinoActivityIndicator(
+              animating: true,
+              radius: 16.0,
+            )
+          : const CircularProgressIndicator(
+              strokeWidth: 2.0,
+            );
+    }
+
+    bool isSliver = true;
+    late Widget widget;
+    switch (status) {
+      case IndicatorStatus.none:
+        widget = Container(height: 0.0);
+        if (isSliver) {
+          widget = SliverFillRemaining(
+            child: widget,
           );
-        },
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Flexible(
-                child: HeroImage(
-                  h: h,
-                  w: w,
-                  dataProvider: media,
-                ),
-              ),
-              HeroTitle(
-                media: media,
-                maxLines: 1,
-                style: Theme.of(context).textTheme.headline6!.copyWith(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-            ],
+        }
+        break;
+      case IndicatorStatus.loadingMoreBusying:
+        widget = Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(right: 0.0),
+              height: 30.0,
+              width: 30.0,
+              child: getIndicator(context),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("Carregando..."),
+            ),
+          ],
+        );
+        widget = _setbackground(false, widget, 50.0, context);
+        break;
+      case IndicatorStatus.fullScreenBusying:
+        widget = Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            getIndicator(context),
+          ],
+        );
+        widget = _setbackground(false, widget, 35.0, context);
+        if (isSliver) {
+          widget = SliverFillRemaining(
+            child: widget,
+          );
+        }
+        break;
+      case IndicatorStatus.error:
+        widget = const Center(
+          child: Icon(
+            Icons.error,
           ),
+        );
+        widget = _setbackground(false, widget, 35.0, context);
+        widget = GestureDetector(
+          onTap: () {
+            controller.mangaandAnimeRepository.errorRefresh();
+          },
+          child: widget,
+        );
+        break;
+      case IndicatorStatus.fullScreenError:
+        widget = const Center(
+          child: Icon(
+            Icons.error,
+          ),
+        );
+        widget = _setbackground(true, widget, double.infinity, context);
+        widget = GestureDetector(
+          onTap: () {
+            controller.mangaandAnimeRepository.errorRefresh();
+          },
+          child: widget,
+        );
+        if (isSliver) {
+          widget = SliverFillRemaining(
+            child: widget,
+          );
+        }
+        break;
+      case IndicatorStatus.noMoreLoad:
+        widget = const Center(
+          child: Text(
+            'NoData',
+          ),
+        );
+        if (isSliver) {
+          widget = SliverFillRemaining(
+            child: widget,
+          );
+        }
+        break;
+      case IndicatorStatus.empty:
+        widget = const Center(
+          child: Text(
+            'NoData',
+          ),
+        );
+        if (isSliver) {
+          widget = SliverFillRemaining(
+            child: widget,
+          );
+        }
+        break;
+    }
+    return widget;
+  }
+
+  Widget itemBuilder(BuildContext context, Media media, int index) {
+    final h = MediaQuery.of(context).size.height;
+
+    final w = MediaQuery.of(context).size.width;
+
+    return controller.select0.value
+        ? grid1(
+            h,
+            w,
+            media,
+            context,
+            index,
+          )
+        : grid2(
+            media,
+            context,
+            w,
+            h,
+            index,
+          );
+  }
+
+  Widget grid2(
+      Media media, BuildContext context, double w, double h, int index) {
+    final style = Theme.of(context).textTheme.headline6!.copyWith(
+          color: Colors.white,
+        );
+
+    final publishing = 'Publishing'.i18n();
+    return GestureDetector(
+      key: typeScrollableKey(index),
+      onTap: () {
+        Get.to(
+          const MangaDetailsR(),
+          arguments: media,
+          curve: Curves.ease,
+          duration: controller.transitionDuration,
+          transition: Transition.fade,
+        );
+      },
+      child: BoxyRow(
+        children: [
+          Dominant(
+            child: CustomBoxy(
+              delegate: Mybox(),
+              children: [
+                BoxyId(
+                  id: #image,
+                  hasData: true,
+                  data: Size(w / 2.3, h),
+                  child: HeroImage(
+                    logo: false,
+                    h: h,
+                    w: w,
+                    dataProvider: media,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            width: w * .5,
+            child: BoxyColumn(
+              children: [
+                Text(
+                  '$publishing ${media.startDate!.year}',
+                  textAlign: TextAlign.left,
+                  style: style.copyWith(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  media.type ?? '',
+                  textAlign: TextAlign.left,
+                  style: style.copyWith(
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                ),
+                Text(
+                  media.description ?? '',
+                  maxLines: 12,
+                  overflow: TextOverflow.ellipsis,
+                  style: style.copyWith(
+                    color: Colors.grey[400],
+                    fontSize: 13,
+                  ),
+                ),
+                Dominant.expanded(
+                  flex: 2,
+                  child: Wrap(
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    children: media.genres!
+                        .map<Widget>(
+                          (e) => Card(
+                            clipBehavior: Clip.antiAlias,
+                            child: Text(
+                              e,
+                              textAlign: TextAlign.center,
+                              style: style.copyWith(
+                                fontSize: 12.5,
+                                color: AppColors().primary(context),
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget grid1(
+      double h, double w, Media media, BuildContext context, int index) {
+    return GestureDetector(
+      key: typeScrollableKey(index),
+      onTap: () {
+        Get.to(
+          const MangaDetailsR(),
+          opaque: true,
+          curve: Curves.ease,
+          arguments: media,
+          duration: controller.transitionDuration,
+          transition: Transition.fade,
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Flexible(
+              child: HeroImage(
+                h: h,
+                w: w,
+                dataProvider: media,
+              ),
+            ),
+            HeroTitle(
+              media: media,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.headline6!.copyWith(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ],
         ),
       ),
     );
@@ -473,7 +503,6 @@ class _Gnav extends StatelessWidget {
 class LoadOn extends StatelessWidget {
   const LoadOn({
     super.key,
-    required this.onload,
     required this.enable,
     required this.select0,
     required this.select1,
@@ -485,7 +514,6 @@ class LoadOn extends StatelessWidget {
     this.value,
   });
 
-  final bool onload;
   final double? height;
   final bool enable;
   final void Function(int)? onPressed;
@@ -502,111 +530,87 @@ class LoadOn extends StatelessWidget {
 
     const EdgeInsets padding = EdgeInsets.all(3.5);
 
-    return onload
+    return enable
         ? Container(
-            alignment: Alignment.centerLeft,
-            height: height,
-            width: width,
-            child: const CircularProgressIndicator(
-              // value: value,
-              strokeWidth: 2,
+            // width: MediaQuery.of(context).size.width * .26,
+            height: 45,
+            color: Theme.of(context).buttonTheme.colorScheme?.background,
+            child: ToggleButtons(
+              borderRadius: const BorderRadius.all(
+                Radius.circular(10),
+              ),
+              onPressed: onPressed,
+              isSelected: const [
+                false,
+                false,
+              ],
+              children: const [
+                Icon(
+                  Icons.chevron_left,
+                ),
+                Icon(
+                  Icons.chevron_right,
+                ),
+              ],
             ),
           )
-        : enable
-            ? Container(
-                // width: MediaQuery.of(context).size.width * .26,
-                height: 45,
-                color: Theme.of(context).buttonTheme.colorScheme?.background,
-                child: ToggleButtons(
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  onPressed: onPressed,
-                  isSelected: const [
-                    false,
-                    false,
-                  ],
-                  children: const [
-                    Icon(
-                      Icons.chevron_left,
-                    ),
-                    Icon(
-                      Icons.chevron_right,
-                    ),
-                  ],
-                ),
-              )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // const Text('data'),
-                  // const VerticalDivider(
-                  //   thickness: 2,
-                  //   color: Colors.black,
-                  // ),
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // const Text('data'),
+              // const VerticalDivider(
+              //   thickness: 2,
+              //   color: Colors.black,
+              // ),
 
-                  ToggleButtons(
-                    constraints: const BoxConstraints(
-                      maxHeight: 80,
-                      minHeight: 20,
-                      maxWidth: 40,
-                      minWidth: 20,
+              ToggleButtons(
+                constraints: const BoxConstraints(
+                  maxHeight: 80,
+                  minHeight: 20,
+                  maxWidth: 40,
+                  minWidth: 20,
+                ),
+                onPressed: onPressedT,
+                borderRadius: BorderRadius.circular(10),
+                isSelected: [
+                  select0,
+                  select1,
+                  select2,
+                ],
+                children: [
+                  Container(
+                    padding: padding,
+                    alignment: Alignment.center,
+                    height: MediaQuery.of(context).size.height * .045,
+                    child: Image.asset(
+                      'assets/img/image.png',
+                      cacheWidth: 53,
+                      cacheHeight: 83,
                     ),
-                    onPressed: onPressedT,
-                    borderRadius: BorderRadius.circular(10),
-                    isSelected: [
-                      select0,
-                      select1,
-                      select2,
-                    ],
-                    children: [
-                      Container(
-                        padding: padding,
-                        alignment: Alignment.center,
-                        height: MediaQuery.of(context).size.height * .045,
-                        child: Image.asset(
-                          'assets/img/image.png',
-                          cacheWidth: 53,
-                          cacheHeight: 83,
-                        ),
-                      ),
-                      Container(
-                        padding: padding,
-                        alignment: Alignment.center,
-                        height: heightp,
-                        child: Image.asset(
-                          'assets/img/image3.png',
-                          cacheWidth: 53,
-                          cacheHeight: 83,
-                        ),
-                      ),
-                      Container(
-                        padding: padding,
-                        alignment: Alignment.center,
-                        height: heightp,
-                        child: Image.asset(
-                          'assets/img/image4.png',
-                          cacheWidth: 53,
-                          cacheHeight: 83,
-                        ),
-                      ),
-                    ],
+                  ),
+                  Container(
+                    padding: padding,
+                    alignment: Alignment.center,
+                    height: heightp,
+                    child: Image.asset(
+                      'assets/img/image3.png',
+                      cacheWidth: 53,
+                      cacheHeight: 83,
+                    ),
+                  ),
+                  Container(
+                    padding: padding,
+                    alignment: Alignment.center,
+                    height: heightp,
+                    child: Image.asset(
+                      'assets/img/image4.png',
+                      cacheWidth: 53,
+                      cacheHeight: 83,
+                    ),
                   ),
                 ],
-              );
+              ),
+            ],
+          );
   }
 }
-
-// backgroundColor:
-//                                       Theme.of(context).colorScheme.primary,
-// bool? equa(List<Media> other) {
-//   if (other.isNotEmpty) {
-//     for (var i in other) {
-//       return i == this;
-//     }
-//     return null;
-//   } else {
-//     return false;
-//   }
-// }
-

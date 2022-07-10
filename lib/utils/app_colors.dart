@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  Color primarys(BuildContext context) {
+  Color primary(BuildContext context) {
     return Theme.of(context).colorScheme.primary;
   }
 
-  Color backgrounds(BuildContext context) {
+  Color background(BuildContext context) {
     return Theme.of(context).colorScheme.background;
   }
 
-  Color secondarys(BuildContext context) {
+  Color secondary(BuildContext context) {
     return Theme.of(context).colorScheme.secondary;
   }
 
-  Color tertiarys(BuildContext context) {
+  Color tertiary(BuildContext context) {
     return Theme.of(context).colorScheme.tertiary;
   }
 }

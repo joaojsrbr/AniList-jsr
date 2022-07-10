@@ -5,9 +5,6 @@ import 'package:get/get.dart';
 import 'package:localization/localization.dart';
 import 'package:provider/provider.dart';
 
-import 'package:ani_search/api/repositories/anime_provider.dart';
-import 'package:ani_search/api/repositories/manga_provider.dart';
-import 'package:ani_search/api/repositories/search_provider.dart';
 import 'package:ani_search/i18n/repositories/locale_provider.dart';
 import 'package:ani_search/module/page/detailsr_module.dart';
 import 'package:ani_search/module/page/homepage_module.dart';
@@ -32,15 +29,9 @@ class MyApp extends StatelessWidget {
         Provider(
           create: (context) => LocaleProvider(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => MangaProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => AnimeProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => SearchProvider(),
-        ),
+        // ChangeNotifierProvider(
+        //   create: (context) => SearchProvider(),
+        // ),
       ],
       child: DynamicColorBuilder(
         builder: (lightDynamic, darkDynamic) {

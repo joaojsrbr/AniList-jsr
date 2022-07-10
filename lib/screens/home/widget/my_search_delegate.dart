@@ -1,17 +1,19 @@
-import 'dart:collection';
 import 'package:ani_search/api/models/api_graphql_media_model.dart';
-import 'package:ani_search/api/repositories/anime_provider.dart';
-import 'package:ani_search/api/repositories/manga_provider.dart';
-import 'package:ani_search/api/repositories/search_provider.dart';
+import 'package:ani_search/api/repositories/search_repository.dart';
 import 'package:ani_search/screens/details/page/details_page.dart';
 import 'package:ani_search/screens/home/hero/hero_image.dart';
 import 'package:ani_search/screens/home/hero/hero_title.dart';
+import 'package:ani_search/utils/app_colors.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:loading_more_list/loading_more_list.dart';
 
 class MySearchDelegate extends SearchDelegate {
   BuildContext context;
   final bool manga;
+
+  late SearchRepository searchRepository =
+      SearchRepository(result: false, manga: manga);
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -27,12 +29,6 @@ class MySearchDelegate extends SearchDelegate {
     required this.manga,
     required this.context,
   });
-
-  void searchDataSu(String query, bool manga) {
-    Provider.of<SearchProvider>(context).searchDataSu(
-      query: query,
-    );
-  }
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -68,46 +64,28 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
-    if (query.isNotEmpty) {
-      searchDataSu(query, manga);
-      final queryMain = Provider.of<SearchProvider>(context).searchListSu;
-      return _return(
-          const PageStorageKey('Results'), h, w, manga ? queryMain : queryMain);
-      // return MangaGridS(
-      //   lista: manga ? queryMain : queryMain,
-      //   key: const PageStorageKey('Results'),
-      // );
-    } else {
-      final queryMainManga = Provider.of<MangaProvider>(context).manga;
-      return _return(const PageStorageKey('Results'), h, w, queryMainManga);
-      // return MangaGridS(
-      //   lista: queryMainManga,
-      //   key: const PageStorageKey('Results'),
-      // );
-    }
-  }
-
-  Scaffold _return(PageStorageKey key, double h, double w,
-      UnmodifiableListView<Media> queryMainManga) {
+    late SearchRepository searchRepository;
+    searchRepository = SearchRepository(
+      result: true,
+      manga: manga,
+      query: query,
+    );
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GridView.builder(
-            key: key,
-            itemCount: queryMainManga.length,
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 340,
-              childAspectRatio: 1,
-              crossAxisSpacing: 0,
-              mainAxisSpacing: 15,
-              mainAxisExtent: 300,
-            ),
-            itemBuilder: (context, index) {
-              return grid1(h, w, queryMainManga[index], context);
-            },
+      key: const PageStorageKey('Results'),
+      body: LoadingMoreList(
+        ListConfig<Media>(
+          autoLoadMore: false,
+          sourceList: searchRepository,
+          padding: const EdgeInsets.all(8),
+          itemBuilder: itemBuilder,
+          indicatorBuilder: (context, indicator) =>
+              indicatorBuilder(context, indicator, searchRepository),
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 340,
+            childAspectRatio: 1,
+            crossAxisSpacing: 0,
+            mainAxisSpacing: 15,
+            mainAxisExtent: 300,
           ),
         ),
       ),
@@ -160,24 +138,121 @@ class MySearchDelegate extends SearchDelegate {
     );
   }
 
-  Future<void> getHomeManga(List<String> sort, String type) async {
-    await Provider.of<MangaProvider>(context, listen: false)
-        .getHomeManga(sort: sort, type: type);
+  Widget itemBuilder(BuildContext context, Media media, int index) {
+    final h = MediaQuery.of(context).size.height;
+    final w = MediaQuery.of(context).size.width;
+    return grid1(
+      h,
+      w,
+      media,
+      context,
+    );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final h = MediaQuery.of(context).size.height;
-    final w = MediaQuery.of(context).size.width;
-    final queryMainAnime = Provider.of<AnimeProvider>(context).anime;
-
-    final queryMainManga = Provider.of<MangaProvider>(context).manga;
-
-    return _return(
-      const PageStorageKey('Results'),
-      h,
-      w,
-      (manga ? queryMainManga : queryMainAnime),
+    return Scaffold(
+      key: const PageStorageKey('Suggestions'),
+      body: LoadingMoreList(
+        key: const PageStorageKey('Suggestions'),
+        ListConfig<Media>(
+          padding: const EdgeInsets.all(8),
+          autoLoadMore: false,
+          sourceList: searchRepository,
+          itemBuilder: itemBuilder,
+          indicatorBuilder: (context, indicator) =>
+              indicatorBuilder(context, indicator, searchRepository),
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 340,
+            childAspectRatio: 1,
+            crossAxisSpacing: 0,
+            mainAxisSpacing: 15,
+            mainAxisExtent: 300,
+          ),
+        ),
+      ),
     );
   }
+}
+
+Widget indicatorBuilder(BuildContext context, IndicatorStatus status,
+    SearchRepository searchRepository) {
+  Widget _setbackground(
+      bool full, Widget widget, double height, BuildContext context) {
+    widget = Container(
+      width: double.infinity,
+      height: height,
+      color: AppColors().background(context),
+      alignment: Alignment.center,
+      child: widget,
+    );
+    return widget;
+  }
+
+  Widget getIndicator(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return theme.platform == TargetPlatform.iOS
+        ? const CupertinoActivityIndicator(
+            animating: true,
+            radius: 16.0,
+          )
+        : const CircularProgressIndicator(
+            strokeWidth: 2.0,
+          );
+  }
+
+  late Widget widget;
+  switch (status) {
+    case IndicatorStatus.none:
+      widget = Container(height: 0.0);
+
+      break;
+    case IndicatorStatus.loadingMoreBusying:
+      widget = Container();
+      break;
+    case IndicatorStatus.fullScreenBusying:
+      widget = Center(
+        child: getIndicator(context),
+      );
+      widget = _setbackground(false, widget, 35.0, context);
+
+      break;
+    case IndicatorStatus.error:
+      widget = const Center(
+        child: Icon(
+          Icons.error,
+        ),
+      );
+      widget = _setbackground(false, widget, 35.0, context);
+      widget = GestureDetector(
+        onTap: () {
+          searchRepository.errorRefresh();
+        },
+        child: widget,
+      );
+      break;
+    case IndicatorStatus.fullScreenError:
+      widget = const Center(
+        child: Icon(
+          Icons.error,
+        ),
+      );
+      widget = _setbackground(true, widget, double.infinity, context);
+      widget = GestureDetector(
+        onTap: () {
+          searchRepository.errorRefresh();
+        },
+        child: widget,
+      );
+
+      break;
+    case IndicatorStatus.noMoreLoad:
+      widget = Container();
+
+      break;
+    case IndicatorStatus.empty:
+      widget = Container();
+      break;
+  }
+  return widget;
 }
