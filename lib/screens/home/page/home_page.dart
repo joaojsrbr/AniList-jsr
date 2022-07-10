@@ -111,7 +111,9 @@ class Homepage extends GetView<HomepageController> {
                     gridDelegate: controller.gridDelegate,
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     itemBuilder: itemBuilder,
-                    sourceList: controller.mangaandAnimeRepository,
+                    sourceList: controller.manga.value
+                        ? controller.mangaRepository
+                        : controller.animeRepository,
                   ),
                 ),
               ),
@@ -201,7 +203,9 @@ class Homepage extends GetView<HomepageController> {
         widget = _setbackground(false, widget, 35.0, context);
         widget = GestureDetector(
           onTap: () {
-            controller.mangaandAnimeRepository.errorRefresh();
+            controller.manga.value
+                ? controller.mangaRepository.errorRefresh()
+                : controller.animeRepository.errorRefresh();
           },
           child: widget,
         );
@@ -215,7 +219,9 @@ class Homepage extends GetView<HomepageController> {
         widget = _setbackground(true, widget, double.infinity, context);
         widget = GestureDetector(
           onTap: () {
-            controller.mangaandAnimeRepository.errorRefresh();
+            controller.manga.value
+                ? controller.mangaRepository.errorRefresh()
+                : controller.animeRepository.errorRefresh();
           },
           child: widget,
         );
@@ -346,11 +352,9 @@ class Homepage extends GetView<HomepageController> {
                 Dominant.expanded(
                   flex: 2,
                   child: Wrap(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
                     children: media.genres!
                         .map<Widget>(
                           (e) => Card(
-                            clipBehavior: Clip.antiAlias,
                             child: Text(
                               e,
                               textAlign: TextAlign.center,

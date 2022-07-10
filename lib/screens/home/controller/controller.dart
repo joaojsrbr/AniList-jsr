@@ -22,7 +22,11 @@ class HomepageController extends GetxController {
 
   late StreamController<int> pageindexcontroller;
 
-  late MangaandAnimeRepository mangaandAnimeRepository;
+  // late MangaandAnimeRepository mangaandAnimeRepository;
+
+  late MangaandAnimeRepository mangaRepository;
+
+  late MangaandAnimeRepository animeRepository;
 
   RxInt selectedIndex = 0.obs;
 
@@ -44,17 +48,25 @@ class HomepageController extends GetxController {
 
   late Stream<Root> onload;
 
-  late StreamController<Root> streamController;
-
   RxInt length = 0.obs;
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void onInit() {
-    mangaandAnimeRepository = MangaandAnimeRepository(
+    mangaRepository = MangaandAnimeRepository(
       manga: true,
       type: 'MANGA',
+      sorts: "TRENDING_DESC",
+      perPage: 25,
+      page: 0,
+    );
+    animeRepository = MangaandAnimeRepository(
+      manga: true,
+      type: 'ANIME',
+      sorts: "TRENDING_DESC",
+      perPage: 25,
+      page: 0,
     );
     // streamController = StreamController.broadcast();
     // onload = streamController.stream;
@@ -88,22 +100,12 @@ class HomepageController extends GetxController {
   @override
   void onClose() {
     // scrollController.dispose();
+    mangaRepository.dispose();
+    animeRepository.dispose();
     scrollController.dispose();
-    streamController.close();
+
     pageindexcontroller.close();
     super.onClose();
-  }
-
-  Future<void> loadmore(context, sort, type) async {
-    Get.find<HomepageController>().streamController.add(
-          Root(
-            context: context,
-            sort: sort,
-            type: type,
-            // type: lista!.first.type,
-            // popula: popula,
-          ),
-        );
   }
 
   void onTabchange(int value) async {
@@ -111,22 +113,28 @@ class HomepageController extends GetxController {
       scrollController.jumpTo(0.0);
       manga.value = true;
       type.value = "MANGA";
-      mangaandAnimeRepository = MangaandAnimeRepository(
-        manga: manga.value,
-        type: type.value,
-      );
-      await mangaandAnimeRepository.refresh();
+      // mangaandAnimeRepository = MangaandAnimeRepository(
+      //   manga: manga.value,
+      //   type: type.value,
+      //   sorts: sort.value,
+      //   perPage: 25,
+      //   page: 0,
+      // );
+      // await mangaRepository.refresh();
       selectedIndex.value = 0;
       update([28]);
     } else {
       scrollController.jumpTo(0.0);
       manga.value = false;
       type.value = "ANIME";
-      mangaandAnimeRepository = MangaandAnimeRepository(
-        manga: manga.value,
-        type: type.value,
-      );
-      await mangaandAnimeRepository.refresh();
+      // mangaandAnimeRepository = MangaandAnimeRepository(
+      //   manga: manga.value,
+      //   type: type.value,
+      //   sorts: sort.value,
+      //   perPage: 25,
+      //   page: 0,
+      // );
+      // await animeRepository.refresh();
       selectedIndex.value = 1;
       update([28]);
     }
