@@ -376,40 +376,40 @@ class Homepage extends GetView<HomepageController> {
 
   Widget grid1(
       double h, double w, Media media, BuildContext context, int index) {
-    return GestureDetector(
+    return Padding(
       key: typeScrollableKey(index),
-      onTap: () {
-        Get.to(
-          const MangaDetailsR(),
-          opaque: true,
-          curve: Curves.ease,
-          arguments: media,
-          duration: controller.transitionDuration,
-          transition: Transition.fade,
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Flexible(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Flexible(
+            child: GestureDetector(
+              onTap: () {
+                Get.to(
+                  const MangaDetailsR(),
+                  opaque: true,
+                  curve: Curves.ease,
+                  arguments: media,
+                  duration: controller.transitionDuration,
+                  transition: Transition.fade,
+                );
+              },
               child: HeroImage(
                 h: h,
                 w: w,
                 dataProvider: media,
               ),
             ),
-            HeroTitle(
-              media: media,
-              maxLines: 1,
-              style: Theme.of(context).textTheme.headline6!.copyWith(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ],
-        ),
+          ),
+          HeroTitle(
+            media: media,
+            maxLines: 1,
+            style: Theme.of(context).textTheme.headline6!.copyWith(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+        ],
       ),
     );
   }
@@ -558,10 +558,11 @@ class LoadOn extends StatelessWidget {
               //   thickness: 2,
               //   color: Colors.black,
               // ),
-              ToggleButton(
+              SelectButton(
                 onPressed: onPressedT,
-                normal: false,
-                initvalue: 0,
+                config: ToggleButtonConfig(
+                  initvalue: 0,
+                ),
                 borderRadius: BorderRadius.circular(10),
                 constraints: const BoxConstraints(
                   maxHeight: 80,

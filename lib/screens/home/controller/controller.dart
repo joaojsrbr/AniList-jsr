@@ -176,7 +176,7 @@ class HomepageController extends GetxController {
         childAspectRatio: 2 / 2,
         crossAxisSpacing: 20,
         mainAxisSpacing: 15,
-        mainAxisExtent: 300,
+        mainAxisExtent: 320,
       );
       gridview.value = false;
       listview.value = false;

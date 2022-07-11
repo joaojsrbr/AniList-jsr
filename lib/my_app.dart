@@ -106,6 +106,7 @@ List<GetPage<dynamic>> _pages = [
     name: '/h',
     page: () => const HomepageModule(),
   ),
+
   GetPage(
     name: '/d',
     page: () => const DetailsRModule(),
