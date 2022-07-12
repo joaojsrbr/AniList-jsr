@@ -119,7 +119,6 @@ class Homepage extends GetView<HomepageController> {
             ),
             Obx(
               () => SliverContainer(
-                // margin: const EdgeInsets.all(8),
                 bufferExtent: controller.gridview.value ? 4 : 4,
                 sliver: LoadingMoreSliverList(
                   key: PageStorageKey(controller.type.value),

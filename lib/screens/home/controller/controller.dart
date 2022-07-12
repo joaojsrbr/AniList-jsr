@@ -130,11 +130,11 @@ class HomepageController extends GetxController {
       listview.value = false;
     } else if (index == 1) {
       gridDelegate = const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 500,
+        maxCrossAxisExtent: 450,
         childAspectRatio: 2 / 2,
         crossAxisSpacing: 20,
         mainAxisSpacing: 15,
-        mainAxisExtent: 320,
+        mainAxisExtent: 350,
       );
       gridview.value = false;
       listview.value = false;

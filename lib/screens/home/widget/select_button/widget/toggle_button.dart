@@ -60,6 +60,8 @@ class SelectButton extends GetView<SelectButtonController> {
   /// O parâmetro index do callback é o índice do botão que está
   /// tocado ou ativado de outra forma.
   ///
+  /// Somente se o paramentro normal e isSelected estiver ativado
+  ///
   /// Quando o retorno de chamada for nulo, todos os botões de alternância serão desabilitados.
   final void Function(int)? onPresseds;
 
