@@ -121,37 +121,35 @@ class SelectButton extends GetView<SelectButtonController> {
     //   permanent: true,
     // );
 
-    return Obx(
-      () => ToggleButtons(
-        key: controller.stringkey(key, 'SelectButton'),
-        color: color,
-        textStyle: textStyle,
-        constraints: constraints,
-        tapTargetSize: tapTargetSize,
-        selectedBorderColor: selectedBorderColor,
-        disabledBorderColor: disabledBorderColor,
-        borderRadius: borderRadius,
-        borderWidth: borderWidth,
-        direction: direction,
-        verticalDirection: verticalDirection,
-        borderColor: borderColor,
-        selectedColor: selectedColor,
-        disabledColor: disabledColor,
-        fillColor: fillColor,
-        focusNodes: focusNodes,
-        focusColor: focusColor,
-        highlightColor: highlightColor,
-        hoverColor: hoverColor,
-        renderBorder: renderBorder,
-        splashColor: splashColor,
-        isSelected: config.normal ? isSelected! : controller.isSelected,
-        onPressed: (index) {
-          controller.onPressed(index);
-          onmain!(index);
-        },
-        mouseCursor: mouseCursor,
-        children: children,
-      ),
+    return ToggleButtons(
+      key: controller.stringkey(key, 'SelectButton'),
+      color: color,
+      textStyle: textStyle,
+      constraints: constraints,
+      tapTargetSize: tapTargetSize,
+      selectedBorderColor: selectedBorderColor,
+      disabledBorderColor: disabledBorderColor,
+      borderRadius: borderRadius,
+      borderWidth: borderWidth,
+      direction: direction,
+      verticalDirection: verticalDirection,
+      borderColor: borderColor,
+      selectedColor: selectedColor,
+      disabledColor: disabledColor,
+      fillColor: fillColor,
+      focusNodes: focusNodes,
+      focusColor: focusColor,
+      highlightColor: highlightColor,
+      hoverColor: hoverColor,
+      renderBorder: renderBorder,
+      splashColor: splashColor,
+      isSelected: config.normal ? isSelected! : controller.isSelected,
+      onPressed: (index) {
+        controller.onPressed(index);
+        onmain!(index);
+      },
+      mouseCursor: mouseCursor,
+      children: children,
     );
   }
 }

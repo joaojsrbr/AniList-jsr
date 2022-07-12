@@ -20,6 +20,7 @@ Widget grid2(Media media, BuildContext context, double w, double h, int index) {
   final publishing = 'Publishing'.i18n();
 
   final description = media.description ?? '';
+  final borderRadius = BorderRadius.circular(8);
 
   return GestureDetector(
     onTap: () {
@@ -31,163 +32,108 @@ Widget grid2(Media media, BuildContext context, double w, double h, int index) {
         transition: Transition.fade,
       );
     },
-    child: BoxyRow(
+    child: CustomBoxy(
+      delegate: Mybox(),
       children: [
-        Dominant(
-          child: CustomBoxy(
-            delegate: Mybox(),
-            children: [
-              BoxyId(
-                id: #image,
-                hasData: true,
-                data: const Size(500, 350),
-                child: HeroImage(
-                  logo: false,
-                  h: h,
-                  w: w,
-                  dataProvider: media,
-                ),
-              ),
-              BoxyId(
-                id: #text,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: BoxyColumn(
-                    textBaseline: TextBaseline.alphabetic,
-                    textDirection: TextDirection.ltr,
-                    children: [
-                      Text(
-                        '$publishing ${media.startDate!.year}',
-                        textAlign: TextAlign.left,
-                        style: style.copyWith(
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                      Text(
-                        media.type ?? '',
-                        textAlign: TextAlign.left,
-                        style: style.copyWith(
-                          color: Colors.white,
-                          fontSize: 15,
-                        ),
-                      ),
-                      BoxyFlexible(
-                        flex: 40,
-                        child: HtmlWidget(
-                          description,
-                          enableCaching: true,
-                          // maxLines: 9,
-                          // overflow: TextOverflow.ellipsis,
-                          renderMode: RenderMode.column,
-                          textStyle: style.copyWith(
-                            color: Colors.grey[400],
-                            fontSize: 13,
-                          ),
-                        ),
-                      ),
-                      BoxyFlexible(
-                        flex: 2,
-                        child: Wrap(
-                          children: media.genres!
-                              .map<Widget>(
-                                (e) => Card(
-                                  child: Text(
-                                    e,
-                                    textAlign: TextAlign.center,
-                                    style: style.copyWith(
-                                      fontSize: 12.5,
-                                      color: AppColors().primary(context),
-                                    ),
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // BoxyId(
-              //   hasData: true,
-              //   data: description,
-              //   id: #card,
-              //   child: Padding(
-              //     padding: const EdgeInsets.only(left: 8.0),
-              //     child: Wrap(
-              //       children: media.genres!
-              //           .map<Widget>(
-              //             (e) => Card(
-              //               child: Text(
-              //                 e,
-              //                 textAlign: TextAlign.center,
-              //                 style: style.copyWith(
-              //                   fontSize: 12.5,
-              //                   color: AppColors().primary(context),
-              //                 ),
-              //               ),
-              //             ),
-              //           )
-              //           .toList(),
-              //     ),
-              //   ),
-              // ),
-            ],
+        BoxyId(
+          id: #image,
+          hasData: true,
+          data: const Size(500, 350),
+          child: ClipRRect(
+            borderRadius: borderRadius,
+            child: HeroImage(
+              logo: false,
+              h: h,
+              w: w,
+              dataProvider: media,
+            ),
           ),
         ),
-        // Container(
-        //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        //   width: w * .5,
-        //   child: BoxyColumn(
-        //     children: [
-        //       Text(
-        //         '$publishing ${media.startDate!.year}',
-        //         textAlign: TextAlign.left,
-        //         style: style.copyWith(
-        //           color: Colors.white,
-        //           fontSize: 14,
-        //         ),
-        //       ),
-        //       Text(
-        //         media.type ?? '',
-        //         textAlign: TextAlign.left,
-        //         style: style.copyWith(
-        //           color: Colors.white,
-        //           fontSize: 15,
-        //         ),
-        //       ),
-        //       Text(
-        //         media.description ?? '',
-        //         maxLines: 12,
-        //         overflow: TextOverflow.ellipsis,
-        //         style: style.copyWith(
-        //           color: Colors.grey[400],
-        //           fontSize: 13,
-        //         ),
-        //       ),
-        //       Dominant.expanded(
-        //         flex: 2,
-        //         child: Wrap(
-        //           children: media.genres!
-        //               .map<Widget>(
-        //                 (e) => Card(
-        //                   child: Text(
-        //                     e,
-        //                     textAlign: TextAlign.center,
-        //                     style: style.copyWith(
-        //                       fontSize: 12.5,
-        //                       color: AppColors().primary(context),
-        //                     ),
-        //                   ),
+        BoxyId(
+          id: #text,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: BoxyColumn(
+              textBaseline: TextBaseline.alphabetic,
+              textDirection: TextDirection.ltr,
+              children: [
+                Text(
+                  '$publishing ${media.startDate?.year}',
+                  textAlign: TextAlign.left,
+                  style: style.copyWith(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                ),
+                Text(
+                  media.type ?? '',
+                  textAlign: TextAlign.left,
+                  style: style.copyWith(
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                ),
+                BoxyFlexible(
+                  flex: 40,
+                  child: HtmlWidget(
+                    description,
+                    enableCaching: true,
+                    // maxLines: 9,
+                    // overflow: TextOverflow.ellipsis,
+                    renderMode: RenderMode.column,
+                    textStyle: style.copyWith(
+                      color: Colors.grey[400],
+                      fontSize: 13,
+                    ),
+                  ),
+                ),
+                BoxyFlexible(
+                  flex: 2,
+                  child: Wrap(
+                    children: media.genres!
+                        .map<Widget>(
+                          (e) => Card(
+                            child: Text(
+                              e,
+                              textAlign: TextAlign.center,
+                              style: style.copyWith(
+                                fontSize: 12.5,
+                                color: AppColors().primary(context),
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        // BoxyId(
+        //   hasData: true,
+        //   data: description,
+        //   id: #card,
+        //   child: Padding(
+        //     padding: const EdgeInsets.only(left: 8.0),
+        //     child: Wrap(
+        //       children: media.genres!
+        //           .map<Widget>(
+        //             (e) => Card(
+        //               child: Text(
+        //                 e,
+        //                 textAlign: TextAlign.center,
+        //                 style: style.copyWith(
+        //                   fontSize: 12.5,
+        //                   color: AppColors().primary(context),
         //                 ),
-        //               )
-        //               .toList(),
-        //         ),
-        //       )
-        //     ],
+        //               ),
+        //             ),
+        //           )
+        //           .toList(),
+        //     ),
         //   ),
-        // )
+        // ),
       ],
     ),
   );
