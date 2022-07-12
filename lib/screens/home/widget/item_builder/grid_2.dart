@@ -2,7 +2,6 @@ import 'package:ani_search/api/models/api_graphql_media_model.dart';
 import 'package:ani_search/screens/details/page/details_page.dart';
 import 'package:ani_search/screens/home/controller/controller.dart';
 import 'package:ani_search/screens/home/hero/hero_image.dart';
-import 'package:ani_search/utils/app_colors.dart';
 import 'package:boxy/boxy.dart';
 import 'package:boxy/flex.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +18,33 @@ Widget grid2(Media media, BuildContext context, double w, double h, int index) {
 
   final publishing = 'Publishing'.i18n();
 
-  final description = media.description ?? '';
-  final borderRadius = BorderRadius.circular(8);
+  // final description = media.description!;
+  final description =
+      (media.description ?? '').trim().replaceAll(RegExp(r'\n'), "");
+
+  final title =
+      media.title!.english ?? media.title!.romaji ?? media.title!.native ?? '';
+  // final borderRadius = BorderRadius.circular(8);
+
+  int _flex() {
+    var flex = media.genres!.length;
+
+    if (flex == 1) {
+      flex = 12;
+      return flex;
+    } else if (flex >= 2 && flex <= 4) {
+      flex = 12;
+      return flex;
+    } else if (flex >= 5 && flex < 7) {
+      flex = 16;
+      return flex;
+    } else if (flex >= 7) {
+      flex = 24;
+      return flex;
+    }
+    flex = 24;
+    return flex;
+  }
 
   return GestureDetector(
     onTap: () {
@@ -38,14 +62,42 @@ Widget grid2(Media media, BuildContext context, double w, double h, int index) {
         BoxyId(
           id: #image,
           hasData: true,
-          data: const Size(500, 350),
-          child: ClipRRect(
-            borderRadius: borderRadius,
-            child: HeroImage(
-              logo: false,
-              h: h,
-              w: w,
-              dataProvider: media,
+          data: const Size(500, 438),
+          child: HeroImage(
+            logo: false,
+            h: h,
+            w: w,
+            dataProvider: media,
+          ),
+        ),
+        BoxyId(
+          id: #title,
+          child: Card(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(8),
+                  bottomRight: Radius.circular(8)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Column(
+                textBaseline: TextBaseline.alphabetic,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    maxLines: 3,
+                    style: Theme.of(context).textTheme.headline6!.copyWith(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                        ),
+                    textDirection: TextDirection.ltr,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -75,30 +127,46 @@ Widget grid2(Media media, BuildContext context, double w, double h, int index) {
                 ),
                 BoxyFlexible(
                   flex: 40,
+                  fit: FlexFit.loose,
                   child: HtmlWidget(
                     description,
                     enableCaching: true,
                     // maxLines: 9,
                     // overflow: TextOverflow.ellipsis,
+
                     renderMode: RenderMode.column,
                     textStyle: style.copyWith(
+                      overflow: TextOverflow.clip,
                       color: Colors.grey[400],
                       fontSize: 13,
                     ),
                   ),
                 ),
                 BoxyFlexible(
-                  flex: 2,
+                  // flex: media.genres!.length >= 6 ? 22 : 11,
+                  flex: _flex(),
                   child: Wrap(
                     children: media.genres!
                         .map<Widget>(
-                          (e) => Card(
-                            child: Text(
-                              e,
-                              textAlign: TextAlign.center,
-                              style: style.copyWith(
-                                fontSize: 12.5,
-                                color: AppColors().primary(context),
+                          (e) => Padding(
+                            padding: const EdgeInsets.only(top: 5.5, left: 2),
+                            child: Container(
+                              height: h * 0.028,
+                              margin: const EdgeInsets.only(left: 2, bottom: 4),
+                              child: Chip(
+                                padding:
+                                    const EdgeInsets.only(bottom: 8, top: 0),
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                label: Text(
+                                  e,
+                                  textAlign: TextAlign.start,
+                                  style: style.copyWith(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -148,20 +216,37 @@ class Mybox extends BoxyDelegate {
 
     final sizei = image.parentData as Size;
 
+    final title = getChild(#title);
+
     text.layout(
       constraints.copyWith(
         maxWidth: sizei.width / 2.5,
         minWidth: sizei.width / 2.5,
-        maxHeight: sizei.height / 1.4,
-        minHeight: sizei.height / 1.4,
+        maxHeight: sizei.height / 1.45,
+        minHeight: sizei.height / 1.45,
       ),
     );
-    image.layout(constraints.copyWith(
-      maxWidth: sizei.width / 3,
-      minWidth: sizei.width / 3,
-      maxHeight: sizei.height / 1.1,
-      minHeight: sizei.height / 1.1,
-    ));
+    image.layout(
+      constraints.copyWith(
+        maxWidth: sizei.width / 3,
+        minWidth: sizei.width / 3,
+        maxHeight: sizei.height / 1.25,
+        minHeight: sizei.height / 1.25,
+      ),
+    );
+    title.layout(
+      constraints.copyWith(
+        maxWidth: sizei.width / 2.84,
+        minWidth: sizei.width / 2.84,
+        maxHeight: image.size.height / 4.2,
+        minHeight: image.size.height / 4.2,
+      ),
+    );
+
+    final dy = (image.size.height - title.size.height) * 1.018;
+    final dx = image.size.width - image.size.width - 5;
+
+    title.position(Offset(dx, dy));
 
     text.position(image.rect.topRight);
 
