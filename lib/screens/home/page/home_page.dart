@@ -67,9 +67,9 @@ class Homepage extends GetView<HomepageController> {
                         key: ObjectKey(controller.selectedIndex.value),
                       ),
                       SelectButton(
-                        key: ObjectKey(controller.gridview.value),
                         onPressed: controller.selectOne,
                         config: SelectButtonConfig(
+                          normal: false,
                           initvalue: 0,
                         ),
                         borderRadius: BorderRadius.circular(10),
@@ -111,7 +111,7 @@ class Homepage extends GetView<HomepageController> {
                             ),
                           ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
