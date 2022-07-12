@@ -1,11 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, depend_on_referenced_packages
 // ignore_for_file: unused_element
 
-import 'package:ani_search/screens/home/widget/gnav/gnav.dart';
-import 'package:ani_search/screens/home/widget/indicator_builder/indicator_builder.dart';
-import 'package:ani_search/screens/home/widget/item_builder/item_builder.dart';
-import 'package:ani_search/screens/home/widget/select_button/widget/toggle_button.dart';
-import 'package:ani_search/utils/app_colors.dart';
 import 'package:boxy/slivers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +8,12 @@ import 'package:loading_more_list/loading_more_list.dart';
 
 import 'package:ani_search/api/models/api_graphql_media_model.dart';
 import 'package:ani_search/screens/home/controller/controller.dart';
+import 'package:ani_search/screens/home/widget/gnav/gnav.dart';
+import 'package:ani_search/screens/home/widget/indicator_builder/indicator_builder.dart';
+import 'package:ani_search/screens/home/widget/item_builder/item_builder.dart';
+import 'package:ani_search/screens/home/widget/select_button/widget/toggle_button.dart';
 import 'package:ani_search/screens/home/widget_List/widgets_model_list.dart';
+import 'package:ani_search/utils/app_colors.dart';
 
 class Homepage extends GetView<HomepageController> {
   const Homepage({
@@ -27,8 +27,8 @@ class Homepage extends GetView<HomepageController> {
   Widget build(BuildContext context) {
     sliverappbar1() {
       return SliverAppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        surfaceTintColor: Theme.of(context).colorScheme.background,
+        backgroundColor: AppColors().background(context),
+        surfaceTintColor: AppColors().background(context),
         actions: actions(context, controller.manga),
         floating: false,
       );
