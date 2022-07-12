@@ -65,13 +65,6 @@ class _MangaDetailsRState extends State<MangaDetailsR>
               'id: ${dataProvider.idr} -- title: ${dataProvider.title!.english ?? dataProvider.title!.romaji ?? dataProvider.title!.native ?? ''}\n');
         }
 
-        // String _image(Media dataProvider) {
-        //   return dataProvider.coverImage!.extraLarge ??
-        //       dataProvider.coverImage!.large ??
-        //       dataProvider.coverImage!.medium ??
-        // 'https://convertingcolors.com/plain-1E2436.svg';
-        // }
-
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           body: NestedScrollView(
@@ -238,41 +231,3 @@ class ImageGrid extends StatelessWidget {
     );
   }
 }
-
-// body: CustomScrollView(
-//   slivers: [
-//     SliverAppBar(
-//       expandedHeight: h * 0.7,
-//       flexibleSpace: FlexibleSpaceBar(
-//         background: SafeArea(
-//           child: Stack(
-//             children: [
-//               HeroImage(
-//                 h: h,
-//                 w: w,
-//                 dataProvider: dataProvider,
-//               ),
-//               Positioned(
-//                 top: h * .09,
-//                 right: GetPlatform.isWindows ? 0 : 2,
-//                 left: GetPlatform.isWindows ? w * .25 : w * .47,
-//                 height: h * .2,
-//                 child: Column(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     HeroTitle(
-//                       media: dataProvider,
-//                     ),
-//                     HeroRowScore(
-//                       dataProvider: dataProvider,
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     ),
-//   ],
-// ),

@@ -68,10 +68,7 @@ List<Widget> actions(BuildContext context, RxBool manga) => <Widget>[
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: MySearchDelegate(
-                  context: context,
-                  manga: manga.value,
-                ),
+                delegate: MySearchDelegate(),
               );
             },
             icon: const Icon(Icons.search),

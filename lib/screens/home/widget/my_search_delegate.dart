@@ -13,27 +13,12 @@ import 'package:get/get.dart';
 import 'package:loading_more_list/loading_more_list.dart';
 
 class MySearchDelegate extends SearchDelegate {
-  BuildContext context;
-  final bool manga;
+  final controller = Get.find<HomepageController>();
 
-  // late MangaandAnimeRepository mangaRepository = MangaandAnimeRepository(
-  //   manga: true,
-  //   type: 'MANGA',
-  //   sorts: "TRENDING_DESC",
-  //   perPage: 25,
-  //   page: 0,
-  // );
-
-  // late MangaandAnimeRepository animeRepository = MangaandAnimeRepository(
-  //   manga: true,
-  //   type: 'ANIME',
-  //   sorts: "TRENDING_DESC",
-  //   perPage: 25,
-  //   page: 0,
-  // );
-
-  late SearchRepository searchRepository =
-      SearchRepository(result: false, manga: manga);
+  late SearchRepository searchRepository = SearchRepository(
+    result: false,
+    manga: controller.manga.value,
+  );
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -44,11 +29,6 @@ class MySearchDelegate extends SearchDelegate {
       ),
     );
   }
-
-  MySearchDelegate({
-    required this.manga,
-    required this.context,
-  });
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -62,7 +42,8 @@ class MySearchDelegate extends SearchDelegate {
             // await getData('airing');
           } else {
             query = '';
-            close(context, null);
+
+            // close(context, null);
             // getData(query);
           }
         },
@@ -85,58 +66,50 @@ class MySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    late SearchRepository searchRepository;
+    final SearchRepository searchRepository;
+
+    bool querym = false;
+
     searchRepository = SearchRepository(
       result: true,
-      manga: manga,
+      manga: controller.manga.value,
       query: query,
     );
+    if (query == '') {
+      querym = true;
+    }
+
     return Scaffold(
-      key: const PageStorageKey('Results'),
-      body: LoadingMoreList(
-        ListConfig<Media>(
-          autoLoadMore: false,
-          sourceList: searchRepository,
-          padding: const EdgeInsets.all(8),
-          itemBuilder: itemBuilder,
-          indicatorBuilder: (context, indicator) =>
-              indicatorBuilder(context, indicator, searchRepository),
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 340,
-            childAspectRatio: 1,
-            crossAxisSpacing: 0,
-            mainAxisSpacing: 15,
-            mainAxisExtent: 300,
-          ),
-        ),
-      ),
+      body: querym
+          ? _KeepLive(
+              manga: controller.manga.value,
+            )
+          : LoadingMoreList(
+              ListConfig<Media>(
+                autoLoadMore: false,
+                autoRefresh: true,
+                sourceList: searchRepository,
+                padding: const EdgeInsets.all(8),
+                itemBuilder: itemBuilder,
+                indicatorBuilder: (context, indicator) =>
+                    indicatorBuilder(context, indicator, searchRepository),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 340,
+                  childAspectRatio: 1,
+                  crossAxisSpacing: 0,
+                  mainAxisSpacing: 15,
+                  mainAxisExtent: 300,
+                ),
+              ),
+            ),
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // mangaRepository.map((e){
-
-    // })
-    return _KeepLive(manga: manga);
-    // body: LoadingMoreList(
-    //   key: PageStorageKey(controller.type.value),
-    //   ListConfig<Media>(
-    //     padding: const EdgeInsets.all(8),
-    //     autoLoadMore: false,
-    //     sourceList: manga ? mangaRepository : animeRepository,
-    //     itemBuilder: itemBuilder,
-    //     indicatorBuilder: (context, indicator) => indicatorBuilder(
-    //         context, indicator, manga ? mangaRepository : animeRepository),
-    //     gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-    //       maxCrossAxisExtent: 340,
-    //       childAspectRatio: 1,
-    //       crossAxisSpacing: 0,
-    //       mainAxisSpacing: 15,
-    //       mainAxisExtent: 300,
-    //     ),
-    //   ),
-    // ),
+    return _KeepLive(
+      manga: controller.manga.value,
+    );
   }
 }
 
@@ -255,6 +228,7 @@ class _KeepLiveState extends State<_KeepLive>
           mainAxisExtent: 300,
         ),
         cacheExtent: 340,
+        padding: const EdgeInsets.all(8),
         itemCount: mangaRepository.length,
         itemBuilder: (context, index) => itemBuilder(
           context,

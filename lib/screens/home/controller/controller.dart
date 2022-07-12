@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, depend_on_referenced_packages
-import 'dart:async';
-
 import 'package:ani_search/api/repositories/manga_and_anime_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,17 +18,11 @@ class Root {
 class HomepageController extends GetxController {
   RxInt page = 1.obs;
 
-  late StreamController<int> pageindexcontroller;
-
-  // late MangaandAnimeRepository mangaandAnimeRepository;
-
   late MangaandAnimeRepository mangaRepository;
 
   late MangaandAnimeRepository animeRepository;
 
   RxInt selectedIndex = 0.obs;
-
-  // RxDouble tempDouble = 0.0.obs;
 
   final transitionDuration = const Duration(milliseconds: 750);
 
@@ -40,13 +32,9 @@ class HomepageController extends GetxController {
 
   RxString type = 'MANGA'.obs;
 
-  RxBool enable = false.obs;
-
   RxBool manga = true.obs;
 
   late ScrollController scrollController;
-
-  late Stream<Root> onload;
 
   RxInt length = 0.obs;
 
@@ -68,43 +56,17 @@ class HomepageController extends GetxController {
       perPage: 25,
       page: 0,
     );
-    // streamController = StreamController.broadcast();
-    // onload = streamController.stream;
-    // onload.listen(
-    //   (event) async {
-    //     await loadMore(
-    //       event.context!,
-    //       event.sort!,
-    //       event.type,
-    //       // event.popula!,
-    //     );
-    //   },
-    // );
 
     scrollController = ScrollController();
 
     super.onInit();
   }
 
-  // void _scrollListener() {
-  //   if (scrollController.position.pixels ==
-  //       scrollController.position.maxScrollExtent) {
-  //     loadmore(
-  //       Get.context!,
-  //       sort.value,
-  //       type.value,
-  //     );
-  //   }
-  // }
-
   @override
   void onClose() {
-    // scrollController.dispose();
     mangaRepository.dispose();
     animeRepository.dispose();
     scrollController.dispose();
-
-    pageindexcontroller.close();
     super.onClose();
   }
 
@@ -122,7 +84,6 @@ class HomepageController extends GetxController {
       // );
       // await mangaRepository.refresh();
       selectedIndex.value = 0;
-      update([28]);
     } else {
       scrollController.jumpTo(0.0);
       manga.value = false;
@@ -136,7 +97,6 @@ class HomepageController extends GetxController {
       // );
       // await animeRepository.refresh();
       selectedIndex.value = 1;
-      update([28]);
     }
   }
 
@@ -168,8 +128,6 @@ class HomepageController extends GetxController {
       );
       gridview.value = true;
       listview.value = false;
-
-      update([28]);
     } else if (index == 1) {
       gridDelegate = const SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 500,
@@ -180,10 +138,8 @@ class HomepageController extends GetxController {
       );
       gridview.value = false;
       listview.value = false;
-      update([28]);
     } else {
       listview.value = true;
-      // update([28]);
     }
   }
 }
