@@ -5,7 +5,6 @@ class ControllerBinding implements Bindings {
   @override
   void dependencies() {
     Get.put<HomepageController>(HomepageController());
-
     // Get.put<TrendsController>(TrendsController());
   }
 }
