@@ -55,10 +55,12 @@ dependencies:
 
   # onload ...
   loading_more_list: ^4.1.2
+  visibility_detector: ^0.3.3
 
   # animations
   flutter_staggered_animations: ^1.0.0
-  auto_animated: ^3.0.1
+  # auto_animated: ^3.0.1
+  visibility_aware_state: ^1.0.3
 
   # id
   uuid: 3.0.6

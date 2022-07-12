@@ -1,51 +1,19 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: unused_local_variable
 
+import 'package:ani_search/screens/home/widget/select_button/controller/controller.dart';
+import 'package:ani_search/screens/home/widget/select_button/models/select_button_config_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ToggleButtonController extends GetxController {
-  ToggleButtonController({
-    required this.children,
-    required this.initvalue,
-  });
-  List<Widget> children;
-  int initvalue;
+export 'package:ani_search/screens/home/widget/select_button/models/select_button_config_model.dart';
 
-  RxList<bool> isSelected = RxList();
-
-  onPressed(int index) {
-    isSelected.value = isSelected.map((element) => element = false).toList();
-
-    isSelected[index] = !isSelected[index];
-
-    update([(#ToggleButtonController).toString()]);
-  }
-
-  void init() {
-    isSelected[initvalue] = !isSelected[initvalue];
-    update([(#ToggleButtonController).toString()]);
-  }
-
-  @override
-  void onInit() {
-    for (var i in children) {
-      isSelected.add(false);
-    }
-    init();
-    super.onInit();
-  }
-}
-
-const int _initialvalue = 0;
-
-class ToggleButton extends GetView<ToggleButtonController> {
-  const ToggleButton({
+class SelectButton extends GetView<SelectButtonController> {
+  SelectButton({
     required this.children,
     this.onPressed,
     this.onPresseds,
     this.isSelected,
-    this.initvalue = _initialvalue,
     this.selectedColor,
     this.disabledColor,
     this.fillColor,
@@ -67,20 +35,40 @@ class ToggleButton extends GetView<ToggleButtonController> {
     this.textStyle,
     this.constraints,
     this.mouseCursor,
-    this.normal = false,
+    required this.config,
     super.key,
-  }) : onmain = (onPressed != null) ? onPressed : onPresseds;
+  })  : onmain = (onPressed != null && config.normal == false)
+            ? onPressed
+            : onPresseds,
+        assert(
+            (config.normal == true) ? isSelected == null : true,
+            'Quando normal está ativado\n'
+            'isSelected e onPresseds não pode ser null'),
+        assert(
+            (config.normal == true) ? onPresseds == null : true,
+            'Quando normal está ativado\n'
+            'onPresseds e isSelected não pode ser null');
 
-  final int initvalue;
+  final SelectButtonConfig config;
 
   final void Function(int)? onmain;
 
-  final bool normal;
-
   final List<bool>? isSelected;
 
+  /// O callback é chamado quando um botão é tocado.
+  ///
+  /// O parâmetro index do callback é o índice do botão que está
+  /// tocado ou ativado de outra forma.
+  ///
+  /// Quando o retorno de chamada for nulo, todos os botões de alternância serão desabilitados.
   final void Function(int)? onPresseds;
 
+  /// O callback é chamado quando um botão é tocado.
+  ///
+  /// O parâmetro index do callback é o índice do botão que está
+  /// tocado ou ativado de outra forma.
+  ///
+  /// Quando o retorno de chamada for nulo, todos os botões de alternância serão desabilitados.
   final void Function(int)? onPressed;
 
   final List<Widget> children;
@@ -100,36 +88,42 @@ class ToggleButton extends GetView<ToggleButtonController> {
   final Color? disabledBorderColor;
   final BorderRadius? borderRadius;
   final double? borderWidth;
+
   final Axis direction;
   final VerticalDirection verticalDirection;
   final MaterialTapTargetSize? tapTargetSize;
   final TextStyle? textStyle;
+
+  /// Define o tamanho do botão.
+  ///
+  /// Normalmente usado para restringir o tamanho mínimo do botão.
+  ///
+  /// Se esta propriedade for nula, então
+  /// BoxConstraints(minWidth: 48.0, minHeight: 48.0) é usado.
   final BoxConstraints? constraints;
 
   final MouseCursor? mouseCursor;
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut(
-      () => ToggleButtonController(
+    Get.put<SelectButtonController>(
+      SelectButtonController(
         children: children,
-        initvalue: initvalue,
+        initvalue: config.initvalue,
       ),
     );
 
-    return GetBuilder<ToggleButtonController>(
-      didChangeDependencies: (_) {
-        if (_.controller?.children.length != children.length) {
-          _.controller?.isSelected.value = RxList();
-          for (var i in children) {
-            _.controller?.isSelected.add(false);
-          }
-        }
-      },
-      assignId: true,
-      id: (#ToggleButtonController).toString(),
-      builder: (controller) => ToggleButtons(
-        key: key,
+    // Get.put(
+    //   ToggleButtonController(
+    //     children: children,
+    //     initvalue: initvalue,
+    //   ),
+    //   permanent: true,
+    // );
+
+    return Obx(
+      () => ToggleButtons(
+        key: controller.stringkey(key, 'SelectButton'),
         color: color,
         textStyle: textStyle,
         constraints: constraints,
@@ -150,12 +144,10 @@ class ToggleButton extends GetView<ToggleButtonController> {
         hoverColor: hoverColor,
         renderBorder: renderBorder,
         splashColor: splashColor,
-        isSelected: normal ? isSelected! : controller.isSelected,
+        isSelected: config.normal ? isSelected! : controller.isSelected,
         onPressed: (index) {
           controller.onPressed(index);
-          if (onPressed != null) {
-            normal ? onmain!(index) : onmain!(index);
-          }
+          onmain!(index);
         },
         mouseCursor: mouseCursor,
         children: children,
