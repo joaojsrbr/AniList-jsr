@@ -6,7 +6,6 @@ import 'package:ani_search/screens/home/widget/indicator_builder/indicator_build
 import 'package:ani_search/screens/home/widget/item_builder/item_builder.dart';
 import 'package:ani_search/screens/home/widget/select_button/widget/toggle_button.dart';
 import 'package:ani_search/utils/app_colors.dart';
-import 'package:boxy/boxy.dart';
 import 'package:boxy/slivers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -146,28 +145,6 @@ class Homepage extends GetView<HomepageController> {
         ),
       ),
     );
-  }
-}
-
-class Mybox extends BoxyDelegate {
-  @override
-  Size layout() {
-    final image = getChild(#image);
-
-    // final main = getChild(#main);
-    // final card = getChild(#card);
-
-    final sizei = image.parentData as Size;
-
-    // main.layout(constraints.copyWith(
-    //     maxWidth: sizei.width * 2.3, minWidth: sizei.width * 2.3));
-    image.layout(
-        constraints.copyWith(maxWidth: sizei.width, minWidth: sizei.width));
-
-    // texto.layout(constraints);
-    // card.layout(constraints);
-    return image.size;
-    // return texto.size + Offset(0, card.size.height);
   }
 }
 

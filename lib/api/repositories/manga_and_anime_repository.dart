@@ -83,9 +83,8 @@ class MangaandAnimeRepository extends LoadingMoreBase<Media> {
           add(item);
 
           if (kDebugMode) {
-            print(item.title!.english ??
-                item.title!.romaji ??
-                item.title!.native);
+            print(
+                '${item.title!.english ?? item.title!.romaji ?? item.title!.native} - ${item.description?.length}');
           }
         }
       }
