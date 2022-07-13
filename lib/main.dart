@@ -1,4 +1,4 @@
-import 'package:ani_search/my_app.dart';
+import 'package:ani_search/app/my_app.dart';
 import 'package:flutter/material.dart';
 // import 'package:hive_flutter/hive_flutter.dart';
 
