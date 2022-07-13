@@ -1,3 +1,4 @@
+import 'package:ani_search/app/core/themes/schemes/color_schemes.g.dart';
 import 'package:ani_search/app/core/themes/text_theme.dart';
 import 'package:ani_search/app/core/utils/scrollbehavior.dart';
 import 'package:ani_search/app/modules/home/bindings/home_binding.dart';
@@ -51,18 +52,8 @@ class MyApp extends StatelessWidget {
 
             darkColorScheme = darkDynamic.harmonized();
           } else {
-            lightColorScheme = ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 231, 129, 6),
-              background: const Color.fromRGBO(35, 36, 54, 1),
-              surfaceTint: const Color.fromRGBO(35, 36, 54, 1),
-              brightness: Brightness.light,
-            );
-            darkColorScheme = ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 231, 197, 6),
-              background: const Color.fromRGBO(35, 36, 54, 1),
-              surfaceTint: const Color.fromRGBO(35, 36, 54, 1),
-              brightness: Brightness.dark,
-            );
+            lightColorScheme = RootCor().lightColorScheme;
+            darkColorScheme = RootCor().darkColorScheme;
           }
           return GetMaterialApp(
             color: Theme.of(context).colorScheme.background,

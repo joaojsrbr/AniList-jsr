@@ -1,8 +1,7 @@
 import 'package:ani_search/app/data/api_graphql_media_model.dart';
-import 'package:ani_search/app/modules/details/view/details_view.dart';
-import 'package:ani_search/app/modules/home/controllers/home_controller.dart';
 import 'package:ani_search/app/modules/home/widgets/hero_image.dart';
 import 'package:ani_search/app/modules/home/widgets/hero_title.dart';
+import 'package:ani_search/app/routes/app_pages.dart';
 import 'package:boxy/boxy.dart';
 import 'package:boxy/flex.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,7 @@ Widget grid2(Media media, BuildContext context, double w, double h, int index) {
         color: Colors.white,
       );
 
-  final controller = Get.find<HomepageController>();
+  // final controller = Get.find<HomepageController>();
 
   final publishing = 'Publishing'.i18n();
 
@@ -47,12 +46,9 @@ Widget grid2(Media media, BuildContext context, double w, double h, int index) {
 
   return GestureDetector(
     onTap: () {
-      Get.to(
-        () => const MangaDetailsR(),
+      Get.toNamed(
+        Routes.details,
         arguments: media,
-        curve: Curves.linear,
-        duration: controller.transitionDuration,
-        transition: Transition.native,
       );
     },
     child: CustomBoxy(
