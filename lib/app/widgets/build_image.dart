@@ -145,6 +145,7 @@ class BuildImageWidget extends StatelessWidget {
                           color: color,
                           filterQuality: filterQuality,
                           fit: fit,
+                          fadeInCurve: Curves.linear,
                           errorWidget: (context, url, error) => Center(
                             child: Container(
                               color: Colors.black12,

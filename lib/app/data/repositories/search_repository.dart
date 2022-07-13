@@ -31,7 +31,7 @@ class SearchRepository extends LoadingMoreBase<Media> {
   String? query;
 
   @override
-  bool get hasMore => (_hasMore && length < 25);
+  bool get hasMore => (_hasMore && length <= 25);
 
   bool isSuccess = false;
 
@@ -101,20 +101,6 @@ class SearchRepository extends LoadingMoreBase<Media> {
           print(stack);
         }
       }
-      switch (tempData.stateEnum) {
-        case StateEnum.start:
-          isSuccess = false;
-          break;
-        case StateEnum.processing:
-          isSuccess = false;
-          break;
-        case StateEnum.end:
-          isSuccess = true;
-          break;
-        case StateEnum.error:
-          isSuccess = false;
-          break;
-      }
     } else {
       final QueryOptions options = QueryOptions(
         document: gql(queryRes),
@@ -167,20 +153,20 @@ class SearchRepository extends LoadingMoreBase<Media> {
           print(stack);
         }
       }
-      switch (tempData.stateEnum) {
-        case StateEnum.start:
-          isSuccess = false;
-          break;
-        case StateEnum.processing:
-          isSuccess = false;
-          break;
-        case StateEnum.end:
-          isSuccess = true;
-          break;
-        case StateEnum.error:
-          isSuccess = false;
-          break;
-      }
+    }
+    switch (tempData.stateEnum) {
+      case StateEnum.start:
+        isSuccess = false;
+        break;
+      case StateEnum.processing:
+        isSuccess = false;
+        break;
+      case StateEnum.end:
+        isSuccess = true;
+        break;
+      case StateEnum.error:
+        isSuccess = false;
+        break;
     }
     return isSuccess;
   }
