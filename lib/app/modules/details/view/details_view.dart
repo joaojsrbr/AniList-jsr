@@ -1,11 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 
 import 'package:ani_search/app/core/utils/i18n/repositories/locale_provider.dart';
+import 'package:ani_search/app/modules/details/controllers/details_controller.dart';
 import 'package:ani_search/app/modules/home/widgets/home_export_widgets.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
+import 'package:get/get.dart';
 
 import 'package:provider/provider.dart';
 
@@ -17,32 +19,8 @@ extension on num {
   double get vh => _viewportSize.height * (this);
 }
 
-class MangaDetailsR extends StatefulWidget {
+class MangaDetailsR extends GetView<DetailsController> {
   const MangaDetailsR({super.key});
-
-  @override
-  State<MangaDetailsR> createState() => _MangaDetailsRState();
-}
-
-class _MangaDetailsRState extends State<MangaDetailsR>
-    with TickerProviderStateMixin {
-  late TabController tabController;
-
-  @override
-  void initState() {
-    tabController = TabController(
-      initialIndex: 0,
-      length: 5,
-      vsync: this,
-    );
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +54,7 @@ class _MangaDetailsRState extends State<MangaDetailsR>
                     bottom: TabBar(
                       indicatorWeight: 1,
                       isScrollable: true,
-                      controller: tabController,
+                      controller: controller.tabController,
                       tabs: value.tabs
                           .map(
                             (e) => Tab(
@@ -158,7 +136,7 @@ class _MangaDetailsRState extends State<MangaDetailsR>
             },
             body: TabBarView(
               physics: const NeverScrollableScrollPhysics(),
-              controller: tabController,
+              controller: controller.tabController,
               children: [
                 Container(),
                 Container(),
