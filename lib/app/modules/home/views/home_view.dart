@@ -24,7 +24,7 @@ class Homepage extends GetView<HomepageController> {
       return SliverAppBar(
         backgroundColor: AppColors().background(context),
         surfaceTintColor: AppColors().background(context),
-        actions: actions(context, controller.manga),
+        actions: actions(context),
         floating: false,
       );
     }

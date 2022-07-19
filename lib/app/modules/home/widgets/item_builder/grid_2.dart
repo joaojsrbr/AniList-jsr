@@ -33,14 +33,15 @@ Widget grid2(Media media, BuildContext context, double w, double h, int index) {
     } else if (flex >= 2 && flex <= 4) {
       flex = 12;
       return flex;
-    } else if (flex >= 5 && flex < 7) {
+    } else if (flex >= 5 && flex <= 6) {
       flex = 16;
       return flex;
     } else if (flex >= 7) {
       flex = 24;
       return flex;
+    } else {
+      flex = 24;
     }
-    flex = 24;
     return flex;
   }
 
@@ -60,6 +61,7 @@ Widget grid2(Media media, BuildContext context, double w, double h, int index) {
           data: const Size(500, 400),
           child: HeroImage(
             logo: false,
+            hero: false,
             h: h,
             w: w,
             dataProvider: media,

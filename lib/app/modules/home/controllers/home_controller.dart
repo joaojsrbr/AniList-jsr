@@ -21,6 +21,8 @@ class HomepageController extends GetxController
 
   late MangaandAnimeRepository mangaRepository;
 
+  late TextEditingController textController;
+
   late MangaandAnimeRepository animeRepository;
 
   RxInt selectedIndex = 0.obs;
@@ -43,6 +45,7 @@ class HomepageController extends GetxController
 
   @override
   void onInit() {
+    textController = TextEditingController();
     mangaRepository = MangaandAnimeRepository(
       manga: true,
       type: 'MANGA',

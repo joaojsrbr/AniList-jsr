@@ -1,6 +1,6 @@
+import 'package:ani_search/app/core/themes/app_colors.dart';
 import 'package:ani_search/app/modules/home/widgets/my_search_delegate.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 Widget buildSheet() => Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -56,50 +56,53 @@ Widget buildSheet() => Padding(
 //       ),
 //     ];
 
-List<Widget> actions(BuildContext context, RxBool manga) => <Widget>[
-      Padding(
-        padding: const EdgeInsets.only(right: 10.0),
-        child: Material(
-          type: MaterialType.button,
-          borderRadius: BorderRadius.circular(12),
-          color: Theme.of(context).colorScheme.background,
-          child: IconButton(
-            // autofocus: true,
-            onPressed: () {
-              showSearch(
-                context: context,
-                delegate: MySearchDelegate(),
-              );
-            },
-            icon: const Icon(Icons.search),
-          ),
+List<Widget> actions(BuildContext context) {
+  // final controller = Get.find<HomepageController>();
+
+  return <Widget>[
+    Padding(
+      padding: const EdgeInsets.only(right: 10.0),
+      child: Material(
+        type: MaterialType.button,
+        borderRadius: BorderRadius.circular(12),
+        color: Theme.of(context).colorScheme.background,
+        child: IconButton(
+          autofocus: true,
+          onPressed: () {
+            showSearch(
+              context: context,
+              delegate: MySearchDelegate(),
+            );
+          },
+          icon: const Icon(Icons.search),
         ),
       ),
-      Padding(
-        padding: const EdgeInsets.only(right: 10.0),
-        child: Material(
-          clipBehavior: Clip.antiAlias,
-          type: MaterialType.button,
-          borderRadius: BorderRadius.circular(12),
-          color: Theme.of(context).colorScheme.background,
-          child: IconButton(
-            // autofocus: true,
-            onPressed: () {
-              showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                // isScrollControlled: true,
-                context: context,
-                // shape: const RoundedRectangleBorder(
-                //   borderRadius: BorderRadius.vertical(
-                //     top: Radius.circular(20),
-                //   ),
-                // ),
-                // isScrollControlled: true,
-                builder: (context) => buildSheet(),
-              );
-            },
-            icon: const Icon(Icons.filter_list_rounded),
-          ),
+    ),
+    Padding(
+      padding: const EdgeInsets.only(right: 10.0),
+      child: Material(
+        type: MaterialType.button,
+        borderRadius: BorderRadius.circular(12),
+        color: AppColors().background(context),
+        child: IconButton(
+          // autofocus: true,
+          onPressed: () {
+            showModalBottomSheet(
+              backgroundColor: Colors.transparent,
+              // isScrollControlled: true,
+              context: context,
+              // shape: const RoundedRectangleBorder(
+              //   borderRadius: BorderRadius.vertical(
+              //     top: Radius.circular(20),
+              //   ),
+              // ),
+              // isScrollControlled: true,
+              builder: (context) => buildSheet(),
+            );
+          },
+          icon: const Icon(Icons.filter_list_rounded),
         ),
       ),
-    ];
+    ),
+  ];
+}
