@@ -2,11 +2,11 @@
 
 import 'package:ani_search/app/data/api_graphql_media_model.dart';
 import 'package:ani_search/app/data/repositories/search_repository.dart';
-import 'package:ani_search/app/modules/details/view/details_view.dart';
 import 'package:ani_search/app/modules/home/controllers/home_controller.dart';
 import 'package:ani_search/app/modules/home/widgets/hero_image.dart';
 import 'package:ani_search/app/modules/home/widgets/hero_title.dart';
 import 'package:ani_search/app/core/themes/app_colors.dart';
+import 'package:ani_search/app/routes/app_pages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -107,6 +107,7 @@ class MySearchDelegate extends SearchDelegate {
       body: querym
           ? grid
           : LoadingMoreList(
+              key: PageStorageKey(searchRepository.isSuccess),
               ListConfig<Media>(
                 autoLoadMore: false,
                 autoRefresh: true,
@@ -229,21 +230,9 @@ Widget _itemBuilder(BuildContext context, Media media, int index) {
 GestureDetector grid1(double h, double w, Media media, BuildContext context) {
   return GestureDetector(
     onTap: () {
-      const transitionDuration = Duration(milliseconds: 600);
-      Navigator.of(context).push(
-        PageRouteBuilder(
-          settings: RouteSettings(
-            arguments: media,
-          ),
-          transitionDuration: transitionDuration,
-          reverseTransitionDuration: transitionDuration,
-          pageBuilder: (_, animation, __) {
-            return FadeTransition(
-              opacity: animation,
-              child: const MangaDetailsR(),
-            );
-          },
-        ),
+      Get.toNamed(
+        Routes.details,
+        arguments: media,
       );
     },
     child: Padding(
@@ -255,6 +244,7 @@ GestureDetector grid1(double h, double w, Media media, BuildContext context) {
             child: HeroImage(
               h: h,
               w: w,
+              hero: false,
               dataProvider: media,
             ),
           ),
